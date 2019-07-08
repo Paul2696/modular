@@ -1,12 +1,9 @@
 package com.modular;
 
-import com.modular.persistence.dao.PersistenceManager;
+import com.modular.persistence.dao.impl.PersistenceManager;
 import com.modular.persistence.model.User;
-import com.modular.persistence.model.UserType;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 public class Main {
