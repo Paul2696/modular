@@ -8,6 +8,9 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
@@ -52,13 +55,14 @@ public class UserDAOImpl implements UserDAO {
     public void update(User entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.refresh(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         }
         catch(EntityNotFoundException enfe){
             throw new DataBaseException("El usuario " + entity + " no existe");
         }
         catch(Exception e){
+            logger.debug("", e);
             throw new DataBaseException("No se pudo actualizar al usuario: " + entity);
         }
     }
@@ -78,8 +82,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> getAllUsers() throws DataBaseException{
         try{
-            List<User> users = em.createNativeQuery("SELECT * FROM user").getResultList();
-            return users;
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            criteriaQuery.select(root);
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");

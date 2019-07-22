@@ -25,7 +25,7 @@ public class HomeworkEndpoint {
         try{
             Homework homework = gson.fromJson(json, Homework.class);
             homeworkDAO.create(homework);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
@@ -59,7 +59,7 @@ public class HomeworkEndpoint {
         try{
             Homework homework = gson.fromJson(json, Homework.class);
             homeworkDAO.update(homework);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
@@ -77,7 +77,7 @@ public class HomeworkEndpoint {
         try{
             Homework homework = homeworkDAO.get(homeworkId);
             homeworkDAO.delete(homework);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);

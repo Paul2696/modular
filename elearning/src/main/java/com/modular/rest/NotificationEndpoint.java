@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/notification")
 public class NotificationEndpoint {
@@ -24,7 +25,7 @@ public class NotificationEndpoint {
         try{
             Notification notification = gson.fromJson(json, Notification.class);
             notificationDAO.create(notification);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
@@ -48,7 +49,7 @@ public class NotificationEndpoint {
         try{
             Notification notification = gson.fromJson(json, Notification.class);
             notificationDAO.update(notification);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
@@ -66,7 +67,21 @@ public class NotificationEndpoint {
         try{
             Notification notification = notificationDAO.get(notificationId);
             notificationDAO.delete(notification);
-            return Response.ok().build();
+            return Response.ok("Success").build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllNotification(){
+        try{
+            List<Notification> notifications = notificationDAO.getAllNotifications();
+            String notificationJson = gson.toJson(notifications);
+            return Response.ok(notificationJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);

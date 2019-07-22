@@ -1,6 +1,7 @@
 package com.modular.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Calendar;
 
 @Path("/course")
 public class CourseEndpoint {
@@ -21,14 +23,22 @@ public class CourseEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCourse(String json){
+        Course course = new Course();
         try{
-            Course course = gson.fromJson(json, Course.class);
+            Gson gson = new GsonBuilder().setDateFormat("EEE, MM-dd-yyyy HH:mm:ss'Z'").create();
+            course = gson.fromJson(json, Course.class);
+            System.out.println(course.toString());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(course.getStart());
+            if(calendar.after(course.getEnd())){
+                return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
+            }
             courseDAO.create(course);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
+            return Response.status(400).entity(course.toString()).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
@@ -58,7 +68,7 @@ public class CourseEndpoint {
         try{
             Course course = gson.fromJson(json, Course.class);
             courseDAO.update(course);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
@@ -76,7 +86,7 @@ public class CourseEndpoint {
         try{
             Course course = courseDAO.get(courseId);
             courseDAO.delete(course);
-            return Response.ok().build();
+            return Response.ok("Success").build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);

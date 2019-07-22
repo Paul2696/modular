@@ -8,7 +8,8 @@ import java.util.Date;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int courseId;
+    @Column(name = "idCourse")
+    private int idCourse;
     private String name;
     private Date start;
     private Date end;
@@ -16,12 +17,12 @@ public class Course {
     @JoinColumn(name = "iduser")
     private User user;
 
-    public int getCourseId() {
-        return courseId;
+    public int getIdCourse() {
+        return idCourse;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setIdCourse(int idCourse) {
+        this.idCourse = idCourse;
     }
 
     public String getName() {
@@ -59,7 +60,7 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "courseId=" + courseId +
+                "idCourse=" + idCourse +
                 ", name='" + name + '\'' +
                 ", start=" + start +
                 ", end=" + end +

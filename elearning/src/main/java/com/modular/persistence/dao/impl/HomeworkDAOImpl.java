@@ -48,7 +48,7 @@ public class HomeworkDAOImpl implements HomeworkDAO {
     public void update(Homework entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.refresh(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         }
         catch(EntityNotFoundException enfe){

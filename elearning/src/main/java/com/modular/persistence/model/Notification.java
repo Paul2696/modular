@@ -10,7 +10,7 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idNotification;
     private String message;
-    private boolean seen;
+    private boolean seen = false;
     private byte[] resource;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")

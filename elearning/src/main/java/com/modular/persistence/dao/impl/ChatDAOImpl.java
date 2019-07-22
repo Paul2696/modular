@@ -53,16 +53,21 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public List<Chat> getConversation(int userId1, int userId2) {
-        //List<Chat> conversation = em.createNativeQuery("SELECT * FROM chat WHERE iduser = " + userId1 + "AND iduser1 = " + userId2).getResultList();
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
-        Root<Chat> root = criteriaQuery.from(Chat.class);
-        Predicate predicate1 = criteriaBuilder.equal(root.get("iduser"), userId1);
-        Predicate predicate2 = criteriaBuilder.equal(root.get("iduser1"), userId2);
-        Predicate predicate3 = criteriaBuilder.and(predicate1, predicate2);
-        criteriaQuery.select(root).where(predicate3);
-        List<Chat> conversation = em.createQuery(criteriaQuery).getResultList();
-        return null;
+    public List<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
+        try{
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
+            Root<Chat> root = criteriaQuery.from(Chat.class);
+            Predicate predicate1 = criteriaBuilder.equal(root.get("iduser"), userId1);
+            Predicate predicate2 = criteriaBuilder.equal(root.get("iduser1"), userId2);
+            Predicate predicate3 = criteriaBuilder.and(predicate1, predicate2);
+            criteriaQuery.select(root).where(predicate3);
+            List<Chat> conversation = em.createQuery(criteriaQuery).getResultList();
+            return conversation;
+        }
+        catch(Exception e){
+            throw new DataBaseException("No se pudo obtener la conversacion");
+        }
+
     }
 }

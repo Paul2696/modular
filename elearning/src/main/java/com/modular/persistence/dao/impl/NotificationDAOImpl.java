@@ -8,6 +8,10 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class NotificationDAOImpl implements NotificationDAO {
     private static final Logger logger = Logger.getLogger(NotificationDAOImpl.class);
@@ -47,7 +51,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     public void update(Notification entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.refresh(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         }
         catch(EntityNotFoundException enfe){
@@ -67,6 +71,20 @@ public class NotificationDAOImpl implements NotificationDAO {
         }
         catch(Exception e){
             throw new DataBaseException("No se pudo eliminar la notificacion: " + entity);
+        }
+    }
+
+    @Override
+    public List<Notification> getAllNotifications() throws DataBaseException {
+        try{
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Notification> criteriaQuery = criteriaBuilder.createQuery(Notification.class);
+            Root<Notification> root = criteriaQuery.from(Notification.class);
+            criteriaQuery.select(root);
+            return em.createQuery(criteriaQuery).getResultList();
+        }
+        catch(Exception e){
+            throw new DataBaseException("Hubo un error al cargar las notificaciones");
         }
     }
 }

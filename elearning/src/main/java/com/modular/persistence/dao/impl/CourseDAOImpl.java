@@ -47,7 +47,7 @@ public class CourseDAOImpl implements CourseDAO {
     public void update(Course entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.refresh(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         }
         catch(EntityNotFoundException enfe){

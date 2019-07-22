@@ -1,0 +1,11 @@
+//Path = elearning/api/user/<userId>
+{
+  "idUser" : <idUser>,
+  "name": "<username>",
+  "password": "<password>",
+  "userType": {
+    "idUserType": <userTypeId>, //1 = teacher, 2 = student, 3 = admin
+    "name": "<userType>"
+  },
+  "email" : "<email>"
+}
