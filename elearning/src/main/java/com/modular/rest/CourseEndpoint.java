@@ -7,6 +7,7 @@ import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.model.Course;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -17,7 +18,7 @@ import java.util.Calendar;
 @Path("/course")
 public class CourseEndpoint {
     private static final Logger logger = Logger.getLogger(CourseEndpoint.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
     private CourseDAO courseDAO = new CourseDAOImpl();
 
     @POST
@@ -25,12 +26,9 @@ public class CourseEndpoint {
     public Response createCourse(String json){
         Course course = new Course();
         try{
-            Gson gson = new GsonBuilder().setDateFormat("EEE, MM-dd-yyyy HH:mm:ss'Z'").create();
             course = gson.fromJson(json, Course.class);
             System.out.println(course.toString());
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(course.getStart());
-            if(calendar.after(course.getEnd())){
+            if(course.getStart().compareTo(course.getEnd()) >= 0){
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
             }
             courseDAO.create(course);

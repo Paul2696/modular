@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `type` INT NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`iduser`, `type`),
-  INDEX `fk_user_userType_idx` (`type` ASC) VISIBLE,
+  INDEX `fk_user_userType_idx` (`type` ASC)  ,
   CONSTRAINT `fk_user_userType`
     FOREIGN KEY (`type`)
     REFERENCES `mydb`.`userType` (`iduserType`)
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`course` (
   `end` DATETIME NOT NULL,
   `iduser` INT NOT NULL,
   PRIMARY KEY (`idcourse`, `iduser`),
-  INDEX `fk_course_user1_idx` (`iduser` ASC) VISIBLE,
+  INDEX `fk_course_user1_idx` (`iduser` ASC)  ,
   CONSTRAINT `fk_course_user1`
     FOREIGN KEY (`iduser`)
     REFERENCES `mydb`.`user` (`iduser`)
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`notification` (
   `seen` BINARY(0) NOT NULL,
   `resource` BLOB NULL,
   PRIMARY KEY (`idnotification`, `idCourse`),
-  INDEX `fk_notification_course1_idx` (`idCourse` ASC) VISIBLE,
+  INDEX `fk_notification_course1_idx` (`idCourse` ASC)  ,
   CONSTRAINT `fk_notification_course1`
     FOREIGN KEY (`idCourse`)
     REFERENCES `mydb`.`course` (`idcourse`)
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`homework` (
   `idcourse` INT NOT NULL,
   `end` DATETIME NOT NULL,
   PRIMARY KEY (`idhomework`, `idcourse`),
-  INDEX `fk_homework_course1_idx` (`idcourse` ASC) VISIBLE,
+  INDEX `fk_homework_course1_idx` (`idcourse` ASC)  ,
   CONSTRAINT `fk_homework_course1`
     FOREIGN KEY (`idcourse`)
     REFERENCES `mydb`.`course` (`idcourse`)
@@ -113,8 +113,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`userHomework` (
   `idhomework` INT NOT NULL,
   `iduser` INT NOT NULL,
   PRIMARY KEY (`idhomework`, `iduser`),
-  INDEX `fk_homework_has_user_user1_idx` (`iduser` ASC) VISIBLE,
-  INDEX `fk_homework_has_user_homework1_idx` (`idhomework` ASC) VISIBLE,
+  INDEX `fk_homework_has_user_user1_idx` (`iduser` ASC)  ,
+  INDEX `fk_homework_has_user_homework1_idx` (`idhomework` ASC)  ,
   CONSTRAINT `fk_homework_has_user_homework1`
     FOREIGN KEY (`idhomework`)
     REFERENCES `mydb`.`homework` (`idhomework`)
@@ -137,8 +137,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`chat` (
   `message` VARCHAR(150) NOT NULL,
   `date` DATETIME NOT NULL,
   PRIMARY KEY (`iduser`, `iduser1`),
-  INDEX `fk_user_has_user_user2_idx` (`iduser1` ASC) VISIBLE,
-  INDEX `fk_user_has_user_user1_idx` (`iduser` ASC) VISIBLE,
+  INDEX `fk_user_has_user_user2_idx` (`iduser1` ASC)  ,
+  INDEX `fk_user_has_user_user1_idx` (`iduser` ASC)  ,
   CONSTRAINT `fk_user_has_user_user1`
     FOREIGN KEY (`iduser`)
     REFERENCES `mydb`.`user` (`iduser`)
@@ -155,3 +155,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+USE mydb;
+INSERT INTO userType (name) VALUES ('teacher');
+INSERT INTO userType (name) VALUES ('student');
+INSERT INTO userType (name) VALUES ('admin');
