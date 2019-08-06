@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
+import java.util.List;
 
 @Path("/course")
 public class CourseEndpoint {
@@ -65,6 +66,7 @@ public class CourseEndpoint {
     public Response updateCourse(@PathParam("courseId")int courseId, String json){
         try{
             Course course = gson.fromJson(json, Course.class);
+            course.setIdCourse(courseId);
             courseDAO.update(course);
             return Response.ok("Success").build();
         }
@@ -89,6 +91,19 @@ public class CourseEndpoint {
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+    }
+
+    @GET
+    public Response getAllCourses(){
+        try{
+            List<Course> courses = courseDAO.getAllCourses();
+            String usersJson = gson.toJson(courses);
+            return Response.ok(usersJson).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
         }
     }
 }

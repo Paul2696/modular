@@ -8,6 +8,10 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class CourseDAOImpl implements CourseDAO {
     private static final Logger logger = Logger.getLogger(CourseDAOImpl.class);
@@ -67,6 +71,19 @@ public class CourseDAOImpl implements CourseDAO {
         }
         catch(Exception e){
             throw new DataBaseException("No se pudo eliminar el curso: " + entity);
+        }
+    }
+
+    public List<Course> getAllCourses() throws DataBaseException{
+        try{
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+            Root<Course> root = criteriaQuery.from(Course.class);
+            criteriaQuery.select(root);
+            return em.createQuery(criteriaQuery).getResultList();
+        }
+        catch(Exception e){
+            throw new DataBaseException("Algo salio mal");
         }
     }
 }

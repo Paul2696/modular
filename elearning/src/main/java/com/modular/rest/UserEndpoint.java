@@ -66,6 +66,7 @@ public class UserEndpoint {
     public Response updateUser(@PathParam("userId") int userId, String json){
         try{
             User user = gson.fromJson(json, User.class);
+            user.setIdUser(userId);
             userDAO.update(user);
             return Response.ok("Success").build();
         }
