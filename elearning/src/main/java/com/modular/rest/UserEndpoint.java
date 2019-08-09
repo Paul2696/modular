@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
@@ -116,8 +115,8 @@ public class UserEndpoint {
             User sender = userDAO.get(senderId);
             User receiver = userDAO.get(receiverId);
             JsonObject messageJson = gson.fromJson(json, JsonObject.class);
-            message.setUser1(sender);
-            message.setUser2(receiver);
+            message.setIdUser(sender);
+            message.setIdUser1(receiver);
             message.setMessage(messageJson.get("message").getAsString());
             message.setDate(Calendar.getInstance().getTime());
             chatDAO.create(message);

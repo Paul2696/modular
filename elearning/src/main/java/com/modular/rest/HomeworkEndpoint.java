@@ -1,6 +1,7 @@
 package com.modular.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkDAO;
@@ -16,7 +17,7 @@ import javax.ws.rs.core.Response;
 @Path("/homework")
 public class HomeworkEndpoint {
     private static final Logger logger = Logger.getLogger(HomeworkEndpoint.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
 
     @POST
@@ -58,6 +59,7 @@ public class HomeworkEndpoint {
     public Response updateHomework(@PathParam("homeworkId") int homeworkId, String json){
         try{
             Homework homework = gson.fromJson(json, Homework.class);
+            homework.setIdHomework(homeworkId);
             homeworkDAO.update(homework);
             return Response.ok("Success").build();
         }

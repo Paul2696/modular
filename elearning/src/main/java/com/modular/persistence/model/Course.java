@@ -14,7 +14,7 @@ public class Course {
     private Date start;
     private Date end;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "iduser")
+    @JoinColumn(name = "idUser")
     private User user;
 
     public int getIdCourse() {

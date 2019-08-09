@@ -11,12 +11,14 @@ public class Homework {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idHomework;
     private String name;
+    private String description;
     private int grade;
+    private boolean sent;
     private byte[] resource;
     private byte[] response;
     private String textResponse;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idcourse")
+    @JoinColumn(name = "idCourse")
     private Course course;
     private Date end;
 
@@ -80,6 +82,22 @@ public class Homework {
         return end;
     }
 
+    public boolean isSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setEnd(Date end) {
         this.end = end;
     }
@@ -95,6 +113,8 @@ public class Homework {
                 ", textResponse='" + textResponse + '\'' +
                 ", course=" + course +
                 ", end=" + end +
+                ", sent=" + sent +
+                ", description=" + description +
                 '}';
     }
 

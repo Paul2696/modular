@@ -1,6 +1,7 @@
 package com.modular.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.NotificationDAO;
@@ -16,7 +17,7 @@ import java.util.List;
 @Path("/notification")
 public class NotificationEndpoint {
     private static final Logger logger = Logger.getLogger(NotificationEndpoint.class);
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
     private NotificationDAO notificationDAO = new NotificationDAOImpl();
 
     @POST
@@ -48,6 +49,7 @@ public class NotificationEndpoint {
     public Response updateNotification(@PathParam("notificationId") int notificationId, String json){
         try{
             Notification notification = gson.fromJson(json, Notification.class);
+            notification.setIdNotification(notificationId);
             notificationDAO.update(notification);
             return Response.ok("Success").build();
         }

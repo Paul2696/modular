@@ -35,8 +35,8 @@ public class Conversation {
     public static Conversation createConversation(List<Chat> chats){
         Conversation conversation = new Conversation();
         if(chats != null && !chats.isEmpty()){
-            conversation.setSender(chats.get(0).getUser1());
-            conversation.setReceiver(chats.get(0).getUser2());
+            conversation.setSender(chats.get(0).getIdUser());
+            conversation.setReceiver(chats.get(0).getIdUser1());
             for(Chat chat : chats){
                 conversation.addMessage(new Message(chat.getDate(), chat.getMessage()));
             }

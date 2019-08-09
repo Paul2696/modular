@@ -1,0 +1,8 @@
+{
+  "name" : "Mi super tarea",
+  "description" : "Mi primer super tarea asi bien chingonsota",
+  "end" : "2019-08-22",
+  "course" : {
+    "idCourse" : 1
+  }
+}

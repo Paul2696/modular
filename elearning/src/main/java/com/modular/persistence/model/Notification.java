@@ -2,6 +2,8 @@ package com.modular.persistence.model;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "notification")
@@ -11,6 +13,7 @@ public class Notification {
     private int idNotification;
     private String message;
     private boolean seen = false;
+    private Date date = Calendar.getInstance().getTime();
     private byte[] resource;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
@@ -56,6 +59,14 @@ public class Notification {
         this.course = course;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Notification{" +
@@ -64,6 +75,7 @@ public class Notification {
                 ", seen=" + seen +
                 ", resource=" + Arrays.toString(resource) +
                 ", course=" + course +
+                ", date=" + date +
                 '}';
     }
 }

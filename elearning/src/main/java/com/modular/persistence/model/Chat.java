@@ -2,35 +2,37 @@ package com.modular.persistence.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
 @Table(name = "chat")
 public class Chat implements Serializable{
+    @Id
+    private int idChat;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "iduser")
-    @EmbeddedId
-    private User user1;
+    @JoinColumn(name = "idUser")
+    private User idUser;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "iduser1")
-    private User user2;
+    @JoinColumn(name = "idUser1")
+    private User idUser1;
     private String message;
-    private Date date;
+    private Date date = Calendar.getInstance().getTime();
 
-    public User getUser1() {
-        return user1;
+    public User getIdUser() {
+        return idUser;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
     }
 
-    public User getUser2() {
-        return user2;
+    public User getIdUser1() {
+        return idUser1;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setIdUser1(User idUser1) {
+        this.idUser1 = idUser1;
     }
 
     public String getMessage() {
@@ -49,11 +51,20 @@ public class Chat implements Serializable{
         this.date = date;
     }
 
+    public int getIdChat() {
+        return idChat;
+    }
+
+    public void setIdChat(int idChat) {
+        this.idChat = idChat;
+    }
+
     @Override
     public String toString() {
         return "Chat{" +
-                "user1=" + user1 +
-                ", user2=" + user2 +
+                ", idChat=" + idChat +
+                ", idUser=" + idUser +
+                ", idUser1=" + idUser1 +
                 ", message='" + message + '\'' +
                 ", date=" + date +
                 '}';
