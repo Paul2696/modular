@@ -12,11 +12,6 @@ public class Homework {
     private int idHomework;
     private String name;
     private String description;
-    private int grade;
-    private boolean sent;
-    private byte[] resource;
-    private byte[] response;
-    private String textResponse;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     private Course course;
@@ -38,37 +33,6 @@ public class Homework {
         this.name = name;
     }
 
-    public int getGrade() {
-        return grade;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public byte[] getResource() {
-        return resource;
-    }
-
-    public void setResource(byte[] resource) {
-        this.resource = resource;
-    }
-
-    public byte[] getResponse() {
-        return response;
-    }
-
-    public void setResponse(byte[] response) {
-        this.response = response;
-    }
-
-    public String getTextResponse() {
-        return textResponse;
-    }
-
-    public void setTextResponse(String textResponse) {
-        this.textResponse = textResponse;
-    }
 
     public Course getCourse() {
         return course;
@@ -80,14 +44,6 @@ public class Homework {
 
     public Date getEnd() {
         return end;
-    }
-
-    public boolean isSent() {
-        return sent;
-    }
-
-    public void setSent(boolean sent) {
-        this.sent = sent;
     }
 
     public String getDescription() {
@@ -107,13 +63,8 @@ public class Homework {
         return "Homework{" +
                 "idHomework=" + idHomework +
                 ", name='" + name + '\'' +
-                ", grade=" + grade +
-                ", resource=" + Arrays.toString(resource) +
-                ", response=" + Arrays.toString(response) +
-                ", textResponse='" + textResponse + '\'' +
                 ", course=" + course +
                 ", end=" + end +
-                ", sent=" + sent +
                 ", description=" + description +
                 '}';
     }

@@ -59,9 +59,13 @@ public class ChatDAOImpl implements ChatDAO {
             CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
             Root<Chat> root = criteriaQuery.from(Chat.class);
             Predicate predicate1 = criteriaBuilder.equal(root.get("idUser"), userId1);
-            Predicate predicate2 = criteriaBuilder.equal(root.get("idUser1"), userId2);
-            Predicate predicate3 = criteriaBuilder.and(predicate1, predicate2);
-            criteriaQuery.select(root).where(predicate3);
+            Predicate predicate2 = criteriaBuilder.equal(root.get("idUser"), userId2);
+            Predicate predicate3 = criteriaBuilder.equal(root.get("idUser1"), userId1);
+            Predicate predicate4 = criteriaBuilder.equal(root.get("idUser1"), userId2);
+            Predicate predicate5 = criteriaBuilder.or(predicate1, predicate2);
+            Predicate predicate6 = criteriaBuilder.or(predicate3, predicate4);
+            Predicate predicate7 = criteriaBuilder.and(predicate5, predicate6);
+            criteriaQuery.select(root).where(predicate7);
             List<Chat> conversation = em.createQuery(criteriaQuery).getResultList();
             return conversation;
         }

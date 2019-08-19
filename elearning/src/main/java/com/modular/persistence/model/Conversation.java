@@ -38,7 +38,7 @@ public class Conversation {
             conversation.setSender(chats.get(0).getIdUser());
             conversation.setReceiver(chats.get(0).getIdUser1());
             for(Chat chat : chats){
-                conversation.addMessage(new Message(chat.getDate(), chat.getMessage()));
+                conversation.addMessage(new Message(chat.getDate(), chat.getMessage(), chat.getIdUser(), chat.getIdUser1()));
             }
         }
         return conversation;

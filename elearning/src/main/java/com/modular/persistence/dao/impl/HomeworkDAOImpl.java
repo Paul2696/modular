@@ -3,6 +3,7 @@ package com.modular.persistence.dao.impl;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkDAO;
 import com.modular.persistence.model.Homework;
+import com.modular.persistence.model.HomeworkResponse;
 import com.modular.persistence.model.User;
 import org.apache.log4j.Logger;
 

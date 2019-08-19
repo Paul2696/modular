@@ -5,13 +5,21 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkDAO;
+import com.modular.persistence.dao.HomeworkResponseDAO;
 import com.modular.persistence.dao.impl.HomeworkDAOImpl;
+import com.modular.persistence.dao.impl.HomeworkResponseDAOImpl;
 import com.modular.persistence.model.Homework;
+import com.modular.persistence.model.HomeworkResponse;
+import org.apache.commons.io.IOUtils;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 
 @Path("/homework")
@@ -19,6 +27,7 @@ public class HomeworkEndpoint {
     private static final Logger logger = Logger.getLogger(HomeworkEndpoint.class);
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
+    private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -87,4 +96,34 @@ public class HomeworkEndpoint {
         }
     }
 
+    @POST
+    @Path("{homeworkId}/response/{userId}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createHomeworkResponse(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            @Multipart("file") Attachment uploadedInputStream
+            )
+    {
+        try{
+            InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
+            byte[] buff = IOUtils.toByteArray(stream);
+
+            logger.debug(IOUtils.toString(buff, "UTF-8"));
+            return Response.ok("Success").build();
+        }
+        catch(Exception dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
+    /*
+    @GET
+    @Path("{homeworkId}/response/{userId}/{homeworkResponseId}")
+    public Response getHomeworkResponse(@PathParam("homeworkId") int homeworkId, @PathParam("userId") int userId, @PathParam("homeworkResponseId") int homeworkResponseId){
+        try{
+            HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
+            String homewo
+        }
+    }*/
 }
