@@ -8,6 +8,7 @@ import java.util.Date;
 @Table(name = "homeworkResponse")
 public class HomeworkResponse {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idHomeworkResponse;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
@@ -19,8 +20,8 @@ public class HomeworkResponse {
     private boolean sent;
     private String textResponse;
     private Date sended;
-    private byte[] resource;
     private byte[] response;
+    private String fileExtension;
 
     public int getIdHomeworkResponse() {
         return idHomeworkResponse;
@@ -78,13 +79,6 @@ public class HomeworkResponse {
         this.sended = sended;
     }
 
-    public byte[] getResource() {
-        return resource;
-    }
-
-    public void setResource(byte[] resource) {
-        this.resource = resource;
-    }
 
     public byte[] getResponse() {
         return response;
@@ -92,6 +86,14 @@ public class HomeworkResponse {
 
     public void setResponse(byte[] response) {
         this.response = response;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
     @Override
@@ -104,8 +106,8 @@ public class HomeworkResponse {
                 ", sent=" + sent +
                 ", textResponse='" + textResponse + '\'' +
                 ", sended=" + sended +
-                ", resource=" + Arrays.toString(resource) +
                 ", response=" + Arrays.toString(response) +
+                ", fileExtension='" + fileExtension + '\'' +
                 '}';
     }
 }

@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.ChatDAO;
+import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.UserDAO;
 import com.modular.persistence.dao.impl.ChatDAOImpl;
+import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.dao.impl.UserDAOImpl;
-import com.modular.persistence.model.Chat;
-import com.modular.persistence.model.Conversation;
-import com.modular.persistence.model.User;
+import com.modular.persistence.model.*;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -25,6 +25,7 @@ public class UserEndpoint {
     private Gson gson = new Gson();
     private UserDAO userDAO = new UserDAOImpl();
     private ChatDAO chatDAO = new ChatDAOImpl();
+    private CourseDAO courseDAO = new CourseDAOImpl();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +51,9 @@ public class UserEndpoint {
     public Response getUser(@PathParam("userId") int userId){
         try{
             User user = userDAO.get(userId);
+            for(Course course : user.getCourses()){
+                course.setUsers(null);
+            }
             String userJson = gson.toJson(user);
             return Response.ok(userJson).build();
         }
@@ -105,6 +109,26 @@ public class UserEndpoint {
             return Response.status(400).entity(dbe.getMessage()).build();
         }
     }
+    @PUT
+    @Path("{userId}/enroll/{courseId}")
+    public Response enrollCourse(@PathParam("userId") int userId,
+                                 @PathParam("courseId") int courseId)
+    {
+        try{
+            Course course = courseDAO.get(courseId);
+            User user = userDAO.get(userId);
+            if(user.getUserType().getIdUserType() == UserType.TEACHER){
+                Response.status(403).entity("Un profesor no puede registrarse en un curso").build();
+            }
+            userDAO.enrollCourse(course, user);
+            return Response.ok("Success").build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity("No fue posible hacer el registro").build();
+        }
+    }
+
 
     @POST
     @Path("{sender}/chat/{receiver}")

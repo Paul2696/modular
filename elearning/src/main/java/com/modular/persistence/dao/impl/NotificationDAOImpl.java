@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -75,16 +76,27 @@ public class NotificationDAOImpl implements NotificationDAO {
     }
 
     @Override
-    public List<Notification> getAllNotifications() throws DataBaseException {
+    public List<Notification> getAllNotifications(int courseId) throws DataBaseException {
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Notification> criteriaQuery = criteriaBuilder.createQuery(Notification.class);
             Root<Notification> root = criteriaQuery.from(Notification.class);
-            criteriaQuery.select(root);
+            Predicate predicate = criteriaBuilder.equal(root.get("course"), courseId);
+            criteriaQuery.select(root).where(predicate);
             return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             throw new DataBaseException("Hubo un error al cargar las notificaciones");
         }
+    }
+    public boolean exists(int id){
+        try{
+            get(id);
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return false;
+        }
+        return true;
     }
 }

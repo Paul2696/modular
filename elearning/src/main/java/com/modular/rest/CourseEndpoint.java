@@ -7,6 +7,7 @@ import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.model.Course;
+import com.modular.persistence.model.User;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 
@@ -51,6 +52,9 @@ public class CourseEndpoint {
     public Response getCourse(@PathParam("courseId") int courseId){
         try{
             Course course = courseDAO.get(courseId);
+            for(User user : course.getUsers()){
+                user.setCourses(null);
+            }
             String courseJson = gson.toJson(course);
             return Response.ok(courseJson).build();
         }

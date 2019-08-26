@@ -2,6 +2,7 @@ package com.modular.persistence.dao.impl;
 
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.UserDAO;
+import com.modular.persistence.model.Course;
 import com.modular.persistence.model.User;
 import org.apache.log4j.Logger;
 
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -90,6 +92,27 @@ public class UserDAOImpl implements UserDAO {
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");
+        }
+    }
+
+    public boolean exist(int id){
+        try{
+            get(id);
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return false;
+        }
+        return true;
+    }
+
+    public void enrollCourse(Course course, User user){
+        try{
+            user.addCourse(course);
+            update(user);
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
         }
     }
 }

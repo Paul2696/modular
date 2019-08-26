@@ -1,6 +1,8 @@
 package com.modular.persistence.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -14,6 +16,13 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type")
     private UserType userType;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "userCourse",
+        joinColumns = @JoinColumn(name = "idUser"),
+        inverseJoinColumns = @JoinColumn(name = "idCourse")
+    )
+    private List<Course> courses;
 
     public int getIdUser() {
         return idUser;
@@ -53,6 +62,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public void addCourse(Course course) {
+        if(courses == null){
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
     }
 
     @Override

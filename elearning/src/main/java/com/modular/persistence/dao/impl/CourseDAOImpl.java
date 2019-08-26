@@ -86,4 +86,15 @@ public class CourseDAOImpl implements CourseDAO {
             throw new DataBaseException("Algo salio mal");
         }
     }
+
+    public boolean exists(int id){
+        try{
+            get(id);
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return false;
+        }
+        return true;
+    }
 }

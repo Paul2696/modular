@@ -6,20 +6,27 @@ import com.google.gson.JsonSyntaxException;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkDAO;
 import com.modular.persistence.dao.HomeworkResponseDAO;
+import com.modular.persistence.dao.UserDAO;
 import com.modular.persistence.dao.impl.HomeworkDAOImpl;
 import com.modular.persistence.dao.impl.HomeworkResponseDAOImpl;
+import com.modular.persistence.dao.impl.UserDAOImpl;
+import com.modular.persistence.model.Course;
 import com.modular.persistence.model.Homework;
 import com.modular.persistence.model.HomeworkResponse;
+import com.modular.persistence.model.User;
 import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.log4j.Logger;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 
 @Path("/homework")
@@ -28,6 +35,7 @@ public class HomeworkEndpoint {
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
     private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
+    private UserDAO userDAO = new UserDAOImpl();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -97,19 +105,43 @@ public class HomeworkEndpoint {
     }
 
     @POST
-    @Path("{homeworkId}/response/{userId}")
+    @Path("{homeworkId}/response/{userId}/file")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response createHomeworkResponse(
+    public Response createHomeworkResponseFile(
             @PathParam("homeworkId") int homeworkId,
             @PathParam("userId") int userId,
-            @Multipart("file") Attachment uploadedInputStream
+            @Multipart("file") Attachment uploadedInputStream,
+            @QueryParam("extension") String extension
             )
     {
         try{
+            if(!homeworkDAO.exists(homeworkId)){
+                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
+            }
+            if(!userDAO.exist(userId)){
+                return Response.status(400).entity("El usuario " + userId + " no existe").build();
+            }
+            Course course = homeworkDAO.get(homeworkId).getCourse();
+            User user = userDAO.get(userId);
+            boolean found = false;
+            for(Course c : user.getCourses()){
+                if(c.getIdCourse() == course.getIdCourse()){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
+            }
             InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
             byte[] buff = IOUtils.toByteArray(stream);
-
-            logger.debug(IOUtils.toString(buff, "UTF-8"));
+            HomeworkResponse response = new HomeworkResponse();
+            response.setResponse(buff);
+            response.setIdHomework(homeworkDAO.get(homeworkId));
+            response.setIdUser(userDAO.get(userId));
+            response.setSended(Calendar.getInstance().getTime());
+            response.setFileExtension(extension);
+            homeworkResponseDAO.create(response);
             return Response.ok("Success").build();
         }
         catch(Exception dbe){
@@ -117,13 +149,171 @@ public class HomeworkEndpoint {
             return Response.status(400).entity(dbe.getMessage()).build();
         }
     }
-    /*
+
+    @POST
+    @Path("{homeworkId}/response/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createHomeworkResponse(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            String json
+            )
+    {
+        try{
+            if(!homeworkDAO.exists(homeworkId)){
+                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
+            }
+            if(!userDAO.exist(userId)){
+                return Response.status(400).entity("El usuario " + userId + " no existe").build();
+            }
+            Course course = homeworkDAO.get(homeworkId).getCourse();
+            User user = userDAO.get(userId);
+            boolean found = false;
+            for(Course c : user.getCourses()){
+                if(c.getIdCourse() == course.getIdCourse()){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
+            }
+            HomeworkResponse response = gson.fromJson(json, HomeworkResponse.class);
+            response.setSended(Calendar.getInstance().getTime());
+            homeworkResponseDAO.create(response);
+            return Response.ok("Success").build();
+        }
+        catch(Exception dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
+
     @GET
     @Path("{homeworkId}/response/{userId}/{homeworkResponseId}")
-    public Response getHomeworkResponse(@PathParam("homeworkId") int homeworkId, @PathParam("userId") int userId, @PathParam("homeworkResponseId") int homeworkResponseId){
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getHomeworkResponse(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            @PathParam("homeworkResponseId") int homeworkResponseId
+            )
+    {
         try{
             HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
-            String homewo
+            String homeworkJson = gson.toJson(homeworkResponse);
+            return Response.ok(homeworkJson).build();
         }
-    }*/
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(404).entity(dbe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("{homeworkId}/response/{userId}/{homeworkResponseId}/file")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getHomeworkResponseFile(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            @PathParam("homeworkResponseId") int homeworkResponseId
+            )
+    {
+        try{
+            HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
+            return Response.ok(homeworkResponse.getResponse(), MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\" burrada." + homeworkResponse.getFileExtension() + "\"")
+                    .build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(404).entity(dbe.getMessage()).build();
+        }
+    }
+
+    @PUT
+    @Path("{homeworkId}/response/{userId}/{homeworkResponseId}/file")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response updateHomeworkFile(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            @PathParam("homeworkResponseId") int homeworkResponseId,
+            @Multipart("file") Attachment uploadedInputStream,
+            @QueryParam("extension") String extension
+            )
+    {
+        try{
+            if(!homeworkDAO.exists(homeworkId)){
+                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
+            }
+            if(!userDAO.exist(userId)){
+                return Response.status(400).entity("El usuario " + userId + " no existe").build();
+            }
+            Course course = homeworkDAO.get(homeworkId).getCourse();
+            User user = userDAO.get(userId);
+            boolean found = false;
+            for(Course c : user.getCourses()){
+                if(c.getIdCourse() == course.getIdCourse()){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
+            }
+            InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
+            byte[] buff = IOUtils.toByteArray(stream);
+            HomeworkResponse response = homeworkResponseDAO.get(homeworkResponseId);
+            response.setResponse(buff);
+            response.setSended(Calendar.getInstance().getTime());
+            response.setFileExtension(extension);
+            homeworkResponseDAO.update(response);
+            return Response.ok("Success").build();
+        }
+        catch(Exception dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
+
+    @PUT
+    @Path("{homeworkId}/response/{userId}/{homeworkResponseId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateHomework(
+            @PathParam("homeworkId") int homeworkId,
+            @PathParam("userId") int userId,
+            @PathParam("homeworkResponseId") int homeworkResponseId,
+            String json
+            )
+    {
+        try{
+            if(!homeworkDAO.exists(homeworkId)){
+                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
+            }
+            if(!userDAO.exist(userId)){
+                return Response.status(400).entity("El usuario " + userId + " no existe").build();
+            }
+            Course course = homeworkDAO.get(homeworkId).getCourse();
+            User user = userDAO.get(userId);
+            boolean found = false;
+            for(Course c : user.getCourses()){
+                if(c.getIdCourse() == course.getIdCourse()){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
+            }
+            HomeworkResponse responseJson = gson.fromJson(json, HomeworkResponse.class);
+            HomeworkResponse response = homeworkResponseDAO.get(homeworkResponseId);
+            response.setTextResponse(responseJson.getTextResponse());
+            response.setSended(Calendar.getInstance().getTime());
+            homeworkResponseDAO.update(response);
+            return Response.ok("Success").build();
+        }
+        catch(Exception dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
 }

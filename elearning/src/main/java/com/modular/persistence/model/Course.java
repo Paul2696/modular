@@ -2,6 +2,7 @@ package com.modular.persistence.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -16,6 +17,8 @@ public class Course {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     private User user;
+    @ManyToMany(mappedBy = "courses")
+    private List<User> users;
 
     public int getIdCourse() {
         return idCourse;
@@ -57,6 +60,14 @@ public class Course {
         this.user = user;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -65,6 +76,7 @@ public class Course {
                 ", start=" + start +
                 ", end=" + end +
                 ", user=" + user +
+                ", users=" + users +
                 '}';
     }
 }

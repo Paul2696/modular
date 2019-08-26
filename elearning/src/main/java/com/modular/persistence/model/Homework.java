@@ -12,6 +12,7 @@ public class Homework {
     private int idHomework;
     private String name;
     private String description;
+    private byte[] resource;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     private Course course;
@@ -58,14 +59,23 @@ public class Homework {
         this.end = end;
     }
 
+    public byte[] getResource() {
+        return resource;
+    }
+
+    public void setResource(byte[] resource) {
+        this.resource = resource;
+    }
+
     @Override
     public String toString() {
         return "Homework{" +
                 "idHomework=" + idHomework +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", resource=" + Arrays.toString(resource) +
                 ", course=" + course +
                 ", end=" + end +
-                ", description=" + description +
                 '}';
     }
 

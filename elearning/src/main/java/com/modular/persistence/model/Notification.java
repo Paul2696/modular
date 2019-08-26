@@ -13,11 +13,12 @@ public class Notification {
     private int idNotification;
     private String message;
     private boolean seen = false;
-    private Date date = Calendar.getInstance().getTime();
+    private Date date;
     private byte[] resource;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     private Course course;
+    private String fileExtension;
 
     public int getIdNotification() {
         return idNotification;
@@ -67,15 +68,24 @@ public class Notification {
         this.date = date;
     }
 
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
     @Override
     public String toString() {
         return "Notification{" +
                 "idNotification=" + idNotification +
                 ", message='" + message + '\'' +
                 ", seen=" + seen +
+                ", date=" + date +
                 ", resource=" + Arrays.toString(resource) +
                 ", course=" + course +
-                ", date=" + date +
+                ", fileExtension='" + fileExtension + '\'' +
                 '}';
     }
 }
