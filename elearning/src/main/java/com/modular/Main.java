@@ -7,7 +7,7 @@ import com.modular.persistence.model.User;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args){

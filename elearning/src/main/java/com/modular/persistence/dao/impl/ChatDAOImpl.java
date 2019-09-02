@@ -11,7 +11,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ChatDAOImpl implements ChatDAO {
     private static final Logger logger = Logger.getLogger(ChatDAOImpl.class);
@@ -53,7 +54,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public List<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
+    public Set<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
@@ -66,7 +67,7 @@ public class ChatDAOImpl implements ChatDAO {
             Predicate predicate6 = criteriaBuilder.or(predicate3, predicate4);
             Predicate predicate7 = criteriaBuilder.and(predicate5, predicate6);
             criteriaQuery.select(root).where(predicate7);
-            List<Chat> conversation = em.createQuery(criteriaQuery).getResultList();
+            Set<Chat> conversation = new TreeSet<Chat>(em.createQuery(criteriaQuery).getResultList());
             return conversation;
         }
         catch(Exception e){

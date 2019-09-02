@@ -15,7 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
 
 @Path("/course")
 public class CourseEndpoint {
@@ -26,19 +26,17 @@ public class CourseEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCourse(String json){
-        Course course = new Course();
         try{
-            course = gson.fromJson(json, Course.class);
-            System.out.println(course.toString());
+            Course course = gson.fromJson(json, Course.class);
             if(course.getStart().compareTo(course.getEnd()) >= 0){
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
             }
             courseDAO.create(course);
-            return Response.ok("Success").build();
+            return Response.ok(course.getIdCourse()).build();
         }
         catch(JsonSyntaxException jse){
             logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity(course.toString()).build();
+            return Response.status(400).entity(json).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
@@ -101,13 +99,37 @@ public class CourseEndpoint {
     @GET
     public Response getAllCourses(){
         try{
-            List<Course> courses = courseDAO.getAllCourses();
+            Set<Course> courses = courseDAO.getAllCourses();
+            for(Course course : courses){
+                for(User user : course.getUsers()){
+                    user.setCourses(null);
+                }
+            }
             String usersJson = gson.toJson(courses);
             return Response.ok(usersJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("{userId}")
+    public Response getAllFromUser(@PathParam("userId") int userId){
+        try{
+            Set<Course> courses = courseDAO.getAllFromUser(userId);
+            for (Course course : courses){
+                for (User user : course.getUsers()){
+                    user.setCourses(null);
+                }
+            }
+            String coursesJson = gson.toJson(courses);
+            return Response.ok(coursesJson).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(404).entity(dbe.getMessage()).build();
         }
     }
 }

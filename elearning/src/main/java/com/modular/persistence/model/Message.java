@@ -1,6 +1,7 @@
 package com.modular.persistence.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Message {
     private Date date;
@@ -57,5 +58,21 @@ public class Message {
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message1 = (Message) o;
+        return Objects.equals(date, message1.date) &&
+                Objects.equals(message, message1.message) &&
+                Objects.equals(sender, message1.sender) &&
+                Objects.equals(receiver, message1.receiver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, message, sender, receiver);
     }
 }

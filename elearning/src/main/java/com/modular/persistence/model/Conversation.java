@@ -1,12 +1,14 @@
 package com.modular.persistence.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.Set;
+import java.util.Objects;
 
 public class Conversation {
     private User sender;
     private User receiver;
-    private List<Message> conversation = new ArrayList<>();
+    private Set<Message> conversation = new TreeSet<>();
 
     public User getSender() {
         return sender;
@@ -24,19 +26,21 @@ public class Conversation {
         this.receiver = receiver;
     }
 
-    public List<Message> getConversation() {
+    public Set<Message> getConversation() {
         return conversation;
     }
 
-    public void setConversation(List<Message> conversation) {
+    public void setConversation(Set<Message> conversation) {
         this.conversation = conversation;
     }
 
-    public static Conversation createConversation(List<Chat> chats){
+    public static Conversation createConversation(Set<Chat> chats){
         Conversation conversation = new Conversation();
         if(chats != null && !chats.isEmpty()){
-            conversation.setSender(chats.get(0).getIdUser());
-            conversation.setReceiver(chats.get(0).getIdUser1());
+            Iterator<Chat> it = chats.iterator();
+            Chat c = it.next();
+            conversation.setSender(c.getIdUser());
+            conversation.setReceiver(c.getIdUser1());
             for(Chat chat : chats){
                 conversation.addMessage(new Message(chat.getDate(), chat.getMessage(), chat.getIdUser(), chat.getIdUser1()));
             }
@@ -55,5 +59,20 @@ public class Conversation {
                 ", receiver=" + receiver +
                 ", conversation=" + conversation +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conversation that = (Conversation) o;
+        return Objects.equals(sender, that.sender) &&
+                Objects.equals(receiver, that.receiver) &&
+                Objects.equals(conversation, that.conversation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender, receiver, conversation);
     }
 }

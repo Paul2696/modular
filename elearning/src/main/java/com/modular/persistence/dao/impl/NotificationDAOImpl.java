@@ -12,7 +12,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class NotificationDAOImpl implements NotificationDAO {
     private static final Logger logger = Logger.getLogger(NotificationDAOImpl.class);
@@ -76,14 +77,14 @@ public class NotificationDAOImpl implements NotificationDAO {
     }
 
     @Override
-    public List<Notification> getAllNotifications(int courseId) throws DataBaseException {
+    public Set<Notification> getAllNotifications(int courseId) throws DataBaseException {
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Notification> criteriaQuery = criteriaBuilder.createQuery(Notification.class);
             Root<Notification> root = criteriaQuery.from(Notification.class);
             Predicate predicate = criteriaBuilder.equal(root.get("course"), courseId);
             criteriaQuery.select(root).where(predicate);
-            return em.createQuery(criteriaQuery).getResultList();
+            return new TreeSet<Notification>(em.createQuery(criteriaQuery).getResultList());
         }
         catch(Exception e){
             throw new DataBaseException("Hubo un error al cargar las notificaciones");

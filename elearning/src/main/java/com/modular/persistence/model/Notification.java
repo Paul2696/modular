@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "notification")
@@ -87,5 +88,26 @@ public class Notification {
                 ", course=" + course +
                 ", fileExtension='" + fileExtension + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notification that = (Notification) o;
+        return idNotification == that.idNotification &&
+                seen == that.seen &&
+                Objects.equals(message, that.message) &&
+                Objects.equals(date, that.date) &&
+                Arrays.equals(resource, that.resource) &&
+                Objects.equals(course, that.course) &&
+                Objects.equals(fileExtension, that.fileExtension);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(idNotification, message, seen, date, course, fileExtension);
+        result = 31 * result + Arrays.hashCode(resource);
+        return result;
     }
 }

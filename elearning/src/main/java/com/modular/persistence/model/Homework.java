@@ -3,6 +3,8 @@ package com.modular.persistence.model;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "homework")
@@ -13,10 +15,11 @@ public class Homework {
     private String name;
     private String description;
     private byte[] resource;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idCourse")
-    private Course course;
+    private int idCourse;
     private Date end;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idHomework")
+    private Set<HomeworkResponse> homeworkResponse;
 
     public int getIdHomework() {
         return idHomework;
@@ -35,12 +38,12 @@ public class Homework {
     }
 
 
-    public Course getCourse() {
-        return course;
+    public int getIdCourse() {
+        return idCourse;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setIdCourse(int idCourse) {
+        this.idCourse = idCourse;
     }
 
     public Date getEnd() {
@@ -67,6 +70,14 @@ public class Homework {
         this.resource = resource;
     }
 
+    public Set<HomeworkResponse> getHomeworkResponse() {
+        return homeworkResponse;
+    }
+
+    public void setHomeworkResponse(Set<HomeworkResponse> homeworkResponse) {
+        this.homeworkResponse = homeworkResponse;
+    }
+
     @Override
     public String toString() {
         return "Homework{" +
@@ -74,9 +85,30 @@ public class Homework {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", resource=" + Arrays.toString(resource) +
-                ", course=" + course +
+                ", idCourse=" + idCourse +
                 ", end=" + end +
+                ", homeworkResponse=" + homeworkResponse +
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Homework homework = (Homework) o;
+        return idHomework == homework.idHomework &&
+                idCourse == homework.idCourse &&
+                Objects.equals(name, homework.name) &&
+                Objects.equals(description, homework.description) &&
+                Arrays.equals(resource, homework.resource) &&
+                Objects.equals(end, homework.end) &&
+                Objects.equals(homeworkResponse, homework.homeworkResponse);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(idHomework, name, description, idCourse, end, homeworkResponse);
+        result = 31 * result + Arrays.hashCode(resource);
+        return result;
+    }
 }

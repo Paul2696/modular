@@ -3,6 +3,7 @@ package com.modular.persistence.model;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "homeworkResponse")
@@ -13,9 +14,7 @@ public class HomeworkResponse {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
     private Homework idHomework;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idUser")
-    private User idUser;
+    private int idUser;
     private int grade;
     private boolean sent;
     private String textResponse;
@@ -39,11 +38,11 @@ public class HomeworkResponse {
         this.idHomework = idHomework;
     }
 
-    public User getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(User idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 
@@ -109,5 +108,28 @@ public class HomeworkResponse {
                 ", response=" + Arrays.toString(response) +
                 ", fileExtension='" + fileExtension + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HomeworkResponse that = (HomeworkResponse) o;
+        return idHomeworkResponse == that.idHomeworkResponse &&
+                idUser == that.idUser &&
+                grade == that.grade &&
+                sent == that.sent &&
+                Objects.equals(idHomework, that.idHomework) &&
+                Objects.equals(textResponse, that.textResponse) &&
+                Objects.equals(sended, that.sended) &&
+                Arrays.equals(response, that.response) &&
+                Objects.equals(fileExtension, that.fileExtension);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(idHomeworkResponse, idHomework, idUser, grade, sent, textResponse, sended, fileExtension);
+        result = 31 * result + Arrays.hashCode(response);
+        return result;
     }
 }

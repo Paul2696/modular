@@ -1,11 +1,92 @@
-<html>
-    <body>
-        <form action="api/notification/1?extension=pdf" method="post" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit"> submit </input>
-        </form>
-        <form action="api/homework/1/response/2/1/file" method="get">
-            <input type="submit" name="getFile">
-        </form>
-    </body>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>E-Learning A Tu Medida</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/animate.css">
+	<link href="css/animate.min.css" rel="stylesheet"> 
+	<link href="css/style.css" rel="stylesheet" />
+	<script src="js/lib/jquery-3.3.1.min.js"></script>
+	<script src="js/lib/knockout-3.4.2.js"></script>
+	<script src="js/lib/js.cookie.js"></script>
+	<script src="js/Session.js"></script>
+	<script src="js/index.js"></script>
+  </head>
+  <body>	
+	<header id="header">
+        <nav class="navbar navbar-inverse" role="banner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                	<div class="navbar-brand">
+						<a href="index.html"><h1>E-Learning</h1></a>
+					</div>
+                </div>
+					<div class="nav navbar-nav">
+						<ul data-bind="foreach: menu" class="nav nav-tabs">
+							<li>
+								<a data-bind="attr:{href: url}, text: menu, css: {active: $root.active === menu}"></a>
+							</li>
+						</ul>
+					</div>
+
+            </div><!--/.container-->
+        </nav><!--/nav-->		
+    </header><!--/header-->	
+	
+	<div class="slider">		
+		<div id="about-slider">
+			<div id="carousel-slider" class="carousel slide" data-ride="carousel">
+				<!-- Indicators -->
+				<ol class="carousel-indicators visible-xs">
+					<li data-target="#carousel-slider" data-slide-to="0" class="active"></li>
+					<li data-target="#carousel-slider" data-slide-to="1"></li>
+					<li data-target="#carousel-slider" data-slide-to="2"></li>
+				</ol>
+
+				<div class="carousel-inner">
+					<div class="item active">
+					<img src="img/fondo.jpg" class="img-responsive" alt=""> 						 
+						<div class="carousel-caption">
+							<div class="wow fadeInUp" data-wow-offset="0" data-wow-delay="0.3s">								
+								<h2><span style="color:black">E-LEARNING A TU MEDIDA</span></h2>
+							</div>
+							<div class="col-md-10 col-md-offset-1">
+								<div class="wow fadeInUp" data-wow-offset="0" data-wow-delay="0.6s">
+									<p style="color:black">"E-Learning a tu medida" es una extensión de moodle que permite dar una mejor
+									atención a las necesidades del alumno con base a su manera de aprendizaje
+									esto apoyándose por medio de un test de formas de aprendizaje y lograr dar 
+									al alumno las herramientas adecuadas para su método de aprendizaje.</p>
+								</div>
+							</div>
+							<div class="wow fadeInUp" data-wow-offset="0" data-wow-delay="0.9s">								
+								
+							</div>
+						</div>
+				    </div>
+				</div>
+			</div> <!--/#carousel-slider-->
+		</div><!--/#about-slider-->
+	</div><!--/#slider-->
+	
+
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->		
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/lib/wow.min.js"></script>
+	<script>
+	wow = new WOW(
+	 {
+	
+		}	) 
+		.init();
+	</script>	
+  </body>
 </html>

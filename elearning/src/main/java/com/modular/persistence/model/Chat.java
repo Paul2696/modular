@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "chat")
@@ -57,6 +58,23 @@ public class Chat implements Serializable{
 
     public void setIdChat(int idChat) {
         this.idChat = idChat;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chat chat = (Chat) o;
+        return idChat == chat.idChat &&
+                Objects.equals(idUser, chat.idUser) &&
+                Objects.equals(idUser1, chat.idUser1) &&
+                Objects.equals(message, chat.message) &&
+                Objects.equals(date, chat.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idChat, idUser, idUser1, message, date);
     }
 
     @Override

@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
 
 @Path("/notification")
 public class NotificationEndpoint {
@@ -149,7 +149,7 @@ public class NotificationEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllNotification(@PathParam("courseId") int courseId) {
         try {
-            List<Notification> notifications = notificationDAO.getAllNotifications(courseId);
+            Set<Notification> notifications = notificationDAO.getAllNotifications(courseId);
             for (Notification notification : notifications) {
                 notification.getCourse().setUsers(null);
             }

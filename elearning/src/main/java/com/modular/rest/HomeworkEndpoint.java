@@ -3,10 +3,8 @@ package com.modular.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.modular.persistence.dao.DataBaseException;
-import com.modular.persistence.dao.HomeworkDAO;
-import com.modular.persistence.dao.HomeworkResponseDAO;
-import com.modular.persistence.dao.UserDAO;
+import com.modular.persistence.dao.*;
+import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.dao.impl.HomeworkDAOImpl;
 import com.modular.persistence.dao.impl.HomeworkResponseDAOImpl;
 import com.modular.persistence.dao.impl.UserDAOImpl;
@@ -27,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 
 @Path("/homework")
@@ -36,12 +35,16 @@ public class HomeworkEndpoint {
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
     private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
     private UserDAO userDAO = new UserDAOImpl();
+    private CourseDAO courseDAO = new CourseDAOImpl();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createHomework(String json){
         try{
             Homework homework = gson.fromJson(json, Homework.class);
+            if(courseDAO.exists(homework.getIdCourse())){
+                return Response.status(404).entity("The course doesn't exist").build();
+            }
             homeworkDAO.create(homework);
             return Response.ok("Success").build();
         }
@@ -63,6 +66,19 @@ public class HomeworkEndpoint {
             Homework homework = homeworkDAO.get(homeworkId);
             String homeworkJson = gson.toJson(homework);
             return Response.ok(homeworkJson).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.status(400).entity(dbe.getMessage()).build();
+        }
+    }
+
+    @GET
+    public Response getAllHomeworks(){
+        try{
+            Set<Homework> homeworks = homeworkDAO.getAll();
+            String homeworksJson = gson.toJson(homeworks);
+            return Response.ok(homeworksJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
@@ -121,7 +137,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = homeworkDAO.get(homeworkId).getCourse();
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -138,7 +154,7 @@ public class HomeworkEndpoint {
             HomeworkResponse response = new HomeworkResponse();
             response.setResponse(buff);
             response.setIdHomework(homeworkDAO.get(homeworkId));
-            response.setIdUser(userDAO.get(userId));
+            response.setIdUser(userId);
             response.setSended(Calendar.getInstance().getTime());
             response.setFileExtension(extension);
             homeworkResponseDAO.create(response);
@@ -166,7 +182,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = homeworkDAO.get(homeworkId).getCourse();
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -248,7 +264,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = homeworkDAO.get(homeworkId).getCourse();
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -278,7 +294,7 @@ public class HomeworkEndpoint {
     @PUT
     @Path("{homeworkId}/response/{userId}/{homeworkResponseId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateHomework(
+    public Response updateHomeworkResponse(
             @PathParam("homeworkId") int homeworkId,
             @PathParam("userId") int userId,
             @PathParam("homeworkResponseId") int homeworkResponseId,
@@ -292,7 +308,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = homeworkDAO.get(homeworkId).getCourse();
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -316,4 +332,6 @@ public class HomeworkEndpoint {
             return Response.status(400).entity(dbe.getMessage()).build();
         }
     }
+
+    //TODO: Agregar metodo para calificar
 }

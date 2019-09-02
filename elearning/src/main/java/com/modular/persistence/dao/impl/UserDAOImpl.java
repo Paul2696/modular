@@ -1,6 +1,7 @@
 package com.modular.persistence.dao.impl;
 
 import com.modular.persistence.dao.DataBaseException;
+import com.modular.persistence.dao.IncorrectPasswordException;
 import com.modular.persistence.dao.UserDAO;
 import com.modular.persistence.model.Course;
 import com.modular.persistence.model.User;
@@ -13,7 +14,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class UserDAOImpl implements UserDAO {
     private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
@@ -82,13 +84,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAllUsers() throws DataBaseException{
+    public Set<User> getAllUsers() throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
             criteriaQuery.select(root);
-            return em.createQuery(criteriaQuery).getResultList();
+            return new TreeSet<User>(em.createQuery(criteriaQuery).getResultList());
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");
@@ -106,8 +108,11 @@ public class UserDAOImpl implements UserDAO {
         return true;
     }
 
-    public void enrollCourse(Course course, User user){
+    public void enrollCourse(Course course, User user, String password) throws IncorrectPasswordException{
         try{
+            if(course.getPassword() != null && !course.getPassword().equals(password)){
+                throw new IncorrectPasswordException("Password Incorrecto");
+            }
             user.addCourse(course);
             update(user);
         }

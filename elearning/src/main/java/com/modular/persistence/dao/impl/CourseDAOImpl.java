@@ -10,8 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CourseDAOImpl implements CourseDAO {
     private static final Logger logger = Logger.getLogger(CourseDAOImpl.class);
@@ -74,13 +76,27 @@ public class CourseDAOImpl implements CourseDAO {
         }
     }
 
-    public List<Course> getAllCourses() throws DataBaseException{
+    public Set<Course> getAllCourses() throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
             criteriaQuery.select(root);
-            return em.createQuery(criteriaQuery).getResultList();
+            return new TreeSet<Course>(em.createQuery(criteriaQuery).getResultList());
+        }
+        catch(Exception e){
+            throw new DataBaseException("Algo salio mal");
+        }
+    }
+
+    public Set<Course> getAllFromUser(int idUser) throws DataBaseException{
+        try{
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+            Root<Course> root = criteriaQuery.from(Course.class);
+            Predicate predicate = criteriaBuilder.equal(root.get("idUser"), idUser);
+            criteriaQuery.select(root).where(predicate);
+            return new TreeSet<Course>(em.createQuery(criteriaQuery).getResultList());
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");

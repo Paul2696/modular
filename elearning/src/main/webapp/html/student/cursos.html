@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>elearning - Tareas</title>
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/animate.css">
+    <link href="../../css/animate.min.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet" />
+    <script src="../../js/lib/moment-with-locales.min.js"></script>
+    <script src="../../js/lib/jquery-3.3.1.min.js"></script>
+    <script src="../../js/lib/knockout-3.4.2.js"></script>
+    <script src="../../js/lib/js.cookie.js"></script>
+    <script src="../../js/Session.js"></script>
+    <script src="../../js/Request.js"></script>
+    <script src="../../js/CourseViewModel.js"></script>
+    <script src="../../js/courseStudent.js"></script>
+</head>
+<body>
+<header id="header">
+    <nav class="navbar navbar-inverse" role="banner">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-brand">
+                    <a href="../../index.html"><h1>E-Learning</h1></a>
+                </div>
+            </div>
+
+            <div class="nav navbar-nav">
+                <ul data-bind="foreach: menu" class="nav nav-tabs">
+                    <li>
+                        <a data-bind="attr:{href: url}, text: menu, css: {active: $root.active === menu}"></a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-log-out" data-bind="click: destroySession"></span><h4>Logout</h4></a></li>
+            </ul>
+        </div><!--/.container-->
+    </nav><!--/nav-->
+</header><!--/header-->
+
+<div class="about">
+    <div class="container">
+        <div class="text-center">
+
+            <div>
+                <span class="select-label">Cursos</span>
+                <select id="course" style="color: black" data-bind="foreach: courses">
+                    <option data-bind="attr:{value: id}, text: name"></option>
+                </select>
+            </div>
+
+            <table id="datos" class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col"><h2>	Profesor	</h2></th>
+                    <th scope="col"><h2>	Inicio	</h2></th>
+                    <!--th scope="col"><h2>	Descripción</h2></th>-->
+                    <th scope="col" ><h2>	Fin</h2></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td><h3 data-bind="text: professor"></h3></td>
+                    <td><h3 data-bind="text: start"></h3></td>
+                    <!--td><h3><a href="text:" data-bind="#"></a></h3></td-->
+                    <!--td><h3 data-bind="text: descripcion"></h3></td>-->
+                    <td><h3 data-bind="text: end"></h3></td>
+                </tr>
+                </tbody>
+            </table>
+            <button style="position: absolute;" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalEnroll">
+                Inscribirse
+            </button>
+
+            <div class="modal fade" id="modalEnroll" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Inscripcion al curso</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h3 data-bind="text: needsPassword() ? 'Ingrese el password del curso:' : '¿Esta seguro de inscribirse a este curso?'"></h3>
+                            <h3><input type="password" data-bind="textInput: password, visible: needsPassword"></h3>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bind="click: enroll" data-dismiss="modal">Inscribirse</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="../../js/lib/bootstrap.min.js"></script>
+<script src="../../js/lib/wow.min.js"></script>
+<script>
+	wow = new WOW(
+	 {
+
+		}	)
+		.init();
+	</script>
+</body>
+</html>

@@ -3,10 +3,7 @@ package com.modular.rest;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.modular.persistence.dao.ChatDAO;
-import com.modular.persistence.dao.CourseDAO;
-import com.modular.persistence.dao.DataBaseException;
-import com.modular.persistence.dao.UserDAO;
+import com.modular.persistence.dao.*;
 import com.modular.persistence.dao.impl.ChatDAOImpl;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.dao.impl.UserDAOImpl;
@@ -17,7 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Set;
 
 @Path("/user")
 public class UserEndpoint {
@@ -100,7 +97,7 @@ public class UserEndpoint {
     @GET
     public Response getAllUser(){
         try{
-            List<User> users = userDAO.getAllUsers();
+            Set<User> users = userDAO.getAllUsers();
             String usersJson = gson.toJson(users);
             return Response.ok(usersJson).build();
         }
@@ -112,7 +109,8 @@ public class UserEndpoint {
     @PUT
     @Path("{userId}/enroll/{courseId}")
     public Response enrollCourse(@PathParam("userId") int userId,
-                                 @PathParam("courseId") int courseId)
+                                 @PathParam("courseId") int courseId,
+                                 String passwordJson)
     {
         try{
             Course course = courseDAO.get(courseId);
@@ -120,12 +118,17 @@ public class UserEndpoint {
             if(user.getUserType().getIdUserType() == UserType.TEACHER){
                 Response.status(403).entity("Un profesor no puede registrarse en un curso").build();
             }
-            userDAO.enrollCourse(course, user);
+            JsonObject password = gson.fromJson(passwordJson, JsonObject.class);
+            userDAO.enrollCourse(course, user, password.get("password").getAsString());
             return Response.ok("Success").build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity("No fue posible hacer el registro").build();
+        }
+        catch(IncorrectPasswordException ipe){
+            logger.debug(ipe.getMessage(), ipe);
+            return Response.status(400).entity(ipe.getMessage()).build();
         }
     }
 
@@ -157,7 +160,7 @@ public class UserEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getConversation(@PathParam("sender") int senderID, @PathParam("receiver") int receiverId){
         try{
-            List<Chat> chats = chatDAO.getConversation(senderID, receiverId);
+            Set<Chat> chats = chatDAO.getConversation(senderID, receiverId);
             Conversation conversation = Conversation.createConversation(chats);
             String json = gson.toJson(conversation);
             return Response.ok(json).build();

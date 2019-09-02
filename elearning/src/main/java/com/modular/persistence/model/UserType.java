@@ -1,6 +1,7 @@
 package com.modular.persistence.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "userType")
@@ -35,5 +36,19 @@ public class UserType {
                 "idUserType=" + idUserType +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserType userType = (UserType) o;
+        return idUserType == userType.idUserType &&
+                Objects.equals(name, userType.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserType, name);
     }
 }

@@ -1,5 +1,6 @@
 {
   "name": "Mi super curso",
+  "password": "password", //optional
   "start": "2019-08-12",
   "end": "2019-12-13",
   "user": {

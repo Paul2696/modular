@@ -13,7 +13,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     private static final Logger logger = Logger.getLogger(HomeworkDAOImpl.class);
@@ -74,14 +75,14 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
 
     }
 
-    public List<HomeworkResponse> getAllHomeworks(int idHomework)throws DataBaseException{
+    public Set<HomeworkResponse> getAllHomeworks(int idHomework)throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<HomeworkResponse> criteriaQuery = criteriaBuilder.createQuery(HomeworkResponse.class);
             Root<HomeworkResponse> root = criteriaQuery.from(HomeworkResponse.class);
             Predicate predicate1 = criteriaBuilder.equal(root.get("idHomework"), idHomework);
             criteriaQuery.select(root).where(predicate1);
-            return em.createQuery(criteriaQuery).getResultList();
+            return new TreeSet<HomeworkResponse>(em.createQuery(criteriaQuery).getResultList());
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");

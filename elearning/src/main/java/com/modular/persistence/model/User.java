@@ -1,8 +1,9 @@
 package com.modular.persistence.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeSet;
+import java.util.Set;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -22,7 +23,7 @@ public class User {
         joinColumns = @JoinColumn(name = "idUser"),
         inverseJoinColumns = @JoinColumn(name = "idCourse")
     )
-    private List<Course> courses;
+    private Set<Course> courses;
 
     public int getIdUser() {
         return idUser;
@@ -64,18 +65,18 @@ public class User {
         this.email = email;
     }
 
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 
     public void addCourse(Course course) {
         if(courses == null){
-            courses = new ArrayList<>();
+            courses = new TreeSet<>();
         }
         courses.add(course);
     }
@@ -89,5 +90,23 @@ public class User {
                 ", email='" + email + '\'' +
                 ", userType=" + userType +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return idUser == user.idUser &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(userType, user.userType) &&
+                Objects.equals(courses, user.courses);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUser, name, password, email, userType, courses);
     }
 }
