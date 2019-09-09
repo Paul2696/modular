@@ -47,8 +47,4 @@ public class UserType {
                 Objects.equals(name, userType.name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idUserType, name);
-    }
 }

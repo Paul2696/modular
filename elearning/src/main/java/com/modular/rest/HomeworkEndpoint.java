@@ -127,6 +127,7 @@ public class HomeworkEndpoint {
             @PathParam("homeworkId") int homeworkId,
             @PathParam("userId") int userId,
             @Multipart("file") Attachment uploadedInputStream,
+            @Multipart("json") Attachment jsonAttachment,
             @QueryParam("extension") String extension
             )
     {
@@ -151,51 +152,14 @@ public class HomeworkEndpoint {
             }
             InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
             byte[] buff = IOUtils.toByteArray(stream);
-            HomeworkResponse response = new HomeworkResponse();
+            String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
+            HomeworkResponse response = gson.fromJson(textResponse, HomeworkResponse.class);
             response.setResponse(buff);
             response.setIdHomework(homeworkDAO.get(homeworkId));
             response.setIdUser(userId);
             response.setSended(Calendar.getInstance().getTime());
             response.setFileExtension(extension);
-            homeworkResponseDAO.create(response);
-            return Response.ok("Success").build();
-        }
-        catch(Exception dbe){
-            logger.debug(dbe.getMessage(), dbe);
-            return Response.status(400).entity(dbe.getMessage()).build();
-        }
-    }
-
-    @POST
-    @Path("{homeworkId}/response/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createHomeworkResponse(
-            @PathParam("homeworkId") int homeworkId,
-            @PathParam("userId") int userId,
-            String json
-            )
-    {
-        try{
-            if(!homeworkDAO.exists(homeworkId)){
-                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
-            }
-            if(!userDAO.exist(userId)){
-                return Response.status(400).entity("El usuario " + userId + " no existe").build();
-            }
-            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
-            User user = userDAO.get(userId);
-            boolean found = false;
-            for(Course c : user.getCourses()){
-                if(c.getIdCourse() == course.getIdCourse()){
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
-            }
-            HomeworkResponse response = gson.fromJson(json, HomeworkResponse.class);
-            response.setSended(Calendar.getInstance().getTime());
+            response.setSent(true);
             homeworkResponseDAO.create(response);
             return Response.ok("Success").build();
         }
@@ -216,6 +180,7 @@ public class HomeworkEndpoint {
     {
         try{
             HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
+            homeworkResponse.getIdHomework().setHomeworkResponse(null);
             String homeworkJson = gson.toJson(homeworkResponse);
             return Response.ok(homeworkJson).build();
         }
@@ -254,6 +219,7 @@ public class HomeworkEndpoint {
             @PathParam("userId") int userId,
             @PathParam("homeworkResponseId") int homeworkResponseId,
             @Multipart("file") Attachment uploadedInputStream,
+            @Multipart("json") Attachment jsonAttachment,
             @QueryParam("extension") String extension
             )
     {
@@ -278,52 +244,11 @@ public class HomeworkEndpoint {
             }
             InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
             byte[] buff = IOUtils.toByteArray(stream);
-            HomeworkResponse response = homeworkResponseDAO.get(homeworkResponseId);
+            String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
+            HomeworkResponse response = gson.fromJson(textResponse, HomeworkResponse.class);
             response.setResponse(buff);
             response.setSended(Calendar.getInstance().getTime());
             response.setFileExtension(extension);
-            homeworkResponseDAO.update(response);
-            return Response.ok("Success").build();
-        }
-        catch(Exception dbe){
-            logger.debug(dbe.getMessage(), dbe);
-            return Response.status(400).entity(dbe.getMessage()).build();
-        }
-    }
-
-    @PUT
-    @Path("{homeworkId}/response/{userId}/{homeworkResponseId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateHomeworkResponse(
-            @PathParam("homeworkId") int homeworkId,
-            @PathParam("userId") int userId,
-            @PathParam("homeworkResponseId") int homeworkResponseId,
-            String json
-            )
-    {
-        try{
-            if(!homeworkDAO.exists(homeworkId)){
-                return Response.status(400).entity("La tarea con id " + homeworkId + " no existe").build();
-            }
-            if(!userDAO.exist(userId)){
-                return Response.status(400).entity("El usuario " + userId + " no existe").build();
-            }
-            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
-            User user = userDAO.get(userId);
-            boolean found = false;
-            for(Course c : user.getCourses()){
-                if(c.getIdCourse() == course.getIdCourse()){
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
-            }
-            HomeworkResponse responseJson = gson.fromJson(json, HomeworkResponse.class);
-            HomeworkResponse response = homeworkResponseDAO.get(homeworkResponseId);
-            response.setTextResponse(responseJson.getTextResponse());
-            response.setSended(Calendar.getInstance().getTime());
             homeworkResponseDAO.update(response);
             return Response.ok("Success").build();
         }

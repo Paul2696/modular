@@ -72,10 +72,6 @@ public class Chat implements Serializable{
                 Objects.equals(date, chat.date);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idChat, idUser, idUser1, message, date);
-    }
 
     @Override
     public String toString() {

@@ -71,8 +71,4 @@ public class Conversation {
                 Objects.equals(conversation, that.conversation);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(sender, receiver, conversation);
-    }
 }

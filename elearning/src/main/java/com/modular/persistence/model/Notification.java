@@ -104,10 +104,4 @@ public class Notification {
                 Objects.equals(fileExtension, that.fileExtension);
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(idNotification, message, seen, date, course, fileExtension);
-        result = 31 * result + Arrays.hashCode(resource);
-        return result;
-    }
 }

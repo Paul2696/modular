@@ -100,15 +100,8 @@ public class Homework {
                 idCourse == homework.idCourse &&
                 Objects.equals(name, homework.name) &&
                 Objects.equals(description, homework.description) &&
-                Arrays.equals(resource, homework.resource) &&
                 Objects.equals(end, homework.end) &&
                 Objects.equals(homeworkResponse, homework.homeworkResponse);
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(idHomework, name, description, idCourse, end, homeworkResponse);
-        result = 31 * result + Arrays.hashCode(resource);
-        return result;
-    }
 }

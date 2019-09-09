@@ -118,9 +118,4 @@ public class Course {
                 Objects.equals(users, course.users) &&
                 Objects.equals(homework, course.homework);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCourse, name, password, start, end, user, users, homework);
-    }
 }

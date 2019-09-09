@@ -2,6 +2,7 @@ package com.modular.persistence.model;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -122,14 +123,7 @@ public class HomeworkResponse {
                 Objects.equals(idHomework, that.idHomework) &&
                 Objects.equals(textResponse, that.textResponse) &&
                 Objects.equals(sended, that.sended) &&
-                Arrays.equals(response, that.response) &&
                 Objects.equals(fileExtension, that.fileExtension);
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(idHomeworkResponse, idHomework, idUser, grade, sent, textResponse, sended, fileExtension);
-        result = 31 * result + Arrays.hashCode(response);
-        return result;
-    }
 }

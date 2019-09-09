@@ -71,8 +71,4 @@ public class Message {
                 Objects.equals(receiver, message1.receiver);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, message, sender, receiver);
-    }
 }

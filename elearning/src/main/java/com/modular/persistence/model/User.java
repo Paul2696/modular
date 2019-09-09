@@ -105,8 +105,4 @@ public class User {
                 Objects.equals(courses, user.courses);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idUser, name, password, email, userType, courses);
-    }
 }
