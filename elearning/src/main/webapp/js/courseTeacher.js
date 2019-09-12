@@ -10,13 +10,14 @@ let coursesTeacherViewModel = {
     menu : ko.observableArray([]),
     courses : ko.observableArray([]),
     courseViewModel : CourseViewModel,
-    session: parseSession(Cookies.getJSON("session")),
+    session: null,
     status: ko.observable(),
     message: ko.observable(),
 
     init: function() {
             let self = this;
             //if(self.session && self.session.isSessionActive()) {
+                self.session = testSession();
                 self.menu(self.session.getSessionMenu());
                 self.populateCoursesTable();
             //} else {

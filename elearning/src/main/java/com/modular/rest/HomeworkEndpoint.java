@@ -247,6 +247,9 @@ public class HomeworkEndpoint {
             String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
             HomeworkResponse response = gson.fromJson(textResponse, HomeworkResponse.class);
             response.setResponse(buff);
+            response.setIdHomework(homeworkDAO.get(homeworkId));
+            response.setIdHomeworkResponse(homeworkResponseId);
+            response.setIdUser(userId);
             response.setSended(Calendar.getInstance().getTime());
             response.setFileExtension(extension);
             homeworkResponseDAO.update(response);

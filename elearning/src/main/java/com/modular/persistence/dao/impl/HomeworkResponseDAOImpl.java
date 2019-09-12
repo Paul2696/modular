@@ -56,7 +56,7 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     public void update(HomeworkResponse entity) throws DataBaseException{
         try{
             em.getTransaction().begin();
-            em.persist(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         }
         catch(EntityNotFoundException enfe){

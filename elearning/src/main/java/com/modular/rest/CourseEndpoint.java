@@ -15,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 
 @Path("/course")
@@ -99,7 +100,7 @@ public class CourseEndpoint {
     @GET
     public Response getAllCourses(){
         try{
-            Set<Course> courses = courseDAO.getAllCourses();
+            List<Course> courses = courseDAO.getAllCourses();
             for(Course course : courses){
                 for(User user : course.getUsers()){
                     user.setCourses(null);
@@ -115,10 +116,10 @@ public class CourseEndpoint {
     }
 
     @GET
-    @Path("{userId}")
+    @Path("user/{userId}")
     public Response getAllFromUser(@PathParam("userId") int userId){
         try{
-            Set<Course> courses = courseDAO.getAllFromUser(userId);
+            List<Course> courses = courseDAO.getAllFromUser(userId);
             for (Course course : courses){
                 for (User user : course.getUsers()){
                     user.setCourses(null);

@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -30,6 +31,7 @@ public class CourseDAOImpl implements CourseDAO {
             throw new DataBaseException("El curso " + entity + " ya existe");
         }
         catch (Exception e) {
+            logger.debug("Query Failed", e);
             throw new DataBaseException("No se pudo crear el curso");
         }
     }
@@ -45,6 +47,7 @@ public class CourseDAOImpl implements CourseDAO {
             return course;
         }
         catch(IllegalArgumentException iae){
+            logger.debug("Query Failed", iae);
             throw new DataBaseException("No se pudo encontrar el elemento");
         }
     }
@@ -60,6 +63,7 @@ public class CourseDAOImpl implements CourseDAO {
             throw new DataBaseException("El curso " + entity + " no existe");
         }
         catch(Exception e){
+            logger.debug("Query Failed", e);
             throw new DataBaseException("No se pudo actualizar el curso: " + entity);
         }
     }
@@ -76,29 +80,31 @@ public class CourseDAOImpl implements CourseDAO {
         }
     }
 
-    public Set<Course> getAllCourses() throws DataBaseException{
+    public List<Course> getAllCourses() throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
             criteriaQuery.select(root);
-            return new TreeSet<Course>(em.createQuery(criteriaQuery).getResultList());
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
+            logger.debug("Query Failed", e);
             throw new DataBaseException("Algo salio mal");
         }
     }
 
-    public Set<Course> getAllFromUser(int idUser) throws DataBaseException{
+    public List<Course> getAllFromUser(int idUser) throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
             Predicate predicate = criteriaBuilder.equal(root.get("idUser"), idUser);
             criteriaQuery.select(root).where(predicate);
-            return new TreeSet<Course>(em.createQuery(criteriaQuery).getResultList());
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
+            logger.debug("Query Failed", e);
             throw new DataBaseException("Algo salio mal");
         }
     }

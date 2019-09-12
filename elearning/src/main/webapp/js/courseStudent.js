@@ -18,6 +18,7 @@ let coursesStudentViewModel = {
     init: function() {
             let self = this;
             //if(self.session && self.session.isSessionActive()) {
+                testSession();
                 self.menu(self.session.getSessionMenu());
                 self.loadCourses();
             //} else {

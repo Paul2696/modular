@@ -18,7 +18,7 @@ public class Course {
     private Date end;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
-    private User user;
+    private User idUser;
     @ManyToMany(mappedBy = "courses")
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
@@ -67,11 +67,11 @@ public class Course {
     }
 
     public User getUser() {
-        return user;
+        return idUser;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.idUser = user;
     }
 
     public Set<User> getUsers() {
@@ -98,7 +98,7 @@ public class Course {
                 ", password='" + password + '\'' +
                 ", start=" + start +
                 ", end=" + end +
-                ", user=" + user +
+                ", user=" + idUser +
                 ", users=" + users +
                 ", homework=" + homework +
                 '}';
@@ -114,7 +114,7 @@ public class Course {
                 Objects.equals(password, course.password) &&
                 Objects.equals(start, course.start) &&
                 Objects.equals(end, course.end) &&
-                Objects.equals(user, course.user) &&
+                Objects.equals(idUser, course.idUser) &&
                 Objects.equals(users, course.users) &&
                 Objects.equals(homework, course.homework);
     }
