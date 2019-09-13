@@ -1,8 +1,9 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,7 +15,8 @@ public class HomeworkResponse {
     private int idHomeworkResponse;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
-    private Homework idHomework;
+    @JsonIgnoreProperties("homeworkResponse")
+    private Homework homework;
     private int idUser;
     private int grade;
     private boolean sent;
@@ -31,12 +33,12 @@ public class HomeworkResponse {
         this.idHomeworkResponse = idHomeworkResponse;
     }
 
-    public Homework getIdHomework() {
-        return idHomework;
+    public Homework getHomework() {
+        return homework;
     }
 
-    public void setIdHomework(Homework idHomework) {
-        this.idHomework = idHomework;
+    public void setHomework(Homework homework) {
+        this.homework = homework;
     }
 
     public int getIdUser() {
@@ -96,11 +98,12 @@ public class HomeworkResponse {
         this.fileExtension = fileExtension;
     }
 
+
     @Override
     public String toString() {
         return "HomeworkResponse{" +
                 "idHomeworkResponse=" + idHomeworkResponse +
-                ", idHomework=" + idHomework +
+                ", idHomework=" + homework.getIdHomework() +
                 ", idUser=" + idUser +
                 ", grade=" + grade +
                 ", sent=" + sent +
@@ -120,7 +123,7 @@ public class HomeworkResponse {
                 idUser == that.idUser &&
                 grade == that.grade &&
                 sent == that.sent &&
-                Objects.equals(idHomework, that.idHomework) &&
+                homework.getIdHomework() == that.getHomework().getIdHomework() &&
                 Objects.equals(textResponse, that.textResponse) &&
                 Objects.equals(sended, that.sended) &&
                 Objects.equals(fileExtension, that.fileExtension);

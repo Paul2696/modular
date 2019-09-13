@@ -1,5 +1,7 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.TreeSet;
 import java.util.Set;
@@ -23,6 +25,7 @@ public class User {
         joinColumns = @JoinColumn(name = "idUser"),
         inverseJoinColumns = @JoinColumn(name = "idCourse")
     )
+    @JsonIgnoreProperties("users")
     private Set<Course> courses;
 
     public int getIdUser() {

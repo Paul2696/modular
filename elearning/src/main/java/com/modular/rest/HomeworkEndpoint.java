@@ -1,8 +1,9 @@
 package com.modular.rest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modular.persistence.dao.*;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.dao.impl.HomeworkDAOImpl;
@@ -17,44 +18,56 @@ import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.log4j.Logger;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 
 @Path("/homework")
 public class HomeworkEndpoint {
     private static final Logger logger = Logger.getLogger(HomeworkEndpoint.class);
-    private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
+    private static ObjectMapper mapper = new ObjectMapper();
+
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
     private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
     private UserDAO userDAO = new UserDAOImpl();
     private CourseDAO courseDAO = new CourseDAOImpl();
+    static{
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createHomework(String json){
         try{
-            Homework homework = gson.fromJson(json, Homework.class);
-            if(courseDAO.exists(homework.getIdCourse())){
+            Homework homework = mapper.readValue(json, Homework.class);
+            if(!courseDAO.exists(homework.getCourse().getIdCourse())){
                 return Response.status(404).entity("The course doesn't exist").build();
             }
             homeworkDAO.create(homework);
             return Response.ok("Success").build();
         }
-        catch(JsonSyntaxException jse){
+        catch(JsonParseException jse){
             logger.debug("The input json was malformed", jse);
             return Response.status(400).entity("The input json was malformed").build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonMappingException jme) {
+            logger.debug("The input json was malformed", jme);
+            return Response.status(400).entity(json).build();
+        }
+        catch (IOException io) {
+            logger.debug(io.getMessage(), io);
+            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -64,25 +77,33 @@ public class HomeworkEndpoint {
     public Response getHomework(@PathParam("homeworkId") int homeworkId){
         try{
             Homework homework = homeworkDAO.get(homeworkId);
-            String homeworkJson = gson.toJson(homework);
+            String homeworkJson = mapper.writeValueAsString(homework);
             return Response.ok(homeworkJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
         }
+        catch(JsonProcessingException jpe) {
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
+        }
     }
 
     @GET
     public Response getAllHomeworks(){
         try{
-            Set<Homework> homeworks = homeworkDAO.getAll();
-            String homeworksJson = gson.toJson(homeworks);
+            List<Homework> homeworks = homeworkDAO.getAll();
+            String homeworksJson = mapper.writeValueAsString(homeworks);
             return Response.ok(homeworksJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
+        }
+        catch(JsonProcessingException jpe) {
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
@@ -91,18 +112,26 @@ public class HomeworkEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateHomework(@PathParam("homeworkId") int homeworkId, String json){
         try{
-            Homework homework = gson.fromJson(json, Homework.class);
+            Homework homework = mapper.readValue(json, Homework.class);
             homework.setIdHomework(homeworkId);
             homeworkDAO.update(homework);
             return Response.ok("Success").build();
         }
-        catch(JsonSyntaxException jse){
+        catch(JsonParseException jse){
             logger.debug("The input json was malformed", jse);
             return Response.status(400).entity("The input json was malformed").build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonMappingException jme) {
+            logger.debug("The input json was malformed", jme);
+            return Response.status(400).entity(json).build();
+        }
+        catch (IOException io) {
+            logger.debug(io.getMessage(), io);
+            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -126,7 +155,7 @@ public class HomeworkEndpoint {
     public Response createHomeworkResponseFile(
             @PathParam("homeworkId") int homeworkId,
             @PathParam("userId") int userId,
-            @Multipart("file") Attachment uploadedInputStream,
+            @Multipart(value = "file", required = false) Attachment uploadedInputStream,
             @Multipart("json") Attachment jsonAttachment,
             @QueryParam("extension") String extension
             )
@@ -138,7 +167,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getCourse().getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -150,12 +179,16 @@ public class HomeworkEndpoint {
             if(!found){
                 return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
             }
-            InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
-            byte[] buff = IOUtils.toByteArray(stream);
             String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
-            HomeworkResponse response = gson.fromJson(textResponse, HomeworkResponse.class);
-            response.setResponse(buff);
-            response.setIdHomework(homeworkDAO.get(homeworkId));
+            HomeworkResponse response = mapper.readValue(textResponse, HomeworkResponse.class);
+
+            if(uploadedInputStream != null) {
+                InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
+                byte[] buff = IOUtils.toByteArray(stream);
+                response.setResponse(buff);
+            }
+
+            response.setHomework(homeworkDAO.get(homeworkId));
             response.setIdUser(userId);
             response.setSended(Calendar.getInstance().getTime());
             response.setFileExtension(extension);
@@ -180,13 +213,17 @@ public class HomeworkEndpoint {
     {
         try{
             HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
-            homeworkResponse.getIdHomework().setHomeworkResponse(null);
-            String homeworkJson = gson.toJson(homeworkResponse);
+            homeworkResponse.getHomework().setHomeworkResponse(null);
+            String homeworkJson = mapper.writeValueAsString(homeworkResponse);
             return Response.ok(homeworkJson).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(404).entity(dbe.getMessage()).build();
+        }
+        catch(JsonProcessingException jpe) {
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
@@ -209,6 +246,7 @@ public class HomeworkEndpoint {
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(404).entity(dbe.getMessage()).build();
         }
+
     }
 
     @PUT
@@ -230,7 +268,7 @@ public class HomeworkEndpoint {
             if(!userDAO.exist(userId)){
                 return Response.status(400).entity("El usuario " + userId + " no existe").build();
             }
-            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getIdCourse());
+            Course course = courseDAO.get(homeworkDAO.get(homeworkId).getCourse().getIdCourse());
             User user = userDAO.get(userId);
             boolean found = false;
             for(Course c : user.getCourses()){
@@ -245,9 +283,9 @@ public class HomeworkEndpoint {
             InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
             byte[] buff = IOUtils.toByteArray(stream);
             String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
-            HomeworkResponse response = gson.fromJson(textResponse, HomeworkResponse.class);
+            HomeworkResponse response = mapper.readValue(textResponse, HomeworkResponse.class);
             response.setResponse(buff);
-            response.setIdHomework(homeworkDAO.get(homeworkId));
+            response.setHomework(homeworkDAO.get(homeworkId));
             response.setIdHomeworkResponse(homeworkResponseId);
             response.setIdUser(userId);
             response.setSended(Calendar.getInstance().getTime());

@@ -1,5 +1,9 @@
 package com.modular.rest;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -18,14 +22,17 @@ import org.apache.log4j.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 
 @Path("/notification")
 public class NotificationEndpoint {
     private static final Logger logger = Logger.getLogger(NotificationEndpoint.class);
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
+    private ObjectMapper mapper = new ObjectMapper();
     private NotificationDAO notificationDAO = new NotificationDAOImpl();
     private CourseDAO courseDAO = new CourseDAOImpl();
 
@@ -38,16 +45,24 @@ public class NotificationEndpoint {
             if (!courseDAO.exists(courseId)) {
                 return Response.status(400).entity("El curso no existe").build();
             }
-            Notification notification = gson.fromJson(json, Notification.class);
+            Notification notification = mapper.readValue(json, Notification.class);
             notification.setDate(Calendar.getInstance().getTime());
             notificationDAO.create(notification);
             return Response.ok("Success").build();
-        } catch (JsonSyntaxException jse) {
+        } catch (JsonParseException jse) {
             logger.debug("The input json was malformed", jse);
             return Response.status(400).entity("The input json was malformed").build();
         } catch (DataBaseException dbe) {
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonMappingException jme) {
+            logger.debug("The input json was malformed", jme);
+            return Response.status(400).entity(json).build();
+        }
+        catch (IOException io) {
+            logger.debug(io.getMessage(), io);
+            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -85,16 +100,24 @@ public class NotificationEndpoint {
                                        @PathParam("courseId") int courseId,
                                        String json) {
         try {
-            Notification notification = gson.fromJson(json, Notification.class);
+            Notification notification = mapper.readValue(json, Notification.class);
             notification.setIdNotification(notificationId);
             notificationDAO.update(notification);
             return Response.ok("Success").build();
-        } catch (JsonSyntaxException jse) {
+        } catch (JsonParseException jse) {
             logger.debug("The input json was malformed", jse);
             return Response.status(400).entity("The input json was malformed").build();
         } catch (DataBaseException dbe) {
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonMappingException jme) {
+            logger.debug("The input json was malformed", jme);
+            return Response.status(400).entity(json).build();
+        }
+        catch (IOException io) {
+            logger.debug(io.getMessage(), io);
+            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -149,15 +172,16 @@ public class NotificationEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllNotification(@PathParam("courseId") int courseId) {
         try {
-            Set<Notification> notifications = notificationDAO.getAllNotifications(courseId);
-            for (Notification notification : notifications) {
-                notification.getCourse().setUsers(null);
-            }
-            String notificationJson = gson.toJson(notifications);
+            List<Notification> notifications = notificationDAO.getAllNotifications(courseId);
+            String notificationJson = mapper.writeValueAsString(notifications);
             return Response.ok(notificationJson).build();
         } catch (DataBaseException dbe) {
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonProcessingException jpe) {
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 

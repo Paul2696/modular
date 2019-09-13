@@ -5,12 +5,12 @@ import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.model.Chat;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -54,21 +54,20 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public Set<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
+    public List<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
             Root<Chat> root = criteriaQuery.from(Chat.class);
-            Predicate predicate1 = criteriaBuilder.equal(root.get("idUser"), userId1);
-            Predicate predicate2 = criteriaBuilder.equal(root.get("idUser"), userId2);
-            Predicate predicate3 = criteriaBuilder.equal(root.get("idUser1"), userId1);
-            Predicate predicate4 = criteriaBuilder.equal(root.get("idUser1"), userId2);
+            Predicate predicate1 = criteriaBuilder.equal(root.get("user").get("idUser"), userId1);
+            Predicate predicate2 = criteriaBuilder.equal(root.get("user").get("idUser"), userId2);
+            Predicate predicate3 = criteriaBuilder.equal(root.get("user1").get("idUser"), userId1);
+            Predicate predicate4 = criteriaBuilder.equal(root.get("user1").get("idUser"), userId2);
             Predicate predicate5 = criteriaBuilder.or(predicate1, predicate2);
             Predicate predicate6 = criteriaBuilder.or(predicate3, predicate4);
             Predicate predicate7 = criteriaBuilder.and(predicate5, predicate6);
             criteriaQuery.select(root).where(predicate7);
-            Set<Chat> conversation = new TreeSet<Chat>(em.createQuery(criteriaQuery).getResultList());
-            return conversation;
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             logger.debug(e.getMessage(), e);

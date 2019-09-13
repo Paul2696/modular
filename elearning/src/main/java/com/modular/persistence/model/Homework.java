@@ -1,5 +1,7 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
@@ -15,11 +17,15 @@ public class Homework {
     private String name;
     private String description;
     private byte[] resource;
-    private int idCourse;
     private Date end;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
+    @JsonIgnoreProperties("idHomework")
     private Set<HomeworkResponse> homeworkResponse;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idCourse")
+    @JsonIgnoreProperties("homework")
+    private Course course;
 
     public int getIdHomework() {
         return idHomework;
@@ -35,15 +41,6 @@ public class Homework {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-
-    public int getIdCourse() {
-        return idCourse;
-    }
-
-    public void setIdCourse(int idCourse) {
-        this.idCourse = idCourse;
     }
 
     public Date getEnd() {
@@ -78,14 +75,20 @@ public class Homework {
         this.homeworkResponse = homeworkResponse;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
     @Override
     public String toString() {
         return "Homework{" +
                 "idHomework=" + idHomework +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", resource=" + Arrays.toString(resource) +
-                ", idCourse=" + idCourse +
+                ", idCourse=" + course.getIdCourse() +
                 ", end=" + end +
                 ", homeworkResponse=" + homeworkResponse +
                 '}';
@@ -97,7 +100,7 @@ public class Homework {
         if (o == null || getClass() != o.getClass()) return false;
         Homework homework = (Homework) o;
         return idHomework == homework.idHomework &&
-                idCourse == homework.idCourse &&
+                course.getIdCourse() == homework.getCourse().getIdCourse() &&
                 Objects.equals(name, homework.name) &&
                 Objects.equals(description, homework.description) &&
                 Objects.equals(end, homework.end) &&

@@ -99,7 +99,7 @@ public class CourseDAOImpl implements CourseDAO {
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
-            Predicate predicate = criteriaBuilder.equal(root.get("idUser"), idUser);
+            Predicate predicate = criteriaBuilder.equal(root.get("user").get("idUser"), idUser);
             criteriaQuery.select(root).where(predicate);
             return em.createQuery(criteriaQuery).getResultList();
         }

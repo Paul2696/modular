@@ -2,7 +2,6 @@ package com.modular.persistence.dao.impl;
 
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkResponseDAO;
-import com.modular.persistence.model.Homework;
 import com.modular.persistence.model.HomeworkResponse;
 import org.apache.log4j.Logger;
 
@@ -13,7 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 
 public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
@@ -75,14 +74,14 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
 
     }
 
-    public Set<HomeworkResponse> getAllHomeworks(int idHomework)throws DataBaseException{
+    public List<HomeworkResponse> getAllHomeworks(int idHomework)throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<HomeworkResponse> criteriaQuery = criteriaBuilder.createQuery(HomeworkResponse.class);
             Root<HomeworkResponse> root = criteriaQuery.from(HomeworkResponse.class);
-            Predicate predicate1 = criteriaBuilder.equal(root.get("idHomework"), idHomework);
+            Predicate predicate1 = criteriaBuilder.equal(root.get("homework").get("idHomework"), idHomework);
             criteriaQuery.select(root).where(predicate1);
-            return new TreeSet<HomeworkResponse>(em.createQuery(criteriaQuery).getResultList());
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");

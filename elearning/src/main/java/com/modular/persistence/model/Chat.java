@@ -13,27 +13,27 @@ public class Chat implements Serializable{
     private int idChat;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
-    private User idUser;
+    private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser1")
-    private User idUser1;
+    private User user1;
     private String message;
     private Date date = Calendar.getInstance().getTime();
 
-    public User getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(User idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public User getIdUser1() {
-        return idUser1;
+    public User getUser1() {
+        return user1;
     }
 
-    public void setIdUser1(User idUser1) {
-        this.idUser1 = idUser1;
+    public void setUser1(User user1) {
+        this.user1 = user1;
     }
 
     public String getMessage() {
@@ -66,8 +66,8 @@ public class Chat implements Serializable{
         if (o == null || getClass() != o.getClass()) return false;
         Chat chat = (Chat) o;
         return idChat == chat.idChat &&
-                Objects.equals(idUser, chat.idUser) &&
-                Objects.equals(idUser1, chat.idUser1) &&
+                Objects.equals(user, chat.user) &&
+                Objects.equals(user1, chat.user1) &&
                 Objects.equals(message, chat.message) &&
                 Objects.equals(date, chat.date);
     }
@@ -77,8 +77,8 @@ public class Chat implements Serializable{
     public String toString() {
         return "Chat{" +
                 ", idChat=" + idChat +
-                ", idUser=" + idUser +
-                ", idUser1=" + idUser1 +
+                ", user=" + user +
+                ", user1=" + user1 +
                 ", message='" + message + '\'' +
                 ", date=" + date +
                 '}';

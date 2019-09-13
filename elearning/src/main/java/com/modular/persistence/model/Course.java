@@ -1,5 +1,7 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -18,11 +20,13 @@ public class Course {
     private Date end;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
-    private User idUser;
+    private User user;
     @ManyToMany(mappedBy = "courses")
+    @JsonIgnoreProperties("courses")
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
+    @JsonIgnoreProperties("course")
     private Set<Homework> homework;
 
 
@@ -67,11 +71,11 @@ public class Course {
     }
 
     public User getUser() {
-        return idUser;
+        return user;
     }
 
     public void setUser(User user) {
-        this.idUser = user;
+        this.user = user;
     }
 
     public Set<User> getUsers() {
@@ -98,7 +102,7 @@ public class Course {
                 ", password='" + password + '\'' +
                 ", start=" + start +
                 ", end=" + end +
-                ", user=" + idUser +
+                ", user=" + user +
                 ", users=" + users +
                 ", homework=" + homework +
                 '}';
@@ -114,7 +118,7 @@ public class Course {
                 Objects.equals(password, course.password) &&
                 Objects.equals(start, course.start) &&
                 Objects.equals(end, course.end) &&
-                Objects.equals(idUser, course.idUser) &&
+                Objects.equals(user, course.user) &&
                 Objects.equals(users, course.users) &&
                 Objects.equals(homework, course.homework);
     }

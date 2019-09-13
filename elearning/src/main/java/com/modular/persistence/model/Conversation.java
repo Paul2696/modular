@@ -1,14 +1,11 @@
 package com.modular.persistence.model;
 
-import java.util.Iterator;
-import java.util.TreeSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 public class Conversation {
     private User sender;
     private User receiver;
-    private Set<Message> conversation = new TreeSet<>();
+    private List<Message> conversation = new ArrayList<>();
 
     public User getSender() {
         return sender;
@@ -26,23 +23,23 @@ public class Conversation {
         this.receiver = receiver;
     }
 
-    public Set<Message> getConversation() {
+    public List<Message> getConversation() {
         return conversation;
     }
 
-    public void setConversation(Set<Message> conversation) {
+    public void setConversation(List<Message> conversation) {
         this.conversation = conversation;
     }
 
-    public static Conversation createConversation(Set<Chat> chats){
+    public static Conversation createConversation(List<Chat> chats){
         Conversation conversation = new Conversation();
         if(chats != null && !chats.isEmpty()){
             Iterator<Chat> it = chats.iterator();
             Chat c = it.next();
-            conversation.setSender(c.getIdUser());
-            conversation.setReceiver(c.getIdUser1());
+            conversation.setSender(c.getUser());
+            conversation.setReceiver(c.getUser1());
             for(Chat chat : chats){
-                conversation.addMessage(new Message(chat.getDate(), chat.getMessage(), chat.getIdUser(), chat.getIdUser1()));
+                conversation.addMessage(new Message(chat.getDate(), chat.getMessage(), chat.getUser(), chat.getUser1()));
             }
         }
         return conversation;

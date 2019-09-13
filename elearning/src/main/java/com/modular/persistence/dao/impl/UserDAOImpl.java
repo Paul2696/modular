@@ -12,9 +12,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 
 public class UserDAOImpl implements UserDAO {
@@ -84,13 +83,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Set<User> getAllUsers() throws DataBaseException{
+    public List<User> getAllUsers() throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
             criteriaQuery.select(root);
-            return new TreeSet<User>(em.createQuery(criteriaQuery).getResultList());
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");

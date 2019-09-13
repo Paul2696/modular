@@ -3,8 +3,6 @@ package com.modular.persistence.dao.impl;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.HomeworkDAO;
 import com.modular.persistence.model.Homework;
-import com.modular.persistence.model.HomeworkResponse;
-import com.modular.persistence.model.User;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityExistsException;
@@ -12,9 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 
 public class HomeworkDAOImpl implements HomeworkDAO {
@@ -89,13 +86,13 @@ public class HomeworkDAOImpl implements HomeworkDAO {
         return true;
     }
 
-    public Set<Homework> getAll()throws DataBaseException{
+    public List<Homework> getAll()throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Homework> criteriaQuery = criteriaBuilder.createQuery(Homework.class);
             Root<Homework> root = criteriaQuery.from(Homework.class);
             criteriaQuery.select(root);
-            return new TreeSet<Homework>(em.createQuery(criteriaQuery).getResultList());
+            return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
             throw new DataBaseException("Algo salio mal");
