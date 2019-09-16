@@ -117,6 +117,10 @@ public class CourseEndpoint {
     public Response getAllCourses(){
         try{
             List<Course> courses = courseDAO.getAllCourses();
+            for(Course course : courses){
+                course.setUsers(null);
+                course.setHomework(null);
+            }
             String usersJson = mapper.writeValueAsString(courses);
             return Response.ok(usersJson).build();
         }

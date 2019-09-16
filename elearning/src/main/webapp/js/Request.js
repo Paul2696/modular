@@ -48,7 +48,7 @@ class Request {
         });
     }
 
-    put(route, parameter, queryParam, data, callback, type, processData){
+    put(route, parameters, queryParam, data, callback, type, processData){
         var url = this.url + route + '/' + parameters.join('/');
         var pd = true;
         if(processData != null){

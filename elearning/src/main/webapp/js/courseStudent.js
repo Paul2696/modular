@@ -18,7 +18,7 @@ let coursesStudentViewModel = {
     init: function() {
             let self = this;
             //if(self.session && self.session.isSessionActive()) {
-                testSession();
+                self.session = testSession();
                 self.menu(self.session.getSessionMenu());
                 self.loadCourses();
             //} else {
@@ -30,17 +30,18 @@ let coursesStudentViewModel = {
           let self = this;
           self.courseViewModel.getAllCourses(function(data){
                 if(data != null && data.length > 0){
-                  self.professor(data[0].user.name);
-                  self.start(data[0].start);
-                  self.end(data[0].end);
-                  self.courses(data);
-                  self.needsPassword(data[0].password);
+                  let course = JSON.parse(data);
+                  self.professor(course[0].user.name);
+                  self.start(course[0].start);
+                  self.end(course[0].end);
+                  self.courses(course);
+                  self.needsPassword(course[0].password);
                 }
           });
           $("#course").change(function(){
               let courseId = $("#course").val();
               for(let i = 0; i < self.courses().length; i++){
-                  if(self.courses()[i].id == courseId){
+                  if(self.courses()[i].idCourse == courseId){
                       self.professor(self.courses()[i].user.name);
                       self.start(self.courses()[i].start);
                       self.end(self.courses()[i].end);

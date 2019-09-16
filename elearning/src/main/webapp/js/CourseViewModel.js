@@ -16,29 +16,29 @@ let CourseViewModel = {
 
     getCourses: function(idCourse, callback) {
        let request = new Request("http://localhost:8080/");
-       request.get("api/course/", [idCourse], callback);
+       request.get("elearning/api/course", [idCourse], callback);
     },
 
     getAllCourses: function(callback){
         let request = new Request("http://localhost:8080/");
-        request.get("api/course/", [], callback);
+        request.get("elearning/api/course", [], callback);
     },
 
     createCourse: function(course, callback) {
         let data = JSON.parse(JSON.stringify(course));
         let request = new Request("http://localhost:8080/");
-        request.post("api/course/", [], [], data, callback);
+        request.post("elearning/api/course", [], [], data, callback);
     },
 
     updateCourse: function(course, callback){
         let data = JSON.parse(JSON.stringify(course));
         let request = new Request("http://localhost:8080/");
-        request.put("api/course/", [course.idCourse], [], data, callback);
+        request.put("elearning/api/course", [course.idCourse], [], data, callback);
     },
 
     deleteCourse: function(idCourse, callback){
         let request = new Request("http://localhost:8080/");
-        request.delete("api/course/", [idCourse], callback);
+        request.delete("elearning/api/course", [idCourse], callback);
     },
 
     enrollCourse: function(idUser, idCourse, password, callback){
@@ -46,7 +46,7 @@ let CourseViewModel = {
             "password" : password
         };
         let request = new Request("http://localhost:8080/");
-        request.put("api/user/", [idUser, "enroll", idCourse],[], passwordJson, callback);
+        request.put("elearning/api/user", [idUser, "enroll", idCourse],[], passwordJson, callback);
     },
 
     getAllFromUser : function (idUser, callback) {
