@@ -20,6 +20,7 @@ public class Course {
     private Date end;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
+    @JsonIgnoreProperties("courses")
     private User user;
     @ManyToMany(mappedBy = "courses")
     @JsonIgnoreProperties("courses")
