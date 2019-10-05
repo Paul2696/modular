@@ -120,6 +120,7 @@ public class CourseEndpoint {
             for(Course course : courses){
                 course.setUsers(null);
                 course.setHomework(null);
+                course.getUser().setCourses(null);
             }
             String usersJson = mapper.writeValueAsString(courses);
             return Response.ok(usersJson).build();

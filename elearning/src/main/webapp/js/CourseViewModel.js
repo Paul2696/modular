@@ -42,9 +42,10 @@ let CourseViewModel = {
     },
 
     enrollCourse: function(idUser, idCourse, password, callback){
-        let passwordJson = {
+        let passwordObj = {
             "password" : password
         };
+        let passwordJson = JSON.stringify(passwordObj);
         let request = new Request("http://localhost:8080/");
         request.put("elearning/api/user", [idUser, "enroll", idCourse],[], passwordJson, callback);
     },

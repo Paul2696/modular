@@ -26,7 +26,7 @@ public class Course {
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
-    @JsonIgnoreProperties("course")
+    @JsonIgnoreProperties({"course", "homeworkResponse"})
     private Set<Homework> homework;
 
 
@@ -92,6 +92,10 @@ public class Course {
 
     public void setHomework(Set<Homework> homework) {
         this.homework = homework;
+    }
+
+    public boolean needsPassword(){
+        return !(password == null);
     }
 
     @Override

@@ -149,7 +149,14 @@ public class UserEndpoint {
             if(user.getUserType().getIdUserType() == UserType.TEACHER){
                 Response.status(403).entity("Un profesor no puede registrarse en un curso").build();
             }
-            JsonObject password = gson.fromJson(passwordJson, JsonObject.class);
+            JsonObject password = null;
+            if(course.needsPassword()){
+                password = gson.fromJson(passwordJson, JsonObject.class);
+            }
+            else{
+                password = new JsonObject();
+                password.addProperty("password", "");
+            }
             userDAO.enrollCourse(course, user, password.get("password").getAsString());
             return Response.ok("Success").build();
         }
