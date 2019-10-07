@@ -6,8 +6,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
+import com.modular.persistence.dao.UserDAO;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
+import com.modular.persistence.dao.impl.UserDAOImpl;
 import com.modular.persistence.model.Course;
+import com.modular.persistence.model.User;
+import com.modular.persistence.model.UserType;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -22,6 +26,7 @@ public class CourseEndpoint {
     private static final Logger logger = Logger.getLogger(CourseEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();
     private CourseDAO courseDAO = new CourseDAOImpl();
+    private UserDAO userDAO = new UserDAOImpl();
 
     static{
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -136,10 +141,14 @@ public class CourseEndpoint {
     }
 
     @GET
-    @Path("user/{userId}")
-    public Response getAllFromUser(@PathParam("userId") int userId){
+    @Path("teacher/{userId}")
+    public Response getAllFromTeacher(@PathParam("userId") int userId){
         try{
-            List<Course> courses = courseDAO.getAllFromUser(userId);
+            User user = userDAO.get(userId);
+            if(user.getUserType().getIdUserType() != UserType.TEACHER && user.getUserType().getIdUserType() != UserType.ADMIN){
+                return Response.status(403).entity("Se necesita ser un profesor").build();
+            }
+            List<Course> courses = courseDAO.getAllFromTeacher(userId);
             String coursesJson = mapper.writeValueAsString(courses);
             return Response.ok(coursesJson).build();
         }
@@ -150,6 +159,27 @@ public class CourseEndpoint {
         catch(JsonProcessingException jpe) {
             logger.debug(jpe.getMessage(), jpe);
             return Response.serverError().entity(jpe.getMessage()).build();
+        }
+    }
+    @GET
+    @Path("student/{userId}")
+    public Response getAllFromStudent(@PathParam("userId") int userId){
+        try{
+            User user = userDAO.get(userId);
+            if(user.getUserType().getIdUserType() != UserType.STUDENT){
+                return Response.status(403).entity("Se necesita ser un estudiante").build();
+            }
+            List<Course> courses = courseDAO.getAllFromStudent(userId);
+            String coursesJson = mapper.writeValueAsString(courses);
+            return Response.ok(coursesJson).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(Exception e){
+            logger.debug("Algo salio mal");
+            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 }

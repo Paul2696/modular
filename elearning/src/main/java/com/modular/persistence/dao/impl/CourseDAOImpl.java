@@ -94,12 +94,27 @@ public class CourseDAOImpl implements CourseDAO {
         }
     }
 
-    public List<Course> getAllFromUser(int idUser) throws DataBaseException{
+    public List<Course> getAllFromTeacher(int idUser) throws DataBaseException{
         try{
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
             Predicate predicate = criteriaBuilder.equal(root.get("user").get("idUser"), idUser);
+            criteriaQuery.select(root).where(predicate);
+            return em.createQuery(criteriaQuery).getResultList();
+        }
+        catch(Exception e){
+            logger.debug("Query Failed", e);
+            throw new DataBaseException("Algo salio mal");
+        }
+    }
+
+    public List<Course> getAllFromStudent(int idUser) throws DataBaseException{
+        try{
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
+            Root<Course> root = criteriaQuery.from(Course.class);
+            Predicate predicate = criteriaBuilder.equal(root.get("users").get("idUser"), idUser);
             criteriaQuery.select(root).where(predicate);
             return em.createQuery(criteriaQuery).getResultList();
         }

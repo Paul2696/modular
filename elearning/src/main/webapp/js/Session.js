@@ -74,7 +74,7 @@ function getNoUserMenu() {
  }
 
 function testSession() {
-    var session =  new Session(2,2);
+    var session =  new Session(4,2);
     Cookies.set("session", "session");
     return session;
 }
