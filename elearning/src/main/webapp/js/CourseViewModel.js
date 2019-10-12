@@ -24,16 +24,18 @@ let CourseViewModel = {
         request.get("elearning/api/course", [], callback);
     },
 
-    createCourse: function(course, callback) {
+    createCourse: function(course, success, error) {
         let data = JSON.parse(JSON.stringify(course));
+        data = JSON.stringify(data);
         let request = new Request("http://localhost:8080/");
-        request.post("elearning/api/course", [], [], data, callback);
+        request.post(course,"elearning/api/course", [], [], data, success, error);
     },
 
-    updateCourse: function(course, callback){
+    updateCourse: function(course, success, error){
         let data = JSON.parse(JSON.stringify(course));
+        data = JSON.stringify(data);
         let request = new Request("http://localhost:8080/");
-        request.put("elearning/api/course", [course.idCourse], [], data, callback);
+        request.put(course,"elearning/api/course", [course.idCourse], [], data, success, error);
     },
 
     deleteCourse: function(idCourse, callback){
@@ -50,9 +52,15 @@ let CourseViewModel = {
         request.put("elearning/api/user", [idUser, "enroll", idCourse],[], passwordJson, callback);
     },
 
-    getAllFromUser : function (idUser, callback) {
+    getAllFromUser : function (idUser, userType, callback) {
         let request = new Request("http://localhost:8080/");
-        request.get("elearning/api/course/user", [idUser], callback);
+        if(userType === 1) {
+            request.get("elearning/api/course/teacher", [idUser], callback);
+        } else if(userType === 2) {
+            request.get("elearning/api/course/student", [idUser], callback);
+        }
+
+
     }
 
 

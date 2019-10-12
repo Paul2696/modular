@@ -5,7 +5,7 @@ class Request {
         this.contentType = "application/json";
     }
 
-    get(route, parameters, callback) {
+    get(route, parameters, success, error) {
         var url = this.url + route + '/' + parameters.join('/');
 
         $.ajax({
@@ -14,15 +14,15 @@ class Request {
             headers: {
             },
             success: function(response){
-                callback(response);
+                success(JSON.parse(response));
             },
             error: function (response) {
-                callback(response);
+                error(response);
             }
         });
     }
 
-    post(route, parameters, queryParam, data, callback, type, processData) {
+    post(object, route, parameters, queryParam, data, success, error, type, processData) {
         var url = this.url + route + '/' + parameters.join('/');
         var pd = true;
         if(processData != null){
@@ -40,15 +40,15 @@ class Request {
             headers: {
             },
             success: function(response){
-                callback(response);
+                success(response, object, "La creacion fue exitosa");
             },
             error: function (response) {
-                callback(response);
+                error(response);
             }
         });
     }
 
-    put(route, parameters, queryParam, data, callback, type, processData){
+    put(object, route, parameters, queryParam, data, success, error, type, processData){
         var url = this.url + route + '/' + parameters.join('/');
         var pd = true;
         if(processData != null){
@@ -66,15 +66,15 @@ class Request {
             headers: {
             },
             success: function(response){
-                callback(response);
+                success(response, object, "La actualizacion fue exitosa");
             },
             error: function (response) {
-                callback(response);
+                error(response);
             }
         });
     }
 
-    delete(route, parameters, callback){
+    delete(route, parameters, success, error){
         var url = this.url + route + '/' + parameters.join('/');
         $.ajax({
             url : url,
@@ -82,10 +82,10 @@ class Request {
             headers : {
             },
             success : function (response) {
-                callback(response);
+                success(response);
             },
             error : function (response) {
-                callback(response);
+                error(response);
             }
         })
     }

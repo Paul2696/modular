@@ -63,29 +63,34 @@
 			<table id="datos" class="table table-striped">
 				<thead>
 				<tr>
-					<th scope="col"><h2>	Curso	</h2></th>
-					<th scope="col"><h2>	Inicio	</h2></th>
+					<th scope="col"><h3>	Curso	</h3></th>
+					<th scope="col"><h3>	Inicio	</h3></th>
 					<!--th scope="col"><h2>	Descripción </h2></th>-->
 					<!--th><h3>    Recursos</h3></th-->
-					<th scope="col"><h2>	Fin</h2></th>
-					<th scope="col"><h2>	Asignar contrasenia</h2></th>
-					<th scope="col" ><h2>	Editar</h2></th>
-					<th scope="col"><h2>Eliminar</h2></th>
+					<th scope="col"><h3>	Fin</h3></th>
+					<th scope="col"><h3>	Asignar contrasenia</h3></th>
+					<th scope="col" ><h3>	Editar</h3></th>
+					<th scope="col"><h3>Eliminar</h3></th>
 				</tr>
 				</thead>
 
 				<tbody data-bind="foreach: courses">
 				<tr>
 					<td scope="row"><h3><input data-bind="textInput: name, enable: editable"></h3></td>
-					<td><h3><input data-bind="datepicker: startObservable, datepickerOptions: {dateFormat: 'dd-mm-yy'}, enable: editable"/></h3></td>
+					<td><h3><input data-bind="datepicker: startObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></h3></td>
 					<!--td><h3><textArea data-bind="textInput: descripcion, enable: editable"></textArea></h3></td>-->
 					<!--td><h3><a href="text:" data-bind="#"></a></h3></td-->
-					<td><h3><input data-bind="datepicker: endObservable, datepickerOptions: {dateFormat: 'dd-mm-yy'}, enable: editable"/></h3></td>
-					<td><h3><input type="checkbox" data-bind="checked: password, event: {changed: console.log(password)}"/><input type="password" data-bind="textInput: password_str, visible: password"/></h3></td>
-					<td><h3><a data-bind="click: editTextFields">
+					<td><h3><input data-bind="datepicker: endObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></h3></td>
+					<td>
+						<h3>
+							<input type="checkbox" data-bind="checked: hasPassword, enable: editable"/>
+							<input type="password" data-bind="textInput: password, visible: hasPassword, enable: editable"/>
+						</h3>
+					</td>
+					<td><h3><a data-bind="click: function(){editTextFields($data, $root)};">
 						<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}"></span>
 					</a></h3></td>
-					<td><h3><a data-bind="click: remove"><span class="glyphicon glyphicon-trash"></span></a></h3></td>
+					<td><h3><a data-bind="click: function(){remove($data, $root);}"><span class="glyphicon glyphicon-trash"></span></a></h3></td>
 				</tr>
 				</tbody>
 			</table>

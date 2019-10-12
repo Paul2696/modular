@@ -38,9 +38,10 @@ public class UserEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(String json){
         try{
+            logger.debug("Request json: " + json);
             User user = mapper.readValue(json, User.class);
             userDAO.create(user);
-            return Response.ok("Success").build();
+            return Response.ok(200).build();
         }
         catch(JsonParseException jse){
             logger.debug("The input json was malformed", jse);
@@ -54,7 +55,7 @@ public class UserEndpoint {
             logger.debug("The input json was malformed", jme);
             return Response.status(400).entity(json).build();
         }
-        catch (IOException io) {
+        catch (Exception io) {
             logger.debug(io.getMessage(), io);
             return Response.serverError().entity(io.getMessage()).build();
         }

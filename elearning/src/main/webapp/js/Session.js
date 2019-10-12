@@ -1,33 +1,64 @@
+// var noUser = [
+// 	{menu : "Inicio", url : "/webapp/index.html"},
+// 	{menu : "Iniciar Sesion", url : "/webapp/html/log_in.html"},
+// 	{menu : "Crear Cuenta", url : "/webapp/html/registro.html"}
+// ];
+//
+// var withUserStudent = [
+// 	{menu : "Inicio", url : "/webapp/index.html"},
+// 	{menu : "Tareas", url : "/webapp/html/student/tareas.html"},
+// 	{menu : "Cursos", url : "/webapp/html/student/cursos.html"}
+// 	//{menu : "Test", url : "/webapp/html/student/cuestionario.html"},
+// ];
+//
+// var withUserTeacher = [
+// 	{menu : "Inicio", url : "/webapp/index.html"},
+// 	{menu : "Cursos", url : "/webapp/html/teacher/cursos.html"},
+// 	{menu : "Tareas", url : "/webapp/html/teacher/tareas.html"}
+// ];
+//
+// var withUserAdmin = [
+// 	{menu : "Inicio", url : "/webapp/index.html"},
+// 	{menu : "Usuarios", url : "/webapp/html/admin/usuarios.html"}
+// ];
+//
+// var withUserSuperUser = [
+//     {menu : "Inicio", url: "/webapp/index.html"},
+//     {menu : "Cursos Prof", url: "/webapp/html/teacher/cursos.html"},
+//     {menu : "Tareas Prof", url: "/webapp/html/teacher/tareas.html"},
+//     {menu : "Tareas Est", url: "/webapp/html/student/tareas.html"},
+//     {menu : "Cursos Est", url: "/webapp/html/student/cursos.html"},
+// ];
 var noUser = [
-	{menu : "Inicio", url : "/webapp/index.html"},
-	{menu : "Iniciar Sesion", url : "/webapp/html/log_in.html"},
-	{menu : "Crear Cuenta", url : "/webapp/html/registro.html"}
+    {menu : "Inicio", url : "/elearning/index.html"},
+    {menu : "Iniciar Sesion", url : "/elearning/html/log_in.html"},
+    {menu : "Crear Cuenta", url : "/elearning/html/registro.html"}
 ];
 
 var withUserStudent = [
-	{menu : "Inicio", url : "/webapp/index.html"},
-	{menu : "Tareas", url : "/webapp/html/student/tareas.html"},
-	{menu : "Cursos", url : "/webapp/html/student/cursos.html"}
-	//{menu : "Test", url : "/webapp/html/student/cuestionario.html"},
+    {menu : "Inicio", url : "/elearning/index.html"},
+    {menu : "Tareas", url : "/elearning/html/student/tareas.html"},
+    {menu : "Cursos", url : "/elearning/html/student/cursos.html"}
+    //{menu : "Test", url : "/webapp/html/student/cuestionario.html"},
 ];
 
 var withUserTeacher = [
-	{menu : "Inicio", url : "/webapp/index.html"},
-	{menu : "Cursos", url : "/webapp/html/teacher/cursos.html"},
-	{menu : "Tareas", url : "/webapp/html/teacher/tareas.html"}
+    {menu : "Inicio", url : "/elearning/index.html"},
+    {menu : "Cursos", url : "/elearning/html/teacher/cursos.html"},
+    {menu : "Tareas", url : "/elearning/html/teacher/tareas.html"}
 ];
 
 var withUserAdmin = [
-	{menu : "Inicio", url : "/webapp/index.html"},
-	{menu : "Usuarios", url : "/webapp/html/admin/usuarios.html"}
+    {menu : "Inicio", url : "/elearning/index.html"},
+    {menu : "Usuarios", url : "/elearning/html/admin/usuarios.html"}
 ];
 
 var withUserSuperUser = [
-    {menu : "Inicio", url: "/webapp/index.html"},
-    {menu : "Cursos Prof", url: "/webapp/html/teacher/cursos.html"},
-    {menu : "Tareas Prof", url: "/webapp/html/teacher/tareas.html"},
-    {menu : "Tareas Est", url: "/webapp/html/student/tareas.html"},
-    {menu : "Cursos Est", url: "/webapp/html/student/cursos.html"},
+    {menu : "Inicio", url: "/elearning/index.html"},
+    {menu : "Cursos Prof", url: "/elearning/html/teacher/cursos.html"},
+    {menu : "Tareas Prof", url: "/elearning/html/teacher/tareas.html"},
+    {menu : "Tareas Est", url: "/elearning/html/student/tareas.html"},
+    {menu : "Cursos Est", url: "/elearning/html/student/cursos.html"},
 ];
 
 function Session(idUser, userType) {
@@ -74,7 +105,7 @@ function getNoUserMenu() {
  }
 
 function testSession() {
-    var session =  new Session(4,2);
+    var session =  new Session(9,1);
     Cookies.set("session", "session");
     return session;
 }

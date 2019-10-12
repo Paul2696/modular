@@ -29,25 +29,28 @@ var signUpViewModel = {
 
 function doPost(){
 	var signUp = {
-		"name" : signUpViewModel.name(),
-		"email" : signUpViewModel.mail(),
-		"password" : signUpViewModel.password()
+		name : signUpViewModel.name(),
+		email : signUpViewModel.mail(),
+		password : signUpViewModel.password(),
+		userType : {
+			idUserType : 2
+		}
 	}
 
 	var signUpJson = JSON.stringify(signUp);
 	$.ajax({
-		url : "http://localhost:8000/api/user",
+		url : "http://localhost:8080/elearning/api/user",
 		contentType : "application/json",
 		data : signUpJson,
 		method : "post",
 		success : function(response){
 		    signUpViewModel.error(false);
 		    $("#alertSuccess").modal("show");
-		    if(response.code == 200){
+		    if(response == 200){
 		        $("#message").html("Se ha registrado exitosamente");
 		        signUpViewModel.redirect();
 		    }
-		    else if(response.code == 101){
+		    else if(response == 101){
 		        $("#message").html("El usuario ya existe");
 		    }
 		    else{

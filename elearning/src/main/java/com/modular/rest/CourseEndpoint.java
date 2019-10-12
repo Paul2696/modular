@@ -36,6 +36,7 @@ public class CourseEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCourse(String json){
         try{
+            logger.debug("Request JSON: " + json);
             Course course = mapper.readValue(json, Course.class);
             if(course.getStart().compareTo(course.getEnd()) >= 0){
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
@@ -82,6 +83,9 @@ public class CourseEndpoint {
     public Response updateCourse(@PathParam("courseId")int courseId, String json){
         try{
             Course course = mapper.readValue(json, Course.class);
+            if(course.getStart().compareTo(course.getEnd()) >= 0){
+                return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
+            }
             course.setIdCourse(courseId);
             courseDAO.update(course);
             return Response.ok("Success").build();
@@ -110,7 +114,7 @@ public class CourseEndpoint {
         try{
             Course course = courseDAO.get(courseId);
             courseDAO.delete(course);
-            return Response.ok("Success").build();
+            return Response.ok(200).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
