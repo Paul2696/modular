@@ -3,7 +3,6 @@ package com.modular.persistence.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.Objects;
@@ -21,7 +20,7 @@ public class Homework {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
     @JsonIgnoreProperties("idHomework")
-    private Set<HomeworkResponse> homeworkResponse;
+    private Set<HomeworkResponse> responses;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     @JsonIgnoreProperties("homework")
@@ -67,12 +66,12 @@ public class Homework {
         this.resource = resource;
     }
 
-    public Set<HomeworkResponse> getHomeworkResponse() {
-        return homeworkResponse;
+    public Set<HomeworkResponse> getResponses() {
+        return responses;
     }
 
-    public void setHomeworkResponse(Set<HomeworkResponse> homeworkResponse) {
-        this.homeworkResponse = homeworkResponse;
+    public void setResponses(Set<HomeworkResponse> responses) {
+        this.responses = responses;
     }
 
     public Course getCourse() {
@@ -90,7 +89,7 @@ public class Homework {
                 ", description='" + description + '\'' +
                 ", idCourse=" + course.getIdCourse() +
                 ", end=" + end +
-                ", homeworkResponse=" + homeworkResponse +
+                ", homeworkResponse=" + responses +
                 '}';
     }
 
@@ -104,7 +103,7 @@ public class Homework {
                 Objects.equals(name, homework.name) &&
                 Objects.equals(description, homework.description) &&
                 Objects.equals(end, homework.end) &&
-                Objects.equals(homeworkResponse, homework.homeworkResponse);
+                Objects.equals(responses, homework.responses);
     }
 
 }

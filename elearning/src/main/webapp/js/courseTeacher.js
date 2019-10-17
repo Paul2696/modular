@@ -38,7 +38,7 @@ const coursesTeacherViewModel = {
                 }
                 self.courses(data);
             }
-        });
+        },self.error);
     },
 
     create: function() {
@@ -75,7 +75,7 @@ const coursesTeacherViewModel = {
             if(course.idCourse != null) {
                 root.courseViewModel.updateCourse(course, success, error);
             } else if(course.idCourse == null) {
-                root.courseViewModel.createCourse(course, success, root.error);
+                root.courseViewModel.createCourse(course, success, error);
             }
         } else {
             course.editable(!course.editable());
@@ -106,10 +106,11 @@ const coursesTeacherViewModel = {
 
     error: function (data) {
         let self = this;
+        self.courses.pop();
         self.status(data.status);
         self.message("Algo ha salido mal: " + data.responseText);
         $("#alert").show();
-    },
+    }
 
 
 };

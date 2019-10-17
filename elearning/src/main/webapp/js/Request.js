@@ -14,7 +14,7 @@ class Request {
             headers: {
             },
             success: function(response){
-                success(JSON.parse(response));
+                success(response);
             },
             error: function (response) {
                 error(response);

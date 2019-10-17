@@ -6,6 +6,7 @@ import com.modular.persistence.model.Chat;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -16,7 +17,8 @@ import java.util.TreeSet;
 
 public class ChatDAOImpl implements ChatDAO {
     private static final Logger logger = Logger.getLogger(ChatDAOImpl.class);
-    private EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Chat entity) throws DataBaseException {
@@ -45,7 +47,7 @@ public class ChatDAOImpl implements ChatDAO {
     public void delete(Chat entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
             em.getTransaction().commit();
         }
         catch(Exception e){

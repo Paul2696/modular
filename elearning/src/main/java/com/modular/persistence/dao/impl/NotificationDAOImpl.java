@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -17,7 +18,8 @@ import java.util.TreeSet;
 
 public class NotificationDAOImpl implements NotificationDAO {
     private static final Logger logger = Logger.getLogger(NotificationDAOImpl.class);
-    private EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(Notification entity) throws DataBaseException {
@@ -68,7 +70,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     public void delete(Notification entity) throws DataBaseException {
         try{
             em.getTransaction().begin();
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
             em.getTransaction().commit();
         }
         catch(Exception e){

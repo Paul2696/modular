@@ -14,6 +14,7 @@ import com.modular.persistence.model.User;
 import com.modular.persistence.model.UserType;
 import org.apache.log4j.Logger;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,8 +26,10 @@ import java.util.List;
 public class CourseEndpoint {
     private static final Logger logger = Logger.getLogger(CourseEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();
-    private CourseDAO courseDAO = new CourseDAOImpl();
-    private UserDAO userDAO = new UserDAOImpl();
+    @Inject
+    private CourseDAO courseDAO;
+    @Inject
+    private UserDAO userDAO;
 
     static{
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -34,27 +37,18 @@ public class CourseEndpoint {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCourse(String json){
+    public Response createCourse(Course course){
         try{
-            logger.debug("Request JSON: " + json);
-            Course course = mapper.readValue(json, Course.class);
+            logger.debug("Request JSON: " + course);
+            //Course course = mapper.readValue(json, Course.class);
             if(course.getStart().compareTo(course.getEnd()) >= 0){
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
             }
             courseDAO.create(course);
             return Response.ok(course.getIdCourse()).build();
-        }
-        catch(JsonParseException|JsonMappingException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity(json).build();
-        }
-        catch(DataBaseException dbe){
+        } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch (IOException io) {
-            logger.debug(io.getMessage(), io);
-            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -80,31 +74,18 @@ public class CourseEndpoint {
     @PUT
     @Path("{courseId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateCourse(@PathParam("courseId")int courseId, String json){
+    public Response updateCourse(@PathParam("courseId")int courseId, Course course){
         try{
-            Course course = mapper.readValue(json, Course.class);
+            //Course course = mapper.readValue(json, Course.class);
             if(course.getStart().compareTo(course.getEnd()) >= 0){
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
             }
             course.setIdCourse(courseId);
             courseDAO.update(course);
             return Response.ok("Success").build();
-        }
-        catch(JsonParseException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
-        }
-        catch(DataBaseException dbe){
+        } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch(JsonMappingException jme) {
-            logger.debug("The input json was malformed", jme);
-            return Response.status(400).entity(json).build();
-        }
-        catch (IOException io) {
-            logger.debug(io.getMessage(), io);
-            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -131,16 +112,12 @@ public class CourseEndpoint {
                 course.setHomework(null);
                 course.getUser().setCourses(null);
             }
-            String usersJson = mapper.writeValueAsString(courses);
-            return Response.ok(usersJson).build();
+            //String usersJson = mapper.writeValueAsString(courses);
+            return Response.ok(courses).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.serverError().entity(jpe.getMessage()).build();
         }
     }
 
@@ -153,16 +130,12 @@ public class CourseEndpoint {
                 return Response.status(403).entity("Se necesita ser un profesor").build();
             }
             List<Course> courses = courseDAO.getAllFromTeacher(userId);
-            String coursesJson = mapper.writeValueAsString(courses);
-            return Response.ok(coursesJson).build();
+            //String coursesJson = mapper.writeValueAsString(courses);
+            return Response.ok(courses).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(404).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.serverError().entity(jpe.getMessage()).build();
         }
     }
     @GET

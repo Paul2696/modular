@@ -43,7 +43,7 @@ public class HomeworkEndpoint {
 
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.MULTIPART_FORM_DATA})
     public Response createHomework(String json){
         try{
             Homework homework = mapper.readValue(json, Homework.class);
@@ -69,6 +69,16 @@ public class HomeworkEndpoint {
             logger.debug(io.getMessage(), io);
             return Response.serverError().entity(io.getMessage()).build();
         }
+    }
+
+    @POST
+    @Path("/file")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createHomework(
+            @Multipart("file") Attachment file,
+            @Multipart("json") Attachment json
+    ) {
+        return null;
     }
 
     @GET
@@ -213,7 +223,7 @@ public class HomeworkEndpoint {
     {
         try{
             HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
-            homeworkResponse.getHomework().setHomeworkResponse(null);
+            homeworkResponse.getHomework().setResponses(null);
             String homeworkJson = mapper.writeValueAsString(homeworkResponse);
             return Response.ok(homeworkJson).build();
         }

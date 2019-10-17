@@ -1,5 +1,6 @@
 package com.modular.persistence.dao;
 
+
 public interface BaseDAO<E> {
     public void create(E entity) throws DataBaseException;
     public E get(int key) throws DataBaseException;

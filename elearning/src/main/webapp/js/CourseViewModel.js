@@ -14,9 +14,9 @@ let CourseViewModel = {
      */
 
 
-    getCourses: function(idCourse, callback) {
+    getCourses: function(idCourse, success, error) {
        let request = new Request("http://localhost:8080/");
-       request.get("elearning/api/course", [idCourse], callback);
+       request.get("elearning/api/course", [idCourse], success, error);
     },
 
     getAllCourses: function(callback){
@@ -52,12 +52,12 @@ let CourseViewModel = {
         request.put("elearning/api/user", [idUser, "enroll", idCourse],[], passwordJson, callback);
     },
 
-    getAllFromUser : function (idUser, userType, callback) {
+    getAllFromUser : function (idUser, userType, success, error) {
         let request = new Request("http://localhost:8080/");
         if(userType === 1) {
-            request.get("elearning/api/course/teacher", [idUser], callback);
+            request.get("elearning/api/course/teacher", [idUser], success, error);
         } else if(userType === 2) {
-            request.get("elearning/api/course/student", [idUser], callback);
+            request.get("elearning/api/course/student", [idUser], success, error);
         }
 
 

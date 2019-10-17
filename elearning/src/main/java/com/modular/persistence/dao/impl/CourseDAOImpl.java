@@ -5,9 +5,7 @@ import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.model.Course;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -18,11 +16,13 @@ import java.util.TreeSet;
 
 public class CourseDAOImpl implements CourseDAO {
     private static final Logger logger = Logger.getLogger(CourseDAOImpl.class);
-    private EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+    @PersistenceUnit(unitName = "PERSISTENCE")
+    private EntityManagerFactory ef;
 
     @Override
     public void create(Course entity) throws DataBaseException {
         try {
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
@@ -39,6 +39,7 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public Course get(int key) throws DataBaseException {
         try {
+            EntityManager em = ef.createEntityManager();
             Course course = em.find(Course.class, key);
             if(course == null){
                 throw new DataBaseException("No existe un curso con la llave: " + key);
@@ -55,6 +56,7 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public void update(Course entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.merge(entity);
             em.getTransaction().commit();
@@ -71,17 +73,20 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public void delete(Course entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
             em.getTransaction().commit();
         }
         catch(Exception e){
+            logger.debug("delete failed", e);
             throw new DataBaseException("No se pudo eliminar el curso: " + entity);
         }
     }
 
     public List<Course> getAllCourses() throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
@@ -96,6 +101,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     public List<Course> getAllFromTeacher(int idUser) throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);
@@ -111,6 +117,7 @@ public class CourseDAOImpl implements CourseDAO {
 
     public List<Course> getAllFromStudent(int idUser) throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
             Root<Course> root = criteriaQuery.from(Course.class);

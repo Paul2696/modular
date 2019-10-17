@@ -1,24 +1,12 @@
-$(document).ready(function() {
-    //createTestSession();
-    configDatePicker();
-    moment.locale("es");
-    ko.applyBindings(tareasTeacherViewModel);
-    $("#course").change(function() {
-       tareasTeacherViewModel.populateHomeworkTable($(this).val());
-       tareasTeacherViewModel.currentCourse(parseInt($(this).val()));
-    });
-    tareasTeacherViewModel.init();
-});
-
-var tareasTeacherViewModel = {
+let tareasTeacherViewModel = {
     active: "Tareas",
     menu: ko.observableArray([]),
-    homework: ko.observableArray(),
+    homework: ko.observableArray([]),
     homeworkViewModel: HomeworkViewModel,
     courseViewModel: CourseViewModel,
     courses: ko.observableArray(),
     currentCourse: ko.observable(),
-    session: parseSession(Cookies.getJSON("session")),
+    session: testSession(),//parseSession(Cookies.getJSON("session")),
     responses: ko.observableArray([]),
     message: ko.observable(),
     status: ko.observable(),
@@ -27,99 +15,83 @@ var tareasTeacherViewModel = {
      *   function to initialize page data
      */
     init: function() {
-        var self = this;
-        if(self.session && self.session.isSessionActive()) {
+        let self = this;
+        //if(self.session && self.session.isSessionActive()) {
             self.menu(self.session.getSessionMenu());
-            self.courseViewModel.getCourses(self.session.getToken(), function(data){
-              self.courses(data.professor);
-              self.currentCourse($("#course").val());
-              self.populateHomeworkTable($("#course").val());
-          });
+            self.courseViewModel.getAllFromUser(self.session.idUser,self.session.userType, function(data){
+              data = JSON.parse(data);
+              self.courses(data);
+              if(data.length > 0) {
+                  self.currentCourse(data[0].idCourse);
+                  self.homework(data[0].homework);
+              }
+          }, self.error);
 
-        } else {
-            window.location.href = "/webapp/html/log_in.html";
-        }
+        //} else {
+        //    window.location.href = "/webapp/html/log_in.html";
+        //}
     },
     /**
      *   function to populate the homework table
      */
-    populateHomeworkTable: function(course_id) {
-        var self = this;
-        self.homeworkViewModel.getHomework(course_id, self.session.getToken(), function(data) {
-            if(data != null){
-                for(var i = 0; i < data.homework.length; i++){
-                    data.homework[i]["limitObservable"] = ko.observable(new Date(data.homework[i].limit));
-                    data.homework[i]["editable"] = ko.observable(false);
-                    data.homework[i]["file"] = ko.observable();
-                    data.homework[i]["setFile"] = function(data, e){
-                        var hw = this;
-                        var file = e.target.files[0];
-                        hw.file(file);
-                    };
-                    data.homework[i]["editTextFields"] = function() {
-                        if(this.editable()) {
-                            this.editable(!this.editable());
-                            this.limit = this.limitObservable();
+    populateHomeworkTable: function(homework) {
+        let self = this;
+        for(let i = 0; i < homework.length; i++){
+            homework[i]["limitObservable"] = ko.observable(new Date(data.homework[i].limit));
+            homework[i]["editable"] = ko.observable(false);
+            homework[i]["file"] = ko.observable();
+            homework[i]["setFile"] = function(data, e){
+                let hw = this;
+                let file = e.target.files[0];
+                hw.file(file);
+            };
+            homework[i]["editTextFields"] = function() {
+                if(this.editable()) {
+                    this.editable(!this.editable());
+                    this.limit = this.limitObservable();
 
-                            self.homeworkViewModel.updateHomework(this, self.session.getToken(), function(data){
-                                self.status(data.code);
-                                if(data.code == 200){
-                                    self.message("La tarea se ha actualizado correctamente");
-                                    $("#alert").show();
-                                }
-                                else{
-                                    self.message("Algo ha salido mal");
-                                    $("#alert").show();
-                                }
-                            });
-                        } else {
-                            this.editable(!this.editable());
-                        }
-                    };
-                        data.homework[i]["remove"] = function() {
-                            var homework = this;
-                             self.homeworkViewModel.deleteHomework(homework.id, self.session.getToken(), function(data){
-                                   self.status(data.code);
-                                   if(data.code == 200){
-                                      self.homework.remove(homework);
-                                       self.message("La tarea se ha eliminado correctamente");
-                                       $("#alert").show();
-                                   }
-                                   else{
-                                       self.message("Algo ha salido mal");
-                                       $("#alert").show();
-                                   }
-                             });
-                        };
-                    //delete data.homework[i].responses;
-                    if(data.homework[i].responses != null && data.homework[i].responses.length > 0){
-                        data.homework[i]["calificar"] = function(){
-                            self.responses(this.responses);
-                            $("#modalCalificar").modal("show");
-                            $("#modalCalificar").on("hide.bs.modal", function(event){
-                                self.setGrades(event);
-                            });
-                        }
-                    }
-                    else{
-                        data.homework[i]["calificar"] = null;
-                    }
+                    self.homeworkViewModel.updateHomework(this, self.session.getToken(), function(data){
+                        self.status(data.code);
+                        self.message("La tarea se ha actualizado correctamente");
+                        $("#alert").show();
+                    });
+                } else {
+                    this.editable(!this.editable());
                 }
-
-                self.homework(data.homework);
+            };
+            homework[i]["remove"] = function() {
+                let homework = this;
+                self.homeworkViewModel.deleteHomework(homework.idHomework, function(data){
+                    self.status(data.code);
+                    self.homework.remove(homework);
+                    self.message("La tarea se ha eliminado correctamente");
+                    $("#alert").show();
+                }, self.error);
+            };
+            //delete data.homework[i].responses;
+            if(homework[i].responses != null && homework[i].responses.length > 0){
+                homework[i]["calificar"] = function(){
+                    self.responses(this.responses);
+                    $("#modalCalificar").modal("show");
+                    $("#modalCalificar").on("hide.bs.modal", function(event){
+                        self.setGrades(event);
+                    });
+                }
             }
-
-        });
+            else{
+                homework[i]["calificar"] = null;
+            }
+        }
     },
 
     save: function() {
-        var self = this;
+        let self = this;
         self.homeworkViewModel.update()
     },
 
     create: function() {
-        var self = this;
-        var hw = {
+        let self = this;
+        let hw = {
             title: "",
             course: self.currentCourse(),
             limit: new Date(),
@@ -130,35 +102,29 @@ var tareasTeacherViewModel = {
             file: ko.observable(),
             editable: ko.observable(true),
             setFile: function(data, e){
-                var hw = this;
-                var file = e.target.files[0];
+                let hw = this;
+                let file = e.target.files[0];
                 hw.file(file);
             },
             editTextFields: function() {
                 if(this.editable()) {
-                    var tarea = this;
+                    let tarea = this;
                     this.editable(!this.editable());
                     this.limit = this.limitObservable();
-                    self.homeworkViewModel.createHomework(this, self.session.getToken(), function(data){
-                        self.status(data.code);
-                        if(data.code == 200){
-                            self.message("La tarea se ha creado correctamente");
-                            $("#alert").show();
-                            tarea.id = data.homework.id;
-                            self.populateHomeworkTable(self.currentCourse());
-                        }
-                        else{
-                            self.message("Algo ha salido mal");
-                            $("#alert").show();
-                        }
+                    self.homeworkViewModel.createHomework(this,function(data){
+                        self.status(data);
+                        self.message("La tarea se ha creado correctamente");
+                        $("#alert").show();
+                        tarea.idHomework = data;
+                        self.populateHomeworkTable(self.currentCourse());
 
-                    }, this.file());
+                    }, this.file(), self.error);
                 } else {
                     this.editable(!this.editable());
                 }
             },
             remove: function() {
-                 var homework = this;
+                 let homework = this;
                  self.homeworkViewModel.deleteHomework(homework.id, self.session.getToken(), function(data){
                        self.homework.remove(homework);
                  });
@@ -169,9 +135,9 @@ var tareasTeacherViewModel = {
     },
 
     setGrades: function(event){
-        var self = this;
+        let self = this;
         if($(document.activeElement)[0] == $("#send")[0]){
-            var grades = [];
+            let grades = [];
             self.responses().forEach(function(grade){
                if(grade != null){
                 grades.push({
@@ -188,11 +154,31 @@ var tareasTeacherViewModel = {
     },
 
     destroySession: function(){
-        var self = this;
+        let self = this;
         self.session.destroySession();
+    },
+
+    error: function (data) {
+        let self = this;
+        self.status(data.status);
+        self.message("Algo ha salido mal: " + data.responseText);
+        $("#alert").show();
     }
 
 };
+$(document).ready(function() {
+    //createTestSession();
+    configDatePicker();
+    moment.locale("es");
+
+    ko.applyBindings(tareasTeacherViewModel);
+    $("#course").change(function() {
+       tareasTeacherViewModel.populateHomeworkTable($(this).val());
+       tareasTeacherViewModel.currentCourse(parseInt($(this).val()));
+    });
+    tareasTeacherViewModel.init();
+});
+
 
 function createTestSession() {
     return testSession();

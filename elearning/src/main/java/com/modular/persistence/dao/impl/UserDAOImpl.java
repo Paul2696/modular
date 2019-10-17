@@ -7,9 +7,7 @@ import com.modular.persistence.model.Course;
 import com.modular.persistence.model.User;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -18,11 +16,13 @@ import java.util.TreeSet;
 
 public class UserDAOImpl implements UserDAO {
     private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
-    private EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+    @PersistenceUnit(unitName = "PERSISTENCE")
+    private EntityManagerFactory ef;
 
     @Override
     public void create(User entity) throws DataBaseException {
         try {
+            EntityManager em = ef.createEntityManager();
             logger.info("Creating user " + entity);
             em.getTransaction().begin();
             em.persist(entity);
@@ -43,6 +43,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User get(int key) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             User user = em.find(User.class, key);
             if(user == null){
                 throw new DataBaseException("No existe un usuario con la llave: " + key);
@@ -57,6 +58,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void update(User entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.merge(entity);
             em.getTransaction().commit();
@@ -73,8 +75,9 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void delete(User entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
-            em.remove(entity);
+            em.remove(em.contains(entity) ? entity : em.merge(entity));
             em.getTransaction().commit();
         }
         catch(Exception e){
@@ -85,6 +88,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> getAllUsers() throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);

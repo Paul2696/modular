@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -17,7 +18,8 @@ import java.util.TreeSet;
 
 public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     private static final Logger logger = Logger.getLogger(HomeworkDAOImpl.class);
-    private EntityManager em = PersistenceManager.INSTANCE.getEntityManager();
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void create(HomeworkResponse entity) throws DataBaseException {

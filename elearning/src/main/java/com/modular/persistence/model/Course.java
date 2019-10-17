@@ -1,5 +1,6 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,13 +17,15 @@ public class Course {
     private int idCourse;
     private String name;
     private String password;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date start;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date end;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     @JsonIgnoreProperties("courses")
     private User user;
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("courses")
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
