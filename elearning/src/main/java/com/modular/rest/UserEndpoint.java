@@ -13,6 +13,7 @@ import com.modular.persistence.dao.impl.UserDAOImpl;
 import com.modular.persistence.model.*;
 import org.apache.log4j.Logger;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,37 +26,30 @@ import java.util.List;
 public class UserEndpoint {
     private static final Logger logger = Logger.getLogger(UserEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();
-
     private Gson gson = new Gson();
-    private UserDAO userDAO = new UserDAOImpl();
-    private ChatDAO chatDAO = new ChatDAOImpl();
-    private CourseDAO courseDAO = new CourseDAOImpl();
+
+    @Inject
+    private UserDAO userDAO ;
+    @Inject
+    private ChatDAO chatDAO;
+    @Inject
+    private CourseDAO courseDAO;
 
     static {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUser(String json){
+    public Response createUser(User user){
         try{
-            logger.debug("Request json: " + json);
-            User user = mapper.readValue(json, User.class);
+            logger.debug("Request json: " + user);
+            //User user = mapper.readValue(json, User.class);
             userDAO.create(user);
             return Response.ok(200).build();
-        }
-        catch(JsonParseException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
-        }
-        catch(DataBaseException dbe){
+        } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch(JsonMappingException jme) {
-            logger.debug("The input json was malformed", jme);
-            return Response.status(400).entity(json).build();
-        }
-        catch (Exception io) {
+        } catch (Exception io) {
             logger.debug(io.getMessage(), io);
             return Response.serverError().entity(io.getMessage()).build();
         }
@@ -67,44 +61,27 @@ public class UserEndpoint {
     public Response getUser(@PathParam("userId") int userId){
         try{
             User user = userDAO.get(userId);
-            String userJson = mapper.writeValueAsString(user);
-            return Response.ok(userJson).build();
+            //String userJson = mapper.writeValueAsString(user);
+            return Response.ok(user).build();
         }
         catch (DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
     @PUT
     @Path("{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("userId") int userId, String json){
+    public Response updateUser(@PathParam("userId") int userId, User user){
         try{
-            User user = mapper.readValue(json, User.class);
+            //User user = mapper.readValue(json, User.class);
             user.setIdUser(userId);
             userDAO.update(user);
             return Response.ok("Success").build();
-        }
-        catch(JsonParseException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
-        }
-        catch (DataBaseException dbe){
+        } catch (DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonMappingException jme) {
-            logger.debug("The input json was malformed", jme);
-            return Response.status(400).entity(json).build();
-        }
-        catch (IOException io) {
-            logger.debug(io.getMessage(), io);
-            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -126,16 +103,11 @@ public class UserEndpoint {
     public Response getAllUser(){
         try{
             List<User> users = userDAO.getAllUsers();
-            String usersJson = mapper.writeValueAsString(users);
-            return Response.ok(usersJson).build();
+            return Response.ok(users).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
     @PUT

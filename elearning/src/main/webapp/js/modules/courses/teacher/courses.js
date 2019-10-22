@@ -99,14 +99,14 @@ const coursesTeacherViewModel = {
      success: function(data, course, message) {
          let self = this;
          self.status(200);
-         course.idCourse = parseInt(data);
          self.message(message);
          $("#alert").show();
+         self.populateCoursesTable();
      },
 
     error: function (data) {
         let self = this;
-        self.courses.pop();
+        //self.courses.pop();
         self.status(data.status);
         self.message("Algo ha salido mal: " + data.responseText);
         $("#alert").show();

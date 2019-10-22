@@ -32,42 +32,25 @@ import java.util.List;
 public class HomeworkEndpoint {
     private static final Logger logger = Logger.getLogger(HomeworkEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();
-
     private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
     private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
     private UserDAO userDAO = new UserDAOImpl();
     private CourseDAO courseDAO = new CourseDAOImpl();
-    static{
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-    }
 
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.MULTIPART_FORM_DATA})
-    public Response createHomework(String json){
+    public Response createHomework(Homework homework){
         try{
-            Homework homework = mapper.readValue(json, Homework.class);
+            //Homework homework = mapper.readValue(json, Homework.class);
             if(!courseDAO.exists(homework.getCourse().getIdCourse())){
                 return Response.status(404).entity("The course doesn't exist").build();
             }
             homeworkDAO.create(homework);
             return Response.ok("Success").build();
-        }
-        catch(JsonParseException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
-        }
-        catch(DataBaseException dbe){
+        } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch(JsonMappingException jme) {
-            logger.debug("The input json was malformed", jme);
-            return Response.status(400).entity(json).build();
-        }
-        catch (IOException io) {
-            logger.debug(io.getMessage(), io);
-            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
@@ -87,61 +70,37 @@ public class HomeworkEndpoint {
     public Response getHomework(@PathParam("homeworkId") int homeworkId){
         try{
             Homework homework = homeworkDAO.get(homeworkId);
-            String homeworkJson = mapper.writeValueAsString(homework);
-            return Response.ok(homeworkJson).build();
+            return Response.ok(homework).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
     @GET
     public Response getAllHomeworks(){
         try{
-            List<Homework> homeworks = homeworkDAO.getAll();
-            String homeworksJson = mapper.writeValueAsString(homeworks);
-            return Response.ok(homeworksJson).build();
+            List<Homework> homework = homeworkDAO.getAll();
+            return Response.ok(homework).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.status(400).entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe) {
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
     @PUT
     @Path("{homeworkId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateHomework(@PathParam("homeworkId") int homeworkId, String json){
+    public Response updateHomework(@PathParam("homeworkId") int homeworkId, Homework homework){
         try{
-            Homework homework = mapper.readValue(json, Homework.class);
             homework.setIdHomework(homeworkId);
             homeworkDAO.update(homework);
             return Response.ok("Success").build();
-        }
-        catch(JsonParseException jse){
-            logger.debug("The input json was malformed", jse);
-            return Response.status(400).entity("The input json was malformed").build();
-        }
-        catch(DataBaseException dbe){
+        } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch(JsonMappingException jme) {
-            logger.debug("The input json was malformed", jme);
-            return Response.status(400).entity(json).build();
-        }
-        catch (IOException io) {
-            logger.debug(io.getMessage(), io);
-            return Response.serverError().entity(io.getMessage()).build();
         }
     }
 
