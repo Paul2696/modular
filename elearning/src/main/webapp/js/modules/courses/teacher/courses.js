@@ -1,10 +1,10 @@
-$(document).ready(function(){
-    configDatePicker();
-    moment.locale("es");
-    ko.applyBindings(coursesTeacherViewModel);
-    coursesTeacherViewModel.init();
-});
+define([
+    "ko",
+    "jquery",
+    "moment"
+], function (ko, $, moment) {
 
+});
 const coursesTeacherViewModel = {
     active : "Cursos",
     menu : ko.observableArray([]),

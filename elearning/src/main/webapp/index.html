@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>E-Learning A Tu Medida</title>
 
@@ -22,10 +21,12 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid">
-		<div class="col-sm-3 col-md-2 sidebar" data-bind="component: {name: 'nav-bar', params: {menu: menu, handler: navHandler}}"></div>
-		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
-			<div id="main-content"></div>
+	<div class="container-fluid h-100">
+		<div class="row flex-grow-1">
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky" data-bind="component: {name: 'nav-bar', params: {menu: menu, handler: navHandler}}"></div>
+			</nav>
+			<main role="main" class="col-md9 ml-sm-auto col-lg-10" id="main-content"></main>
 		</div>
 	</div>
   </body>

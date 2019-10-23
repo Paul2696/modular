@@ -1,0 +1,25 @@
+<table id="datos">
+    <thead>
+    <tr>
+        <th>Eliminar</th>
+    </tr>
+    </thead>
+
+    <tbody data-bind="foreach: resource">
+    <tr>
+        <td><input data-bind="textInput: name, enable: editable"></td>
+        <td><input data-bind="datepicker: startObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></td>
+        <!--td><h3><textArea data-bind="textInput: descripcion, enable: editable"></textArea></h3></td>-->
+        <!--td><h3><a href="text:" data-bind="#"></a></h3></td-->
+        <td><input data-bind="datepicker: endObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></td>
+        <td>
+            <input type="checkbox" data-bind="checked: hasPassword, enable: editable"/>
+            <input type="password" data-bind="textInput: password, visible: hasPassword, enable: editable"/>
+        </td>
+        <td><a data-bind="click: function(){editTextFields($data, $root)};">
+            <span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}"></span>
+        </a></td>
+        <td><a data-bind="click: function(){remove($data, $root);}"><span class="glyphicon glyphicon-trash"></span></a></td>
+    </tr>
+    </tbody>
+</table>
