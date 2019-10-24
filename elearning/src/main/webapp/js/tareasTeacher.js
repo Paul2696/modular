@@ -3,7 +3,7 @@ let tareasTeacherViewModel = {
     menu: ko.observableArray([]),
     homework: ko.observableArray([]),
     homeworkViewModel: HomeworkViewModel,
-    courseViewModel: CourseViewModel,
+    courseViewModel: CourseRestClient,
     courses: ko.observableArray(),
     currentCourse: ko.observable(),
     session: testSession(),//parseSession(Cookies.getJSON("session")),

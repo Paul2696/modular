@@ -8,6 +8,7 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="js/lib/jquery-ui/jquery-ui.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<script data-main="js/app" src="js/lib/require.js"></script>
   </head>
@@ -26,7 +27,14 @@
 			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
 				<div class="sidebar-sticky" data-bind="component: {name: 'nav-bar', params: {menu: menu, handler: navHandler}}"></div>
 			</nav>
-			<main role="main" class="col-md9 ml-sm-auto col-lg-10" id="main-content"></main>
+			<main role="main" class="col-md9 ml-sm-auto col-lg-10">
+				<div id="main-content"></div>
+				<div id="loading" class="d-flex justify-content-center">
+					<div class="spinner-border" role="status">
+						<span class="sr-only">Loading...</span>
+					</div>
+				</div>
+			</main>
 		</div>
 	</div>
   </body>

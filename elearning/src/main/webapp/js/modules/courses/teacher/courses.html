@@ -2,14 +2,11 @@
 	<table id="datos">
 		<thead>
 		<tr>
-			<th><h3>	Curso	</h3></th>
-			<th><h3>	Inicio	</h3></th>
-			<!--th scope="col"><h2>	Descripción </h2></th>-->
-			<!--th><h3>    Recursos</h3></th-->
-			<th><h3>	Fin</h3></th>
-			<th><h3>	Asignar contrasenia</h3></th>
-			<th><h3>	Editar</h3></th>
-			<th><h3>Eliminar</h3></th>
+			<th>Curso<</th>
+			<th>Fin</th>
+			<th>Asignar contrasenia</h3></th>
+			<th>Editar</th>
+			<th>Eliminar</th>
 		</tr>
 		</thead>
 
@@ -17,17 +14,15 @@
 		<tr>
 			<td><input data-bind="textInput: name, enable: editable"></td>
 			<td><input data-bind="datepicker: startObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></td>
-			<!--td><h3><textArea data-bind="textInput: descripcion, enable: editable"></textArea></h3></td>-->
-			<!--td><h3><a href="text:" data-bind="#"></a></h3></td-->
 			<td><input data-bind="datepicker: endObservable, datepickerOptions: {dateFormat: 'yy-mm-dd'}, enable: editable"/></td>
 			<td>
 				<input type="checkbox" data-bind="checked: hasPassword, enable: editable"/>
 				<input type="password" data-bind="textInput: password, visible: hasPassword, enable: editable"/>
 			</td>
-			<td><a data-bind="click: function(){editTextFields($data, $root)};">
-				<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}"></span>
+			<td><a data-bind="click: function(){$root.createOrEdit($data, $root)};" href="#">
+				<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}">editar</span>
 			</a></td>
-			<td><a data-bind="click: function(){remove($data, $root);}"><span class="glyphicon glyphicon-trash"></span></a></td>
+			<td><a href="#" data-bind="click: function(){$root.remove($data)}"><span class="glyphicon glyphicon-trash"></span>borrar</a></td>
 		</tr>
 		</tbody>
 	</table>

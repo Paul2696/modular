@@ -32,17 +32,17 @@ define(["cookie"], function (Cookie) {
     /**
      */
     self.isSessionActive =  function() {
-        let cookie = Cookie.get("Session");
+        let cookie = Cookie.get("session");
         return cookie !== null ? true : false;
     };
     /**
      */
     self.getSessionMenu = function(userType) {
         switch(userType) {
-            case 3: return withUserStudent;
-            case 2: return withUserTeacher;
-            case 4: return noUser;
-            case 1: return withUserAdmin;
+            case 2: return withUserStudent;
+            case 1: return withUserTeacher;
+            case 3: return noUser;
+            case 4: return withUserAdmin;
         }
     };
     /**
@@ -55,8 +55,8 @@ define(["cookie"], function (Cookie) {
     }
 
     self.testSession = function() {
-        let session =  new Session(9,2);
-        Cookie.set("session", "session");
+        let session =  new Session(9,1);
+        Cookie.set("session", session);
         return session;
     }
     return self;

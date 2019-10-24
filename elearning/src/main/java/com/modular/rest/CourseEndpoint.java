@@ -45,7 +45,7 @@ public class CourseEndpoint {
                 return Response.status(400).entity("La fecha de inicio debe ser anterior a la final").build();
             }
             courseDAO.create(course);
-            return Response.ok(course.getIdCourse()).build();
+            return Response.status(200).entity(course.getIdCourse()).build();
         } catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();

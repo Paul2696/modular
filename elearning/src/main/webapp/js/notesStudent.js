@@ -12,7 +12,7 @@ var notesStudentViewModel = {
     menu: ko.observableArray([]),
     homework: ko.observableArray(),
     homeworkViewModel: HomeworkViewModel,
-    courseViewModel: CourseViewModel,
+    courseViewModel: CourseRestClient,
     courses: ko.observableArray(),
     session: parseSession(Cookies.getJSON("session")),
 

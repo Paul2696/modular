@@ -11,7 +11,7 @@ let tareasStudentViewModel = {
     homework: ko.observableArray(),
     homeworkViewModel: HomeworkViewModel,
     content: ko.observable(""),
-    courseViewModel: CourseViewModel,
+    courseViewModel: CourseRestClient,
     courses: ko.observableArray(),
     file: ko.observable(),
     uploaded: ko.observable(false),

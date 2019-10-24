@@ -7,7 +7,7 @@ let coursesStudentViewModel = {
     active : "Cursos",
     menu : ko.observableArray([]),
     courses : ko.observableArray([]),
-    courseViewModel : CourseViewModel,
+    courseViewModel : CourseRestClient,
     professor : ko.observable(),
     start : ko.observable(),
     end : ko.observable(),

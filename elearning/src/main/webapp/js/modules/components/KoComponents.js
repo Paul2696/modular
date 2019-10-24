@@ -1,5 +1,6 @@
 define([
-    "ko"
+    "ko",
+    "el/modules/components/datepicker/datePickerConfig"
 ], function (ko){
     ko.components.register("nav-bar", {
         viewModel: {require: "modules/components/navBar/NavBarViewModel"},

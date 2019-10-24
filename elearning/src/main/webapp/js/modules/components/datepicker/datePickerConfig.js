@@ -1,4 +1,4 @@
-function configDatePicker(){
+define(["ko", "jquery", "jquery-ui"], function (ko, $) {
     ko.bindingHandlers.datepicker = {
         init: function(element, valueAccessor, allBindingsAccessor) {
             //initialize datepicker with some optional options
@@ -41,5 +41,5 @@ function configDatePicker(){
             }
         }
     };
-}
+});
 
