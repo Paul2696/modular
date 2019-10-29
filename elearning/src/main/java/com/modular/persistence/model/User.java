@@ -1,6 +1,7 @@
 package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
 import java.util.TreeSet;
@@ -26,6 +27,7 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "idCourse")
     )
     @JsonIgnoreProperties("users")
+    @JohnzonIgnoreNested(properties = {"users"})
     private Set<Course> courses;
 
     public int getIdUser() {

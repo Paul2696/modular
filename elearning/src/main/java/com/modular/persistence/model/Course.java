@@ -2,6 +2,7 @@ package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,13 +25,15 @@ public class Course {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     @JsonIgnoreProperties("courses")
+    @JohnzonIgnoreNested(properties = {"courses"})
     private User user;
     @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("courses")
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
-    @JsonIgnoreProperties({"course", "homeworkResponse"})
+    @JsonIgnoreProperties({"homeworkResponse"})
+    @JohnzonIgnoreNested(properties = {"homeworkResponse"})
     private Set<Homework> homework;
 
 

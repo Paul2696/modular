@@ -13,11 +13,13 @@ import com.modular.persistence.model.Course;
 import com.modular.persistence.model.Homework;
 import com.modular.persistence.model.HomeworkResponse;
 import com.modular.persistence.model.User;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.log4j.Logger;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -32,10 +34,17 @@ import java.util.List;
 public class HomeworkEndpoint {
     private static final Logger logger = Logger.getLogger(HomeworkEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();
-    private HomeworkDAO homeworkDAO = new HomeworkDAOImpl();
-    private HomeworkResponseDAO homeworkResponseDAO = new HomeworkResponseDAOImpl();
-    private UserDAO userDAO = new UserDAOImpl();
-    private CourseDAO courseDAO = new CourseDAOImpl();
+    static {
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-mm-dd"));
+    }
+    @Inject
+    private HomeworkDAO homeworkDAO;
+    @Inject
+    private HomeworkResponseDAO homeworkResponseDAO;
+    @Inject
+    private UserDAO userDAO;
+    @Inject
+    private CourseDAO courseDAO;
 
 
     @POST
@@ -58,10 +67,15 @@ public class HomeworkEndpoint {
     @Path("/file")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createHomework(
-            @Multipart("file") Attachment file,
-            @Multipart("json") Attachment json
-    ) {
-        return null;
+            @Multipart(value = "file", required = false) Attachment att1,
+            @Multipart(value = "json") Attachment att2
+    ) throws IOException {
+        Homework hw = mapper.readValue(att2.getDataHandler().getDataSource().getInputStream(), Homework.class);
+        if(att1 != null) {
+            byte[] file = IOUtils.toByteArray(att1.getDataHandler().getDataSource().getInputStream());
+            hw.setResource(file);
+        }
+        return createHomework(hw);
     }
 
     @GET
@@ -102,6 +116,22 @@ public class HomeworkEndpoint {
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
         }
+    }
+
+    @PUT
+    @Path("{homeworkId}/file")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response updateHomework(
+            @Multipart(value = "file", required = false) Attachment att1,
+            @Multipart(value = "json") Attachment att2,
+            @PathParam("homeworkId") int homeworkId
+    ) throws IOException {
+        Homework hw = mapper.readValue(att2.getDataHandler().getDataSource().getInputStream(), Homework.class);
+        if(att1 != null) {
+            byte[] file = IOUtils.toByteArray(att1.getDataHandler().getDataSource().getInputStream());
+            hw.setResource(file);
+        }
+        return updateHomework(homeworkId, hw);
     }
 
     @DELETE

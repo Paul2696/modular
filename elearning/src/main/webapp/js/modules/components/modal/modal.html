@@ -1,0 +1,20 @@
+<div id="modalEnroll" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle" data-bind="text: title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="body" data-bind="text: course">
+                <!--h3 data-bind="text: needsPassword() ? 'Ingrese el password del curso:' : '¿Esta seguro de inscribirse a este curso?'"></h3-->
+                <!--h3><input type="password" data-bind="textInput: password, visible: needsPassword"></h3-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: handler" data-dismiss="modal">Inscribirse</button>
+            </div>
+        </div>
+    </div>
+</div>

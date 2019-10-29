@@ -3,12 +3,22 @@ define([
     "ko",
     "router",
     "jquery",
-    "text!modules/courses/teacher/courses.html"
-], function (require, ko, Router, $, coursesTeacher) {
+], function (require, ko, Router, $) {
     function AppRouter() {
       let self = this;
-      self.paths = ["/courses/teacher"];
-      self.viewModels = {"#courses/teacher" : "modules/courses/teacher/courses"};
+      self.paths = ["/courses/teacher","/homework/teacher"];
+      self.viewModels = {
+          "#courses/teacher"  : "modules/courses/teacher/courses",
+          "#homework/teacher" : "modules/homework/teacher/homework",
+          "#homework/student" : "modules/homework/student/homework",
+          "#courses/student"  : "modules/courses/student/courses"
+      };
+      self.views = {
+          "#courses/teacher"  : "text!modules/courses/teacher/courses.html",
+          "#homework/teacher" : "text!modules/homework/teacher/homework.html",
+          "#homework/student" : "text!modules/homework/student/homework.html",
+          "#courses/student"  : "text!modules/courses/student/courses.html"
+      };
 
       self.router = new Router({
           mode: "hash",
@@ -18,15 +28,16 @@ define([
       });
       self.router.addUriListener();
       self.paths.forEach((path) => {
-          self.router.add(path, () => {
-              $("#main-content").html(coursesTeacher);
-          });
+          self.router.add(path, () =>{});
       });
       self.getModuleName = (path) => {
           return self.viewModels[path];
       };
       self.navigateTo = (path) => {
-            self.router.navigateTo(path);
+          self.router.navigateTo(path);
+          require([self.views[path]], (view) =>{
+              $("#main-content").html(view);
+          });
         };
       self.refresh = () => {
           self.router.refresh();

@@ -14,13 +14,13 @@ define(["el/modules/client/Request"], function (request) {
         createCourse: function(course, callback) {
             let data = JSON.parse(JSON.stringify(course));
             data = JSON.stringify(data);
-            request.post(course,"elearning/api/course", [], [], data, callback);
+            request.post("elearning/api/course", [], [], data, callback);
         },
 
         updateCourse: function(course, callback){
             let data = JSON.parse(JSON.stringify(course));
             data = JSON.stringify(data);
-            request.put(course,"elearning/api/course", [course.idCourse], [], data, callback);
+            request.put("elearning/api/course", [course.idCourse], [], data, callback);
         },
 
         deleteCourse: function(course, callback){

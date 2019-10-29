@@ -1,8 +1,7 @@
 define([
     "ko",
-    "moment",
-    "el/modules/client/CourseRestClient"
-],function (ko, moment, client) {
+    "moment"
+],function (ko, moment) {
     function Course(idUser) {
         let self = this;
         self.idCourse = null;

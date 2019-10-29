@@ -5,25 +5,22 @@ import com.modular.persistence.dao.HomeworkResponseDAO;
 import com.modular.persistence.model.HomeworkResponse;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.TreeSet;
 
 public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     private static final Logger logger = Logger.getLogger(HomeworkDAOImpl.class);
-    @PersistenceContext
-    private EntityManager em;
+    @PersistenceUnit(unitName = "PERSISTENCE")
+    private EntityManagerFactory ef;
 
     @Override
     public void create(HomeworkResponse entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
@@ -41,6 +38,7 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     @Override
     public HomeworkResponse get(int key) throws DataBaseException{
         try {
+            EntityManager em = ef.createEntityManager();
             HomeworkResponse homework = em.find(HomeworkResponse.class, key);
             if(homework == null){
                 throw new DataBaseException("No existe una tarea con la llave: " + key);
@@ -56,6 +54,7 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
     @Override
     public void update(HomeworkResponse entity) throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.merge(entity);
             em.getTransaction().commit();
@@ -78,6 +77,7 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
 
     public List<HomeworkResponse> getAllHomeworks(int idHomework)throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<HomeworkResponse> criteriaQuery = criteriaBuilder.createQuery(HomeworkResponse.class);
             Root<HomeworkResponse> root = criteriaQuery.from(HomeworkResponse.class);

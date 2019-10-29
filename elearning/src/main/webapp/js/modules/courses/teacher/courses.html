@@ -2,7 +2,7 @@
 	<table id="datos">
 		<thead>
 		<tr>
-			<th>Curso<</th>
+			<th>Curso</th>
 			<th>Fin</th>
 			<th>Asignar contrasenia</h3></th>
 			<th>Editar</th>
@@ -22,9 +22,13 @@
 			<td><a data-bind="click: function(){$root.createOrEdit($data, $root)};" href="#">
 				<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}">editar</span>
 			</a></td>
-			<td><a href="#" data-bind="click: function(){$root.remove($data)}"><span class="glyphicon glyphicon-trash"></span>borrar</a></td>
+			<td>
+				<a href="#" data-bind="click: function(){$root.remove($data)}">
+					<span class="glyphicon glyphicon-trash">borrar</span>
+				</a>
+			</td>
 		</tr>
 		</tbody>
 	</table>
-	<button data-bind="click: create">Crear Curso</button>
+	<button class="btn btn-primary btn-md" data-bind="click: create">Crear Curso</button>
 </div>

@@ -1,6 +1,7 @@
 package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ public class HomeworkResponse {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
     @JsonIgnoreProperties("homeworkResponse")
+    @JohnzonIgnoreNested(properties = {"homeworkResponse"})
     private Homework homework;
     private int idUser;
     private int grade;

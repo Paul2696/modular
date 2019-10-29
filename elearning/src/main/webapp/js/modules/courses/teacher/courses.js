@@ -3,12 +3,13 @@ define([
     "jquery",
     "moment",
     "cookie",
-    "el/modules/courses/teacher/Course",
+    "el/modules/courses/Course",
     "el/modules/client/CourseRestClient",
     "el/modules/components/globalMessages/globalMessages"
 ], function (ko, $, moment, cookie, Course, client, messages) {
     function CourseViewModel(){
         let self = this;
+        self.start = ko.observable(new Date());
         self.courses = ko.observableArray([]);
         let session = JSON.parse(cookie.get("session"));
         self.idUser = session.idUser;
@@ -30,6 +31,8 @@ define([
                         self.courses.push(course);
                     });
                 }
+                $("#loading").hide();
+                $("#main-content").show();
             },self.error);
         };
 
@@ -59,7 +62,8 @@ define([
         self.remove = function (course) {
             if(confirm("Esta seguro de eliminar el curso")) {
                 client.deleteCourse(course, function (res) {
-                    console.log(res)
+                    console.log(res);
+                    self.courses.remove(course);
                 });
             }
         }

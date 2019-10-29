@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="text-center">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Profesor</th>
+                <th scope="col">Inicio</th>
+                <th scope="col">Fin</th>
+            </tr>
+            </thead>
+
+            <tbody data-bind="foreach: courses">
+            <tr>
+                <td data-bind="text: user.name"></td>
+                <td data-bind="text: start"></td>
+                <td data-bind="text: end"></td>
+                <td><button class="btn" data-toggle="modal" data-target="#modalEnroll" data-bind="click: $root.openModal">Inscribirse</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <div data-bind="component: {
+                                    name: 'modal',
+                                    params: {
+                                        title: 'Inscribirse al Curso',
+                                        course: course
+                                    }
+                                }"></div>
+    </div>
+</div>

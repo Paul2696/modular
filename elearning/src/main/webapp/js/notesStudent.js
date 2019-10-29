@@ -11,7 +11,7 @@ var notesStudentViewModel = {
     active: "Tareas",
     menu: ko.observableArray([]),
     homework: ko.observableArray(),
-    homeworkViewModel: HomeworkViewModel,
+    homeworkViewModel: HomeworkRestClient,
     courseViewModel: CourseRestClient,
     courses: ko.observableArray(),
     session: parseSession(Cookies.getJSON("session")),

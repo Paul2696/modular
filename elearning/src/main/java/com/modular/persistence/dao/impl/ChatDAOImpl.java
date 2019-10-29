@@ -6,23 +6,23 @@ import com.modular.persistence.model.Chat;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class ChatDAOImpl implements ChatDAO {
     private static final Logger logger = Logger.getLogger(ChatDAOImpl.class);
-    @PersistenceContext
-    private EntityManager em;
+    @PersistenceUnit(unitName = "PERSISTENCE")
+    private EntityManagerFactory ef;
 
     @Override
     public void create(Chat entity) throws DataBaseException {
         try {
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.persist(entity);
             em.getTransaction().commit();
@@ -46,6 +46,7 @@ public class ChatDAOImpl implements ChatDAO {
     @Override
     public void delete(Chat entity) throws DataBaseException {
         try{
+            EntityManager em = ef.createEntityManager();
             em.getTransaction().begin();
             em.remove(em.contains(entity) ? entity : em.merge(entity));
             em.getTransaction().commit();
@@ -58,6 +59,7 @@ public class ChatDAOImpl implements ChatDAO {
     @Override
     public List<Chat> getConversation(int userId1, int userId2) throws DataBaseException{
         try{
+            EntityManager em = ef.createEntityManager();
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
             Root<Chat> root = criteriaQuery.from(Chat.class);

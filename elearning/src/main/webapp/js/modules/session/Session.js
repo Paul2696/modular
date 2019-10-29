@@ -5,9 +5,9 @@ let noUser = [
 ];
 
 let withUserStudent = [
-    "Inicio",
-    "Tareas",
-    "Cursos"
+    {text: "Inicio", path: "#"},
+    {text: "Cursos", path: "#courses/student"},
+    {text: "Tareas", path: "#homework/student"}
 ];
 
 let withUserTeacher = [
@@ -55,7 +55,7 @@ define(["cookie"], function (Cookie) {
     }
 
     self.testSession = function() {
-        let session =  new Session(9,1);
+        let session =  new Session(1,2);
         Cookie.set("session", session);
         return session;
     }

@@ -23,7 +23,7 @@ define(["jquery"], function ($) {
             });
         }
 
-        post(object, route, parameters, queryParam, data, callback, type, processData) {
+        post(route, parameters, queryParam, data, callback, type, processData) {
             let url = this.url + route + '/' + parameters.join('/');
             let pd = true;
             if(processData != null){
@@ -41,7 +41,7 @@ define(["jquery"], function ($) {
                 headers: {
                 },
                 success: function(response){
-                    callback(response, object, "La creacion fue exitosa");
+                    callback(response);
                 },
                 error: function (response) {
                     callback(response);
@@ -49,7 +49,7 @@ define(["jquery"], function ($) {
             });
         }
 
-        put(object, route, parameters, queryParam, data, callback, type, processData){
+        put(route, parameters, queryParam, data, callback, type, processData){
             let url = this.url + route + '/' + parameters.join('/');
             let pd = true;
             if(processData != null){
@@ -67,7 +67,7 @@ define(["jquery"], function ($) {
                 headers: {
                 },
                 success: function(response){
-                    callback(response, object, "La actualizacion fue exitosa");
+                    callback(response);
                 },
                 error: function (response) {
                     callback(response);
@@ -75,7 +75,7 @@ define(["jquery"], function ($) {
             });
         }
 
-        delete(route, parameters, success, error){
+        delete(route, parameters, callback){
             let url = this.url + route + '/' + parameters.join('/');
             $.ajax({
                 url : url,
@@ -83,10 +83,10 @@ define(["jquery"], function ($) {
                 headers : {
                 },
                 success : function (response) {
-                    success(response);
+                    callback(response);
                 },
                 error : function (response) {
-                    error(response);
+                    callback(response);
                 }
             })
         }

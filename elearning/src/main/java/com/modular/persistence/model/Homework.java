@@ -1,6 +1,8 @@
 package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.johnzon.mapper.JohnzonIgnore;
+import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,11 +21,13 @@ public class Homework {
     private Date end;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
-    @JsonIgnoreProperties("idHomework")
+    @JsonIgnoreProperties("homework")
+    @JohnzonIgnoreNested(properties = {"homework"})
     private Set<HomeworkResponse> responses;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     @JsonIgnoreProperties("homework")
+    @JohnzonIgnoreNested(properties = {"homework"})
     private Course course;
 
     public int getIdHomework() {
@@ -89,7 +93,6 @@ public class Homework {
                 ", description='" + description + '\'' +
                 ", idCourse=" + course.getIdCourse() +
                 ", end=" + end +
-                ", homeworkResponse=" + responses +
                 '}';
     }
 
@@ -102,8 +105,7 @@ public class Homework {
                 course.getIdCourse() == homework.getCourse().getIdCourse() &&
                 Objects.equals(name, homework.name) &&
                 Objects.equals(description, homework.description) &&
-                Objects.equals(end, homework.end) &&
-                Objects.equals(responses, homework.responses);
+                Objects.equals(end, homework.end);
     }
 
 }

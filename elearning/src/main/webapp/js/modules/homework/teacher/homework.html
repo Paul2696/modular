@@ -1,0 +1,88 @@
+<div class="container-fluid">
+		<div class="text-center">
+			<div>
+				<span class="select-label">Cursos</span>
+				<select data-bind="foreach: courses">
+					<option data-bind="
+						click: $root.updateTable,
+						attr:{value: idCourse},
+						 text: name"></option>
+				</select>
+			</div>
+		</div>
+	<table id="datos">
+		<thead>
+			<tr>
+				<th scope="col">Tarea</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Descripción</th>
+				<th scope="col"> Calificar tarea</th>
+				<th scope="col" >Editar</th>
+				<th scope="col">Eliminar</th>
+			</tr>
+		</thead>
+
+		<tbody data-bind="foreach: homework">
+			<tr>
+				<td scope="row"><input data-bind="textInput: name, enable: editable"/></td>
+				<td>
+					<input data-bind="
+						datepicker: endObservable,
+						datepickerOptions: {dateFormat: 'yy-mm-dd'},
+						 enable: editable"/>
+				</td>
+				<td><textArea data-bind="textInput: description, enable: editable"></textArea></td>
+				<td><button data-bind="click: function(){$root.grade($data)}">Calificar</button></td>
+				<td><a href="#" data-bind="click: function(){$root.createOrUpdate($data)}">
+					<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}">OK</span>
+				</a></td>
+				<td><a href="#" data-bind="click: function(){$root.remove($data)}"><span class="glyphicon glyphicon-trash">Eliminar</span></a></td>
+				<td data-bind="visible: editable">
+					<input id="fileupload" type="file" enctype="multipart/form-data" data-bind="event: {change: $data.setFile}"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<button style="position: relative;" class="btn btn-primary btn-md" data-bind="click: create">Crear Tarea</button>
+
+
+<div class="modal fade" id="modalCalificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Calificar Alumnos</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h3>Estos son los alumnos que han respondido a esta tarea: </h3>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th><h3>Alumno</h3></th>
+							<th><h3>Archivo</h3></th>
+							<th><h3>Contenido</h3></th>
+							<th><h3>Calificacion</h3></th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--tr>
+							<td scope="row"><h3 data-bind="text: student"></h3></td>
+							<td scope="row"><h3><a data-bind="text: file != null ? 'Descargar Archivo' : 'N/A',
+							attr: file != null ? {href:  'http://localhost:8000' + file, target: '_blank'} : null">
+								</a></h3></td>
+							<td scope="row"><h3 data-bind="text: answer === '' ? 'N/A' : answer"></h3></td>
+							<td scope="row"><h3><input type="text" data-bind="textInput: grade"/></h3></td>
+						</tr-->
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="button" id="send" class="btn btn-primary"   data-dismiss="modal">Aceptar</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

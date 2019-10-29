@@ -9,7 +9,7 @@ let tareasStudentViewModel = {
     active: "Tareas",
     menu: ko.observableArray([]),
     homework: ko.observableArray(),
-    homeworkViewModel: HomeworkViewModel,
+    homeworkViewModel: HomeworkRestClient,
     content: ko.observable(""),
     courseViewModel: CourseRestClient,
     courses: ko.observableArray(),

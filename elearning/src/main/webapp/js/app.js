@@ -9,8 +9,9 @@ requirejs.config({
         paging: "lib/knockout-paging",
         "jquery-ui" : "lib/jquery-ui/jquery-ui",
         text: "lib/text",
-        bootstrap: "lib/bootstrap/bootstrap.min",
-        router: "lib/vanilla-router.min"
+        router: "lib/vanilla-router.min",
+        popper: "lib/bootstrap/popper.min",
+        bootstrap: "lib/bootstrap/bootstrap.min"
     }
 });
 
@@ -20,7 +21,8 @@ requirejs([
     "jquery",
     "el/modules/session/Session",
     "el/AppRouter",
-    "el/modules/components/KoComponents"],function (require, ko, $, session, Router) {
+    "el/modules/components/KoComponents"
+], function (require, ko, $, session, Router) {
     let self = this;
     let s = session.testSession();
     self.mainViewModel = {
@@ -29,17 +31,19 @@ requirejs([
         menu: session.getSessionMenu(s.userType),
         navHandler: function (element) {
             console.log(element);
+            $("#main-content").hide();
             $("#loading").show();
-            let module = self.mainViewModel.router.getModuleName(element.path);
+            ko.cleanNode($("#main-content").get(0));
+            $("#main-content").html("");
             self.mainViewModel.router.navigateTo(element.path);
+            let module = self.mainViewModel.router.getModuleName(element.path);
             require(["require", module], function () {
                 let viewModel = require(module);
-                ko.cleanNode($("#main-content").get(0));
                 ko.applyBindings(new viewModel(), $("#main-content").get(0));
-                $("#loading").hide();
             });
         }.bind(self)
     };
+    $("#main-content").hide();
     ko.applyBindings(self.mainViewModel);
-    self.mainViewModel.router.refresh();
+    self.mainViewModel.router.navigateTo(window.location.hash);
 });
