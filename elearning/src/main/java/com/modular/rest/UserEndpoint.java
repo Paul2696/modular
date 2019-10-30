@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.modular.fuzzy.FuzzyLearning;
 import com.modular.persistence.dao.*;
 import com.modular.persistence.dao.impl.ChatDAOImpl;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
@@ -34,6 +35,8 @@ public class UserEndpoint {
     private ChatDAO chatDAO;
     @Inject
     private CourseDAO courseDAO;
+    @Inject
+    private QuestionDAO questionDAO;
 
     static {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -183,6 +186,44 @@ public class UserEndpoint {
         catch(JsonProcessingException jpe) {
             logger.debug(jpe.getMessage(), jpe);
             return Response.status(400).entity(jpe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("{userId}/test")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getQuestions(@PathParam("userId") int userId){
+        try{
+            List<Question> questions = questionDAO.getAllQuestions();
+            String json = mapper.writeValueAsString(questions);
+            return Response.ok(json).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonProcessingException jpe){
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
+        }
+    }
+
+    @PUT
+    @Path("{userId}/test")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getLearningType(@PathParam("userId") int userId, String json){
+        try{
+            User user = userDAO.get(userId);
+            JsonObject results = gson.fromJson(json, JsonObject.class);
+            user.setLearningType(FuzzyLearning.inferirAprendizaje(FuzzyLearning.fuzzyVisual(results.get("visual").getAsDouble()),
+                    FuzzyLearning.fuzzyAuditivo(results.get("auditivo").getAsDouble()),
+                    FuzzyLearning.fuzzyKinestesico(results.get("kinestesico").getAsDouble())));
+            userDAO.update(user);
+            return Response.ok("Success").build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
         }
     }
 }

@@ -17,6 +17,7 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private String learningType;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type")
     private UserType userType;
@@ -79,6 +80,14 @@ public class User {
         this.courses = courses;
     }
 
+    public String getLearningType() {
+        return learningType;
+    }
+
+    public void setLearningType(String learningType) {
+        this.learningType = learningType;
+    }
+
     public void addCourse(Course course) {
         if(courses == null){
             courses = new TreeSet<>();
@@ -93,8 +102,15 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", learningType='" + learningType + '\'' +
                 ", userType=" + userType +
+                ", courses=" + courses +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUser, name, password, email, learningType, userType, courses);
     }
 
     @Override
@@ -106,6 +122,7 @@ public class User {
                 Objects.equals(name, user.name) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(email, user.email) &&
+                Objects.equals(learningType, user.learningType) &&
                 Objects.equals(userType, user.userType) &&
                 Objects.equals(courses, user.courses);
     }
