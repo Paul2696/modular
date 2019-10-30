@@ -35,6 +35,8 @@ public class Course {
     @JsonIgnoreProperties({"homeworkResponse"})
     @JohnzonIgnoreNested(properties = {"homeworkResponse"})
     private Set<Homework> homework;
+    @Transient
+    private boolean hasPassword = needsPassword();
 
 
     public int getIdCourse() {

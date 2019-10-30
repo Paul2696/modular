@@ -27,12 +27,12 @@ define(["el/modules/client/Request"], function (request) {
             request.delete("elearning/api/course", [course.idCourse], callback);
         },
 
-        enrollCourse: function(idUser, idCourse, password, callback){
+        enrollCourse: function(idUser, course, password, callback){
             let passwordObj = {
                 "password" : password
             };
             let passwordJson = JSON.stringify(passwordObj);
-            request.put("elearning/api/user", [idUser, "enroll", idCourse],[], passwordJson, callback);
+            request.put("elearning/api/user", [idUser, "enroll", course.idCourse],[], passwordJson, callback);
         },
 
         getAllFromUser : function (idUser, userType, callback) {

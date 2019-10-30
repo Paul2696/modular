@@ -123,11 +123,17 @@ public class UserEndpoint {
             Course course = courseDAO.get(courseId);
             User user = userDAO.get(userId);
             if(user.getUserType().getIdUserType() == UserType.TEACHER){
-                Response.status(403).entity("Un profesor no puede registrarse en un curso").build();
+                return Response.status(403).entity("Un profesor no puede registrarse en un curso").build();
+            }
+            if(user.getCourses().contains(course)) {
+                return Response.status(400).entity("El usuario ya se encuentra inscrito en el curso").build();
             }
             JsonObject password = null;
             if(course.needsPassword()){
                 password = gson.fromJson(passwordJson, JsonObject.class);
+                if (password == null && password.entrySet().size() == 0) {
+                    return Response.status(400).entity("El curso requiere un password").build();
+                }
             }
             else{
                 password = new JsonObject();

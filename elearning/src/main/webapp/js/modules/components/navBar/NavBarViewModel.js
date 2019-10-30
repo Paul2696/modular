@@ -14,7 +14,7 @@ define([
             self.selected(selected)
         };
         self.navBarHandler = function (element) {
-            options.handler(element);
+            options.handler(element.path);
         };
     }
     return NavigationBarViewModel;

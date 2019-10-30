@@ -35,9 +35,9 @@ requirejs([
             $("#loading").show();
             ko.cleanNode($("#main-content").get(0));
             $("#main-content").html("");
-            self.mainViewModel.router.navigateTo(element.path);
-            let module = self.mainViewModel.router.getModuleName(element.path);
-            require(["require", module], function () {
+            self.mainViewModel.router.navigateTo(element);
+            let module = self.mainViewModel.router.getModuleName(element);
+            require(["require", module], (require) =>{
                 let viewModel = require(module);
                 ko.applyBindings(new viewModel(), $("#main-content").get(0));
             });
@@ -45,5 +45,5 @@ requirejs([
     };
     $("#main-content").hide();
     ko.applyBindings(self.mainViewModel);
-    self.mainViewModel.router.navigateTo(window.location.hash);
+    self.mainViewModel.navHandler(window.location.hash);
 });
