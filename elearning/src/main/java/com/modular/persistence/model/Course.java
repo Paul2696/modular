@@ -1,7 +1,10 @@
 package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang.StringUtils;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
@@ -54,11 +57,11 @@ public class Course {
     public void setName(String name) {
         this.name = name;
     }
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
-
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -104,7 +107,7 @@ public class Course {
     }
 
     public boolean needsPassword(){
-        return !(password == null);
+        return !StringUtils.isBlank(password);
     }
 
     @Override
@@ -115,9 +118,6 @@ public class Course {
                 ", password='" + password + '\'' +
                 ", start=" + start +
                 ", end=" + end +
-                ", user=" + user +
-                ", users=" + users +
-                ", homework=" + homework +
                 '}';
     }
 
@@ -126,13 +126,11 @@ public class Course {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return idCourse == course.idCourse &&
-                Objects.equals(name, course.name) &&
-                Objects.equals(password, course.password) &&
-                Objects.equals(start, course.start) &&
-                Objects.equals(end, course.end) &&
-                Objects.equals(user, course.user) &&
-                Objects.equals(users, course.users) &&
-                Objects.equals(homework, course.homework);
+        return idCourse == course.idCourse;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCourse, name, password, start, end);
     }
 }

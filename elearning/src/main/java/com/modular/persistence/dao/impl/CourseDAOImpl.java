@@ -115,20 +115,9 @@ public class CourseDAOImpl implements CourseDAO {
         }
     }
 
-    public List<Course> getAllFromStudent(int idUser) throws DataBaseException{
-        try{
-            EntityManager em = ef.createEntityManager();
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Course> criteriaQuery = criteriaBuilder.createQuery(Course.class);
-            Root<Course> root = criteriaQuery.from(Course.class);
-            Predicate predicate = criteriaBuilder.equal(root.get("users").get("idUser"), idUser);
-            criteriaQuery.select(root).where(predicate);
-            return em.createQuery(criteriaQuery).getResultList();
-        }
-        catch(Exception e){
-            logger.debug("Query Failed", e);
-            throw new DataBaseException("Algo salio mal");
-        }
+    @Override
+    public List<Course> getAllFromStudent(int idUser) throws DataBaseException {
+        return null;
     }
 
     public boolean exists(int id){

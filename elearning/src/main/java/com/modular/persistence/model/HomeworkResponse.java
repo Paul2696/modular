@@ -1,6 +1,7 @@
 package com.modular.persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
@@ -100,6 +101,10 @@ public class HomeworkResponse {
         this.fileExtension = fileExtension;
     }
 
+    @JsonProperty
+    public boolean isGraded() {
+        return grade > 0;
+    }
 
     @Override
     public String toString() {

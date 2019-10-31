@@ -1,6 +1,8 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.util.Set;
 import java.util.Objects;
 
 @Entity
-@Table(name = "mydb.user")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +49,12 @@ public class User {
         this.name = name;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
@@ -110,7 +114,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, name, password, email, learningType, userType, courses);
+        return Objects.hash(idUser, name, password, email, learningType, userType);
     }
 
     @Override
@@ -118,13 +122,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return idUser == user.idUser &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(learningType, user.learningType) &&
-                Objects.equals(userType, user.userType) &&
-                Objects.equals(courses, user.courses);
+        return idUser == user.idUser;
     }
 
 }

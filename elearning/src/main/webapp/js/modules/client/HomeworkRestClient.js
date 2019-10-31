@@ -37,28 +37,28 @@ define(["el/modules/client/Request"], function (request) {
             request.delete("elearning/api/homework",[hw_id], callback);
         },
 
-        sendHomework: function(idHomework, idUser, answer, file, callback){
+        sendHomework: function(data, idUser, callback){
             let json = {
-                "homework": idHomework,
-                "answer": answer
+                "homework": data.homework().idHomework,
+                "answer": data.textResponse()
             }
             let homeworkJson = JSON.stringify(json);
             let formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", data.file());
             formData.append("request", homeworkJson);
-            request.post("elearning/api/homework/", [idHomework, "response", idUser], [], formData, callback, false, false);
+            request.post("elearning/api/homework", [data.homework().idHomework, "response", idUser, "file"], [], formData, callback, false, false);
         },
 
         updateStudentHomework: function(idHomework, idUser, answer, file, callback){
             let json = {
-                "id": idHomework,
-                "answer": answer
+                "homework": data.homework().idHomework,
+                "answer": data.textResponse()
             }
             let homeworkJson = JSON.stringify(json);
             let formData = new FormData();
-            formData.append("file", file);
+            formData.append("file", data.file());
             formData.append("request", homeworkJson);
-            request.put("elearning/api/homework/", [idHomework, "response", idUser], [], formData, callback, false, false);
+            request.put("elearning/api/homework", [data.homework().idHomework, "response", idUser, "file"], [], formData, callback, false, false);
         },
 
 
@@ -66,7 +66,7 @@ define(["el/modules/client/Request"], function (request) {
             let gradesObj = new Object();
             gradesObj.grades = data;
             let gradesJson = JSON.stringify(gradesObj);
-            request.post("elearning/api/homework/response/grade/", gradesJson, callback);
+            request.post("elearning/api/homework/response/grade", gradesJson, callback);
         }
     };
     return HomeworkRestClient;

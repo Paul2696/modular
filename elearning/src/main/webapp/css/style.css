@@ -1,3 +1,16 @@
 html { height: 100%; }
 body { height: 100%; display: flex; padding-top: 70px; overflow-x: hidden; overflow-y: hidden;}
 body > div { flex: 1; }
+
+.nav-hover {
+    transition: all, -4s;
+}
+
+.nav-link-hover:hover {
+    color: #fff;
+}
+
+.nav-hover:hover {
+    background-color: #4e555b;
+    border-radius: 5px;
+}

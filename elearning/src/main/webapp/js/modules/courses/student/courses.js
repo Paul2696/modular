@@ -20,8 +20,8 @@ define([
             data : {
                 password: self.password
             },
-            handler: (course) => {
-                self.enroll(course);
+            handler: () => {
+                self.enroll();
             }
         };
 
@@ -52,7 +52,12 @@ define([
 
         self.openModal = (course) => {
             self.course(course);
-            $('#modal').modal("toggle");
+            if(!course.hasPassword){
+                self.enroll();
+            } else {
+                $("#modal").modal("toggle");
+            }
+
         };
 
         self.init();

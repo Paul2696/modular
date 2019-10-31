@@ -11,9 +11,10 @@ define([
         };
 
         self.setSelected = function (selected) {
-            self.selected(selected)
+            self.selected(selected);
         };
         self.navBarHandler = function (element) {
+            self.selected(element.text);
             options.handler(element.path);
         };
     }

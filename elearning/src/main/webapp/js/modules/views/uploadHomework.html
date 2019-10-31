@@ -1,0 +1,8 @@
+<div class="form-group">
+    <label data-bind="text: uploaded() ? 'Archivo actual' : 'Seleccione el archivo de su computadora'"></label>
+    <input data-bind="visible: !uploaded(), fileUpload: file" type="file" enctype="multipart/form-data" />
+        <a data-bind="attr: {href:  'http://localhost:8080' + file(), target: '_blank'}, visible: uploaded">Descargar archivo</a>
+        <button data-bind="visible: uploaded, click: function(){$root.uploaded(false);}">Cambiar archivo</button>
+    <label>Tambi&eacute;n puede desarrollar su tarea en el siguiente campo: </label>
+    <textarea class="form-control" data-bind="textInput: content"></textarea>
+</div>
