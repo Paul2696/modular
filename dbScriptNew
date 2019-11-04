@@ -206,9 +206,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`questionsTest`
+-- Table `mydb`.`question`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`questionsTest` (
+CREATE TABLE IF NOT EXISTS `mydb`.`question` (
   `idQuestion` INT NOT NULL AUTO_INCREMENT,
   `question` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idQuestion`))
@@ -216,18 +216,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`answersTest`
+-- Table `mydb`.`answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`answersTest` (
+CREATE TABLE IF NOT EXISTS `mydb`.`answer` (
   `idAnswer` INT NOT NULL AUTO_INCREMENT,
   `idQuestion` INT NOT NULL,
   `answer` VARCHAR(255) NOT NULL,
   `learningType` INT NOT NULL,
   PRIMARY KEY (`idAnswer`),
-  INDEX `fk_answersTest_questionsTest1_idx` (`idQuestion` ASC) ,
-  CONSTRAINT `fk_answersTest_questionsTest1`
+  INDEX `fk_answer_question1_idx` (`idQuestion` ASC) ,
+  CONSTRAINT `fk_answer_question1`
     FOREIGN KEY (`idQuestion`)
-    REFERENCES `mydb`.`questionsTest` (`idQuestion`)
+    REFERENCES `mydb`.`question` (`idQuestion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -242,325 +242,325 @@ INSERT INTO userType (name) VALUES ('student');
 INSERT INTO userType (name) VALUES ('admin');
 
 -- Insert questions
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Cu&aacute;l de las siguientes actividades disfrutas m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; programa de televisi&oacute;n prefieres?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Cuando conversas con otra persona, t&uacute;:');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si pudieras adquirir uno de los siguientes art&iacute;culos, ¿cu&aacute;l elegir&iacute;as?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; prefieres hacer un s&aacute;bado por la tarde?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; tipo de ex&aacute;menes se te facilitan m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo te orientas m&aacute;s f&aacute;cilmente?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿En qu&eacute; prefieres ocupar tu tiempo en un lugar de descanso?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; te halaga m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Cu&aacute;l de estos ambientes te atrae m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿De qu&eacute; manera se te facilita aprender algo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿A qu&eacute; evento preferir&iacute;as asistir?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿De qu&eacute; manera te formas una opini&oacute;n de otras personas?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo te consideras?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; tipo de pel&iacute;culas te gustan m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo prefieres mantenerte en contacto con otra persona?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Cu&aacute;l de las siguientes frases se identifican m&aacute;s contigo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo prefieres pasar el tiempo con tu novia o novio?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si no encuentras las llaves en una bolsa');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Cuando tratas de recordar algo, ¿c&oacute;mo lo haces?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si tuvieras dinero, ¿qu&eacute; har&iacute;as?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Con qu&eacute; frase te identificas m&aacute;s?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si tuvieras que quedarte en una isla desierta, ¿qu&eacute; preferir&iacute;as llevar contigo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Cu&aacute;l de los siguientes entretenimientos prefieres?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo es tu forma de vestir?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; es lo que m&aacute;s te gusta de una fogata nocturna?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿C&oacute;mo se te facilita entender algo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Por qu&eacute; te distingues?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; es lo que m&aacute;s disfrutas de un amanecer?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si pudieras elegir ¿qu&eacute; preferir&iacute;as ser?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Cuando eliges tu ropa, ¿qu&eacute; es lo m&aacute;s importante para ti?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; es lo que m&aacute;s disfrutas de una habitaci&oacute;n?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; es m&aacute;s sexy para ti?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿A qu&eacute; tipo de espect&aacute;culo preferir&iacute;as asistir?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; te atrae m&aacute;s de una persona?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Cuando vas de compras, ¿en d&oacute;nde pasas mucho tiempo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Cu&aacute;les tu idea de una noche rom&aacute;ntica?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('¿Qu&eacute; es lo que m&aacute;s disfrutas de viajar?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Cuando est&aacute;s en la ciudad, ¿qu&eacute; es lo que m&aacute;s hechas de menos del campo?');
-INSERT INTO questionsTest (question)
+INSERT INTO question (question)
 VALUES ('Si te ofrecieran uno de los siguientes empleos, ¿cu&aacute;l elegir&iacute;as?');
 
 -- Insert into answers
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (1, 'Escuchar m&uacute;sica', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (1, 'Ver pel&iacute;culas', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (1, 'Bailar con buena m&uacute;sica', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (2, 'Reportajes de descubrimientos y lugares', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (2, 'C&oacute;mico y de entretenimiento', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (2, 'Noticias del mundo', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (3, 'La escuchas atentamente', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (3, 'La observas', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (3, 'Tiendes a tocarla', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (4, 'Un jacuzzi', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (4, 'Un est&eacute;reo', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (4, 'Un televisor', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (5, 'Quedarte en casa', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (5, 'Ir a un concierto', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (5, 'Ir al cine', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (6, 'Examen oral', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (6, 'Examen escrito', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (6, 'Examen de opci&oacute;n m&uacute;ltiple', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (7, 'Mediante el uso de un mapa', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (7, 'Pidiendo indicaciones', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (7, 'A trav&eacute;s de la intuici&oacute;n', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (8, 'Pensar', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (8, 'Caminar por los alrededores', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (8, 'Descansar', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (9, 'Que te digan que tienes buen aspecto', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (9, 'Que te digan que tienes un trato muy agradable', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (9, 'Que te digan que tienes una conversaci&oacute;n interesante', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (10, 'Uno en el que se sienta un clima agradable', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (10, 'Uno en el que se escuchen las olas del mar', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (10, 'Uno con una hermosa vista al oc&eacute;ano', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (11, 'Repitiendo en voz alta', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (11, 'Escribi&eacute;ndolo varias veces', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (11, 'Relacion&aacute;ndolo con algo divertido', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (12, 'A una reuni&oacute;n social', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (12, 'A una exposici&oacute;n de arte', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (12, 'A una conferencia', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (13, 'Por la sinceridad en su voz', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (13, 'Por la forma de estrecharte la mano', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (13, 'Por su aspecto', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (14, 'Atl&eacute;tico', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (14, 'Intelectual', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (14, 'Sociable', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (15, 'Cl&aacute;sicas', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (15, 'De acci&oacute;n', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (15, 'De amor', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (16, 'por correo electr&oacute;nico', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (16, 'Tomando un caf&eacute; juntos', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (16, 'Por tel&eacute;fono', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (17, 'Me gusta que mi coche se sienta bien al conducirlo', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (17, 'Percibo hasta el mas ligero ruido que hace mi coche', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (17, 'Es importante que mi coche est&eacute; limpio por fuera y por dentro', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (18, 'Conversando', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (18, 'Acarici&aacute;ndose', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (18, 'Mirando algo juntos', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (19, 'La buscas mirando', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (19, 'Sacudes la bolsa para o&iacute;r el ruido', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (19, 'Buscas al tacto', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (20, 'A trav&eacute;s de im&aacute;genes', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (20, 'A trav&eacute;s de emociones', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (20, 'A trav&eacute;s de sonidos', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (21, 'Comprar una casa', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (21, 'Viajar y conocer el mundo', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (21, 'Adquirir un estudio de grabaci&oacute;n', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (22, 'Reconozco a las personas por su voz', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (22, 'No recuerdo el aspecto de la gente', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (22, 'Recuerdo el aspecto de alguien, pero no su nombre', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (23, 'Algunos buenos libros', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (23, 'Un radio port&aacute;til de alta frecuencia', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (23, 'Golosinas y comida enlatada', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (24, 'Tocar un instrumento musical', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (24, 'Sacar fotograf&iacute;as', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (24, 'Actividades manuales', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (25, 'Impecable', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (25, 'Informal', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (25, 'Muy informal', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (26, 'El calor del fuego y los bombones asados', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (26, 'El sonido del fuego quemando la le&ntilde;a', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (26, 'Mirar el fuego y las estrellas', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (27, 'Cuando te lo explican verbalmente', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (27, 'Cuando utilizan medios visuales', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (27, 'Cuando se realiza a trav&eacute;s de alguna actividad', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (28, 'Por tener una gran intuici&oacute;n', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (28, 'Por ser un buen conversador', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (28, 'Por ser un buen observador', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (29, 'La emoci&oacute;n de vivir un nuevo d&iacute;a', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (29, 'Las tonalidades del cielo', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (29, 'El canto de las aves', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (30, 'Un gran m&eacute;dico', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (30, 'Un gran m&uacute;sico', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (30, 'Un gran pintor', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (31, 'Que sea adecuada', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (31, 'Que luzca bien', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (31, 'Que sea c&oacute;moda', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (32, 'Que sea silenciosa', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (32, 'Que sea confortable', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (32, 'Que est&eacute; limpia y ordenada', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (33, 'Una iluminaci&oacute;n tenue', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (33, 'El perfume', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (33, 'Cierto tipo de m&uacute;sica', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (34, 'A un concierto de m&uacute;sica', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (34, 'A un espect&aacute;culo de magia', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (34, 'A una muestra gastron&oacute;mica', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (35, 'Su trato y forma de ser', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (35, 'Su aspecto f&iacute;sico', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (35, 'Su conversaci&oacute;n', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (36, 'En una librer&iacute;a', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (36, 'En una perfumer&iacute;a', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (36, 'En una tienda de discos', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (37, 'A la luz de las velas', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (37, 'Con m&uacute;sica rom&aacute;ntica', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (37, 'Bailando tranquilamente', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (38, 'Conocer personas y hacer nuevos amigos', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (38, 'Conocer lugares nuevos', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (38, 'Aprender sobre otras costumbres', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (39, 'El aire limpio y refrescante', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (39, 'Los paisajes', 1);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (39, 'La tranquilidad', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (40, 'Director de una estaci&oacute;n de radio', 2);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (40, 'Director de un club deportivo', 3);
-INSERT INTO answersTest (idQuestion, answer, learningType)
+INSERT INTO answer (idQuestion, answer, learningType)
 VALUES (40, 'Director de una revista', 1);
