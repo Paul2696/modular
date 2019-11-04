@@ -1,17 +1,19 @@
 package com.modular.persistence.model;
 
 import javax.persistence.*;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "mydb.question")
+@Table(name = "questionsTest")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idQuestion;
     private String question;
-    private String visualAnswer;
-    private String auditivoAnswer;
-    private String kinestesicoAnswer;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idQuestion")
+    private Set<Answer> answers;
 
     public int getIdQuestion() {
         return idQuestion;
@@ -29,27 +31,25 @@ public class Question {
         this.question = question;
     }
 
-    public String getVisualAnswer() {
-        return visualAnswer;
+    @Override
+    public String toString() {
+        return "Question{" +
+                "idQuestion=" + idQuestion +
+                ", question='" + question + '\'' +
+                '}';
     }
 
-    public void setVisualAnswer(String visualAnswer) {
-        this.visualAnswer = visualAnswer;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question1 = (Question) o;
+        return idQuestion == question1.idQuestion &&
+                Objects.equals(question, question1.question);
     }
 
-    public String getAuditivoAnswer() {
-        return auditivoAnswer;
-    }
-
-    public void setAuditivoAnswer(String auditivoAnswer) {
-        this.auditivoAnswer = auditivoAnswer;
-    }
-
-    public String getKinestesicoAnswer() {
-        return kinestesicoAnswer;
-    }
-
-    public void setKinestesicoAnswer(String kinestesicoAnswer) {
-        this.kinestesicoAnswer = kinestesicoAnswer;
+    @Override
+    public int hashCode() {
+        return Objects.hash(idQuestion, question);
     }
 }

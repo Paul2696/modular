@@ -7,7 +7,8 @@ let noUser = [
 let withUserStudent = [
     {text: "Inicio", path: "#"},
     {text: "Cursos", path: "#courses/student"},
-    {text: "Tareas", path: "#homework/student"}
+    {text: "Tareas", path: "#homework/student"},
+    {text: "Test de Aprendizaje", path: "#test"}
 ];
 
 let withUserTeacher = [

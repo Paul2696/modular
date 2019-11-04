@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <tomee.path>/home/carlo/apache-tomee-plume-8.0.0/webapps</tomee.path>
+    <tomee.path>/home/paul/dev/apache-tomee-plume-8.0.0-M3/webapps</tomee.path>
   </properties>
 
   <dependencies>
@@ -104,6 +104,11 @@
       <artifactId>johnzon-mapper</artifactId>
       <version>1.2.1</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>4.4</version>
     </dependency>
   </dependencies>
 

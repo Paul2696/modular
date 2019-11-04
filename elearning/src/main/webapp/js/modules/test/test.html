@@ -1,0 +1,35 @@
+<div class="jumbotron">
+    <h2>Test de tipos de aprendizaje</h2>
+    <hr class="my-3">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="text-center" data-bind="with: currentQuestion">
+                <div class="modal-header">
+                    <h3 data-bind="text: question"><span class="label label-warning" data-bind="text: questionNumber"></span></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="col-xs-3 col-xs-offset-5">
+                        <div id="loadbar" style="display: none;">
+                            <div class="blockG" id="rotateG_01"></div>
+                            <div class="blockG" id="rotateG_02"></div>
+                            <div class="blockG" id="rotateG_03"></div>
+                            <div class="blockG" id="rotateG_04"></div>
+                            <div class="blockG" id="rotateG_05"></div>
+                            <div class="blockG" id="rotateG_06"></div>
+                            <div class="blockG" id="rotateG_07"></div>
+                        </div>
+                    </div>
+
+                    <div class="quiz" id="quiz" data-toggle="buttons" data-bind="foreach: answers">
+                        <label class="element-animation1 btn btn-lg btn-primary btn-block">
+                            <span class="btn-label">
+                                <i class="glyphicon glyphicon-chevron-right"></i>
+                            </span>
+                            <input type="radio" name="q_answer" data-bind="text: answer, click: $root.addToCounters"/>
+                        </label>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>

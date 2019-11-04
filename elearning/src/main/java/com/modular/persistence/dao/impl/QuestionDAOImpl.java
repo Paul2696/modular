@@ -2,15 +2,17 @@ package com.modular.persistence.dao.impl;
 
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.QuestionDAO;
+import com.modular.persistence.model.Answer;
 import com.modular.persistence.model.Question;
 import org.apache.log4j.Logger;
+import com.modular.persistence.model.Question_;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 import java.util.List;
 
 public class QuestionDAOImpl implements QuestionDAO {
@@ -42,11 +44,8 @@ public class QuestionDAOImpl implements QuestionDAO {
     public List<Question> getAllQuestions() throws DataBaseException {
         try{
             EntityManager em = ef.createEntityManager();
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Question> criteriaQuery = criteriaBuilder.createQuery(Question.class);
-            Root<Question> root = criteriaQuery.from(Question.class);
-            criteriaQuery.select(root);
-            return em.createQuery(criteriaQuery).getResultList();
+            return em.createNativeQuery("SELECT q.idQuestion, q.question, a.idAnswer, a.answer, a.learningType" +
+                    " FROM questionsTest AS q JOIN answersTest AS a ON q.idQuestion = a.idQuestion").getResultList();
         }
         catch(Exception e){
             logger.debug("Query Failed", e);

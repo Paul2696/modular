@@ -12,6 +12,8 @@ import com.modular.persistence.dao.impl.ChatDAOImpl;
 import com.modular.persistence.dao.impl.CourseDAOImpl;
 import com.modular.persistence.dao.impl.UserDAOImpl;
 import com.modular.persistence.model.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.SetUtils;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
@@ -21,7 +23,9 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Path("/user")
 public class UserEndpoint {
@@ -201,16 +205,13 @@ public class UserEndpoint {
     public Response getQuestions(@PathParam("userId") int userId){
         try{
             List<Question> questions = questionDAO.getAllQuestions();
-            String json = mapper.writeValueAsString(questions);
-            return Response.ok(json).build();
+            Set<Question> questionSet = new HashSet<>();
+            questionSet.addAll(questions);
+            return Response.ok(questionSet).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);
             return Response.serverError().entity(dbe.getMessage()).build();
-        }
-        catch(JsonProcessingException jpe){
-            logger.debug(jpe.getMessage(), jpe);
-            return Response.status(400).entity(jpe.getMessage()).build();
         }
     }
 
@@ -225,7 +226,7 @@ public class UserEndpoint {
                     FuzzyLearning.fuzzyAuditivo(results.get("auditivo").getAsDouble()),
                     FuzzyLearning.fuzzyKinestesico(results.get("kinestesico").getAsDouble())));
             userDAO.update(user);
-            return Response.ok("Success").build();
+            return Response.ok(user.getLearningType()).build();
         }
         catch(DataBaseException dbe){
             logger.debug(dbe.getMessage(), dbe);

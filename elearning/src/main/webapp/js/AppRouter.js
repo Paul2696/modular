@@ -11,13 +11,15 @@ define([
           "#courses/teacher"  : "modules/courses/teacher/courses",
           "#homework/teacher" : "modules/homework/teacher/homework",
           "#homework/student" : "modules/homework/student/homework",
-          "#courses/student"  : "modules/courses/student/courses"
+          "#courses/student"  : "modules/courses/student/courses",
+          "#test" : "modules/test/test"
       };
       self.views = {
           "#courses/teacher"  : "text!modules/courses/teacher/courses.html",
           "#homework/teacher" : "text!modules/homework/teacher/homework.html",
           "#homework/student" : "text!modules/homework/student/homework.html",
-          "#courses/student"  : "text!modules/courses/student/courses.html"
+          "#courses/student"  : "text!modules/courses/student/courses.html",
+          "#test" : "text!modules/test/test.html"
       };
 
       self.router = new Router({
