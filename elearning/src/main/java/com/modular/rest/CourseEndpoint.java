@@ -104,6 +104,7 @@ public class CourseEndpoint {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllCourses(){
         try{
             List<Course> courses = courseDAO.getAllCourses();
@@ -123,6 +124,7 @@ public class CourseEndpoint {
 
     @GET
     @Path("teacher/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllFromTeacher(@PathParam("userId") int userId){
         try{
             User user = userDAO.get(userId);
@@ -139,6 +141,7 @@ public class CourseEndpoint {
         }
     }
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("student/{userId}")
     public Response getAllFromStudent(@PathParam("userId") int userId){
         try{

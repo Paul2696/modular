@@ -1,11 +1,13 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "questionsTest")
+@Table(name = "question")
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +15,7 @@ public class Question {
     private String question;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idQuestion")
+    @JsonIgnoreProperties("question")
     private Set<Answer> answers;
 
     public int getIdQuestion() {
@@ -29,6 +32,14 @@ public class Question {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override

@@ -33,7 +33,6 @@ define([
             courseClient.getAllCourses((data) =>{
                 if(data != null && data.length > 0) {
                     data.forEach((element) =>{
-                        element.hasPassword = element.password ? true : false;
                         element.startFormatted = moment(element.start).format("YYYY-MM-DD");
                         element.endFormatted = moment(element.end).format("YYYY-MM-DD");
                     });
@@ -52,7 +51,7 @@ define([
 
         self.openModal = (course) => {
             self.course(course);
-            if(!course.hasPassword){
+            if(!course.needsPassword){
                 self.enroll();
             } else {
                 $("#modal").modal("toggle");

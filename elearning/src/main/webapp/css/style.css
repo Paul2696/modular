@@ -15,6 +15,17 @@ body > div { flex: 1; }
     border-radius: 5px;
 }
 
+.modal-dialog {
+    max-width: 50%;
+}
+
+.jumbotron {
+    padding: 2rem 4rem;
+}
+
+.title {
+    font-weight: bold;
+}
 #qid {
     padding: 10px 15px;
     -moz-border-radius: 50px;

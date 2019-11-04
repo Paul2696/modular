@@ -86,7 +86,25 @@ public class HomeworkResponseDAOImpl implements HomeworkResponseDAO {
             return em.createQuery(criteriaQuery).getResultList();
         }
         catch(Exception e){
+            logger.debug(e);
             throw new DataBaseException("Algo salio mal");
         }
     }
+
+    @Override
+    public void setGRades(List<HomeworkResponse> responses) throws DataBaseException {
+        EntityManager em = ef.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            for(HomeworkResponse hr : responses) {
+               em.merge(hr);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            logger.debug(e);
+            throw new DataBaseException("Algo salio mal");
+        }
+    }
+
+
 }

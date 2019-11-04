@@ -1,5 +1,6 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.johnzon.mapper.JohnzonIgnore;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
@@ -17,17 +18,16 @@ public class Homework {
     private int idHomework;
     private String name;
     private String description;
+    @JsonIgnore
     private byte[] resource;
     private Date end;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
     @JsonIgnoreProperties("homework")
-    @JohnzonIgnoreNested(properties = {"homework"})
     private Set<HomeworkResponse> responses;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     @JsonIgnoreProperties("homework")
-    @JohnzonIgnoreNested(properties = {"homework"})
     private Course course;
 
     public int getIdHomework() {

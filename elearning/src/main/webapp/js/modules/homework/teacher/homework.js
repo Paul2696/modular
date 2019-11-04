@@ -6,7 +6,9 @@
      "el/modules/client/CourseRestClient",
      "el/modules/client/HomeworkRestClient",
      "el/modules/homework/Homework",
- ], function (ko, $, moment, cookie, courseClient, homeworkClient, Homework) {
+     "text!modules/views/gradeHomeworkView.html",
+     "bootstrap"
+ ], function (ko, $, moment, cookie, courseClient, homeworkClient, Homework, view) {
      function HomeworkViewModel() {
          let self = this;
          self.homework = ko.observableArray([]);
@@ -15,6 +17,16 @@
          let session = JSON.parse(cookie.get("session"));
          self.idUser = session.idUser;
          self.userType = session.userType;
+
+         self.view = view;
+         self.model = {
+             data: {
+                 responses: ko.observableArray([])
+             },
+             handler: () => {
+                 self.sendGrades(this.data.responses);
+             }
+         };
 
          self.init = () => {
              self.populateCourses();
@@ -44,6 +56,17 @@
                      let hw = Object.assign(new Homework(), element);
                      hw.endObservable(new Date(hw.end));
                      hw.editable(false);
+                     if(hw.responses != null && hw.responses.length > 0) {
+                         hw.responses.forEach((res) =>{
+                             res.path = ko.pureComputed(()=>{
+                                 return hw.idHomework +
+                                     "/response/" +
+                                     res.user.idUser +
+                                     "/" +
+                                     res.idHomeworkResponse + "/file"
+                             });
+                         });
+                     }
                      self.homework.push(hw);
                  });
              }
@@ -81,32 +104,17 @@
 
          self.grade = (hw) => {
              if(hw.responses != null && hw.responses.length > 0){
-                 self.responses(this.responses);
-                 $("#modalCalificar").modal("show");
-                 $("#modalCalificar").on("hide.bs.modal", function(event){
-                     self.setGrades(event);
-                 });
+                 self.model.data.responses(hw.responses);
+                 $("#modal").modal("toggle");
              }
          };
 
 
-         self.setGrades = (event) =>{
-             if($(document.activeElement)[0] == $("#send")[0]){
-                 let grades = [];
-                 self.responses().forEach(function(grade){
-                     if(grade != null){
-                         grades.push({
-                             id: grade.id,
-                             "grade": grade.grade
-                         });
-                     }
-                 });
-                 self.homeworkViewModel.sendGrades(grades, self.session.getToken(), function(){
-                     //TODO: IGual y se me ocurre algo
-                 });
-             }
-
-         }
+         self.sendGrades = (responses) =>{
+            homeworkClient.sendGrades(responses, (data) =>{
+                console.log(data);
+            });
+         };
          self.init();
      }
      return HomeworkViewModel;

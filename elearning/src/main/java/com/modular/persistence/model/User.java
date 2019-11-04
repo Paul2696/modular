@@ -30,8 +30,11 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "idCourse")
     )
     @JsonIgnoreProperties("users")
-    @JohnzonIgnoreNested(properties = {"users"})
     private Set<Course> courses;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idUser")
+    @JsonIgnoreProperties("user")
+    private Set<HomeworkResponse> responses;
 
     public int getIdUser() {
         return idUser;
@@ -79,6 +82,13 @@ public class User {
         return courses;
     }
 
+    public Set<HomeworkResponse> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(Set<HomeworkResponse> responses) {
+        this.responses = responses;
+    }
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;

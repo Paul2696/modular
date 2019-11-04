@@ -44,8 +44,11 @@ public class QuestionDAOImpl implements QuestionDAO {
     public List<Question> getAllQuestions() throws DataBaseException {
         try{
             EntityManager em = ef.createEntityManager();
-            return em.createNativeQuery("SELECT q.idQuestion, q.question, a.idAnswer, a.answer, a.learningType" +
-                    " FROM questionsTest AS q JOIN answersTest AS a ON q.idQuestion = a.idQuestion").getResultList();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Question> cq = cb.createQuery(Question.class);
+            Root<Question> root = cq.from(Question.class);
+            cq.select(root);
+            return em.createQuery(cq).getResultList();
         }
         catch(Exception e){
             logger.debug("Query Failed", e);

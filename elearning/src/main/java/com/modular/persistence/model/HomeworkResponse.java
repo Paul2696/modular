@@ -1,7 +1,9 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.johnzon.mapper.JohnzonIgnore;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
@@ -11,20 +13,24 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "homeworkResponse")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HomeworkResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idHomeworkResponse;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idHomework")
-    @JsonIgnoreProperties("homeworkResponse")
-    @JohnzonIgnoreNested(properties = {"homeworkResponse"})
+    @JsonIgnoreProperties("responses")
     private Homework homework;
-    private int idUser;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idUser")
+    @JsonIgnoreProperties({"courses", "responses"})
+    private User user;
     private int grade;
     private boolean sent;
     private String textResponse;
     private Date sended;
+    @JsonIgnore
     private byte[] response;
     private String fileExtension;
 
@@ -44,12 +50,12 @@ public class HomeworkResponse {
         this.homework = homework;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getGrade() {
@@ -110,13 +116,12 @@ public class HomeworkResponse {
     public String toString() {
         return "HomeworkResponse{" +
                 "idHomeworkResponse=" + idHomeworkResponse +
-                ", idHomework=" + homework.getIdHomework() +
-                ", idUser=" + idUser +
+                ", homework=" + homework +
+                ", user=" + user +
                 ", grade=" + grade +
                 ", sent=" + sent +
                 ", textResponse='" + textResponse + '\'' +
                 ", sended=" + sended +
-                ", response=" + Arrays.toString(response) +
                 ", fileExtension='" + fileExtension + '\'' +
                 '}';
     }
@@ -127,13 +132,17 @@ public class HomeworkResponse {
         if (o == null || getClass() != o.getClass()) return false;
         HomeworkResponse that = (HomeworkResponse) o;
         return idHomeworkResponse == that.idHomeworkResponse &&
-                idUser == that.idUser &&
                 grade == that.grade &&
                 sent == that.sent &&
-                homework.getIdHomework() == that.getHomework().getIdHomework() &&
+                Objects.equals(homework, that.homework) &&
+                Objects.equals(user, that.user) &&
                 Objects.equals(textResponse, that.textResponse) &&
                 Objects.equals(sended, that.sended) &&
                 Objects.equals(fileExtension, that.fileExtension);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(idHomeworkResponse, homework, user, grade, sent, textResponse, sended, fileExtension);
+    }
 }

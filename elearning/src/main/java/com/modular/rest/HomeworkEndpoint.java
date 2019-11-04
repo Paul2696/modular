@@ -155,8 +155,7 @@ public class HomeworkEndpoint {
             @PathParam("homeworkId") int homeworkId,
             @PathParam("userId") int userId,
             @Multipart(value = "file", required = false) Attachment uploadedInputStream,
-            @Multipart("json") Attachment jsonAttachment,
-            @QueryParam("extension") String extension
+            @Multipart("json") Attachment jsonAttachment
             )
     {
         try{
@@ -187,10 +186,6 @@ public class HomeworkEndpoint {
                 response.setResponse(buff);
             }
 
-            response.setHomework(homeworkDAO.get(homeworkId));
-            response.setIdUser(userId);
-            response.setSended(Calendar.getInstance().getTime());
-            response.setFileExtension(extension);
             response.setSent(true);
             homeworkResponseDAO.create(response);
             return Response.ok("Success").build();
@@ -238,7 +233,7 @@ public class HomeworkEndpoint {
         try{
             HomeworkResponse homeworkResponse = homeworkResponseDAO.get(homeworkResponseId);
             return Response.ok(homeworkResponse.getResponse(), MediaType.APPLICATION_OCTET_STREAM)
-                    .header("Content-Disposition", "attachment; filename=\" burrada." + homeworkResponse.getFileExtension() + "\"")
+                    .header("Content-Disposition", "attachment; filename=\" response." + homeworkResponse.getFileExtension() + "\"")
                     .build();
         }
         catch(DataBaseException dbe){
@@ -279,16 +274,14 @@ public class HomeworkEndpoint {
             if(!found){
                 return Response.status(400).entity("El usuario " + userId + " no esta en el curso").build();
             }
-            InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
-            byte[] buff = IOUtils.toByteArray(stream);
             String textResponse = IOUtils.toString(jsonAttachment.getDataHandler().getInputStream());
             HomeworkResponse response = mapper.readValue(textResponse, HomeworkResponse.class);
-            response.setResponse(buff);
-            response.setHomework(homeworkDAO.get(homeworkId));
-            response.setIdHomeworkResponse(homeworkResponseId);
-            response.setIdUser(userId);
-            response.setSended(Calendar.getInstance().getTime());
-            response.setFileExtension(extension);
+
+            if(uploadedInputStream != null) {
+                InputStream stream = uploadedInputStream.getDataHandler().getInputStream();
+                byte[] buff = IOUtils.toByteArray(stream);
+                response.setResponse(buff);
+            }
             homeworkResponseDAO.update(response);
             return Response.ok("Success").build();
         }
@@ -298,5 +291,15 @@ public class HomeworkEndpoint {
         }
     }
 
-    //TODO: Agregar metodo para calificar
+    @PUT
+    @Path("response/grade")
+    public Response setGrades(List<HomeworkResponse> responses) {
+        try {
+            homeworkResponseDAO.setGRades(responses);
+            return Response.ok(200).build();
+        } catch (DataBaseException e) {
+            logger.debug(e.getMessage(),e);
+            return Response.status(400).entity(e.getMessage()).build();
+        }
+    }
 }

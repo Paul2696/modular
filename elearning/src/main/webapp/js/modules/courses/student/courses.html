@@ -1,10 +1,11 @@
 <div class="jumbotron">
-    <h2>Inscripci&oacute;n a Cursos</h2>
+    <h2 class="title">Inscripci&oacute;n a Cursos</h2>
     <hr class="my-3">
     <div class="text-center">
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
+                <th scope="col">Curso</th>
                 <th scope="col">Profesor</th>
                 <th scope="col">Inicio</th>
                 <th scope="col">Fin</th>
@@ -15,10 +16,11 @@
 
             <tbody data-bind="foreach: courses">
             <tr>
+                <td data-bind="text: name"></td>
                 <td data-bind="text: user.name"></td>
                 <td data-bind="text: startFormatted"></td>
                 <td data-bind="text: endFormatted"></td>
-                <td data-bind="text: hasPassword"></td>
+                <td data-bind="text: needsPassword"></td>
                 <td><button class="btn btn-primary btn-md"
                             data-bind="click: $root.openModal">Inscribirse</button>
                 </td>

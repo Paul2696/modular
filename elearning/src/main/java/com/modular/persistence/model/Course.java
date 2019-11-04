@@ -28,15 +28,13 @@ public class Course {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser")
     @JsonIgnoreProperties("courses")
-    @JohnzonIgnoreNested(properties = {"courses"})
     private User user;
     @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("courses")
+    @JsonIgnoreProperties({"courses", "responses"})
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
     @JsonIgnoreProperties({"homeworkResponse"})
-    @JohnzonIgnoreNested(properties = {"homeworkResponse"})
     private Set<Homework> homework;
     @Transient
     private boolean hasPassword = needsPassword();
@@ -106,6 +104,7 @@ public class Course {
         this.homework = homework;
     }
 
+    @JsonProperty
     public boolean needsPassword(){
         return !StringUtils.isBlank(password);
     }

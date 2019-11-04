@@ -56,7 +56,7 @@ define(["cookie"], function (Cookie) {
     }
 
     self.testSession = function() {
-        let session =  new Session(1,2);
+        let session =  new Session(2,2);
         Cookie.set("session", session);
         return session;
     }
