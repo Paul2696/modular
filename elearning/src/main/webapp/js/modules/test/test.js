@@ -9,16 +9,23 @@ define([
         let self = this;
         let session = JSON.parse(cookie.get("session"));
         self.questions = ko.observableArray([]);
-        self.counters = {
+        self.answers = {
             visual : 0,
             auditivo : 0,
-            kinestesico : 0
+            kinestesico : 0,
+            idUser : session.idUser
         };
         self.counter = 0;
-        self.questionNumber = ko.pureComputed(() => {
-            return self.counter;
-        });
+        self.questionNumber = ko.observable(self.counter);
         self.currentQuestion = ko.observable();
+        self.model = {
+            data : {
+                learningType : ko.observable()
+            },
+            handler : () => {
+
+            }
+        }
 
         self.init = () =>{
             self.loadTest();
@@ -29,35 +36,45 @@ define([
                 if(data != null && data.length > 0){
                     self.questions(data);
                     self.currentQuestion(data[self.counter]);
+                    self.counter++;
+                    self.questionNumber(self.counter);
                 }
                 $("#loading").hide();
-                $("#maint-content").show();
+                $("#main-content").show();
             });
         };
 
         self.addToCounters = (answer) =>{
             switch (answer.learningType) {
                 case 1:
-                    self.counters.visual++;
+                    self.answers.visual++;
                     break;
 
                 case 2:
-                    self.counters.auditivo++;
+                    self.answers.auditivo++;
                     break;
 
                 case 3:
-                    self.counters.kinestesico++;
+                    self.answers.kinestesico++;
                     break;
 
             }
-            self.counter++;
-            if(counter < self.questions().length){
+            if(self.counter < self.questions().length){
                 self.currentQuestion(self.questions()[self.counter]);
+            }
+            self.counter++;
+            self.questionNumber(self.counter);
+
+            if(self.counter > 21){
+                self.sendAnswers();
             }
         };
 
-        self.sendCounters = () =>{
-            userClient.sendResponses(self.counters);
+        self.sendAnswers = () =>{
+            userClient.putAnswers(self.answers, (data) =>{
+                self.model.data.learningType(data);
+                $("#modal").modal("toggle");
+            });
         };
 
         self.init();

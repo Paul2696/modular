@@ -200,9 +200,9 @@ public class UserEndpoint {
     }
 
     @GET
-    @Path("{userId}/test")
+    @Path("test")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuestions(@PathParam("userId") int userId){
+    public Response getQuestions(){
         try{
             List<Question> questions = questionDAO.getAllQuestions();
             Set<Question> questionSet = new HashSet<>();
@@ -216,7 +216,7 @@ public class UserEndpoint {
     }
 
     @PUT
-    @Path("{userId}/test")
+    @Path("test/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getLearningType(@PathParam("userId") int userId, String json){
         try{

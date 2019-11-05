@@ -3,6 +3,7 @@ package com.modular.persistence.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang.StringUtils;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
 
 import javax.persistence.*;
@@ -100,6 +101,11 @@ public class User {
 
     public void setLearningType(String learningType) {
         this.learningType = learningType;
+    }
+
+    @JsonProperty
+    public boolean hasLearningType(){
+        return !StringUtils.isBlank(learningType);
     }
 
     public void addCourse(Course course) {

@@ -6,37 +6,13 @@ define(["el/modules/client/Request"], function (request) {
         },
 
         getTest : (callback) => {
-          let x = [{
-              question : "que estatura tengo?",
-              answers : [{
-                  answer : "Ah no quieres hablar eh?",
-                  learningType : 1
-              },
-                  {
-                      answer : "esta es otra pregunta",
-                      learningType : 2
-                  },
-                  {
-                      answer : "Y la ultima",
-                      learningType : 3
-                  }]
-          },
-              {
-                  question : "otra pregunta",
-                  answers : [{
-                      answer : "prueba de transicion",
-                      learningType : 1
-                  },
-                      {
-                          answer : "cosas",
-                          learningType : 2
-                      },
-                      {
-                          answer : "Y la ultima",
-                          learningType : 3
-                      }]
-              }];
-          callback(x);
+          request.get("elearning/api/user/test", [], callback);
+        },
+
+        putAnswers : (answers, callback) => {
+            let data = JSON.parse(JSON.stringify(answers));
+            data = JSON.stringify(data);
+            request.put("elearning/api/user/test", [answers.idUser], [], data, callback);
         }
     };
 
