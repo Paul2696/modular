@@ -5,6 +5,7 @@ import com.modular.persistence.dao.IncorrectPasswordException;
 import com.modular.persistence.dao.UserDAO;
 import com.modular.persistence.model.Course;
 import com.modular.persistence.model.User;
+import com.modular.persistence.model.UserType;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class UserDAOImpl implements UserDAO {
     public void create(User entity) throws DataBaseException {
         try {
             EntityManager em = ef.createEntityManager();
+            if(entity.getType() == null) {
+                UserType type = em.find(UserType.class, entity.getUserType().getIdUserType());
+                entity.setType(type.getName());
+            }
             logger.info("Creating user " + entity);
             em.getTransaction().begin();
             em.persist(entity);

@@ -68,7 +68,6 @@ public class UserEndpoint {
     public Response getUser(@PathParam("userId") int userId){
         try{
             User user = userDAO.get(userId);
-            //String userJson = mapper.writeValueAsString(user);
             return Response.ok(user).build();
         }
         catch (DataBaseException dbe){

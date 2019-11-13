@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.StringUtils;
 import org.apache.johnzon.mapper.JohnzonIgnoreNested;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.TreeSet;
@@ -13,6 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user")
+@NamedQuery(name = "findById", query = "SELECT u FROM User u where u.idUser = :id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,8 @@ public class User {
     private String password;
     private String email;
     private String learningType;
+    @Column(name = "userType")
+    private String type;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type")
     private UserType userType;
@@ -36,6 +41,14 @@ public class User {
     @JoinColumn(name = "idUser")
     @JsonIgnoreProperties("user")
     private Set<HomeworkResponse> responses;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getIdUser() {
         return idUser;
@@ -69,6 +82,7 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+        this.type = userType.getName();
     }
 
     public String getEmail() {

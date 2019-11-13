@@ -1,6 +1,12 @@
 html { height: 100%; }
-body { height: 100%; display: flex; padding-top: 70px; overflow-x: hidden; overflow-y: hidden;}
+body { height: 100%; display: flex; padding-top: 70px; overflow-x: hidden; overflow-y: hidden; background-color: #dddddd}
 body > div { flex: 1; }
+
+.nav-bar {
+    border: 1px solid #ccc;
+    border-radius: 16px;
+
+}
 
 .nav-hover {
     transition: all, -4s;
@@ -21,6 +27,7 @@ body > div { flex: 1; }
 
 .jumbotron {
     padding: 2rem 4rem;
+    background-color: #f8f9fa;
 }
 
 .title {

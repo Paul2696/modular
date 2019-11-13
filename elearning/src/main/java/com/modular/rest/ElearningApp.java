@@ -1,5 +1,7 @@
 package com.modular.rest;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Application;
@@ -7,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @ApplicationPath("/api")
+@PermitAll
 public class ElearningApp extends Application {
 
     @Override
