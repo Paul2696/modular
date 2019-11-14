@@ -3,9 +3,9 @@
     <hr class="my-3">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="text-center" data-bind="with: currentQuestion">
+            <div class="text-center" data-bind="visible: showTest, with: currentQuestion">
                 <div class="modal-header">
-                    <span class="label label-warning" data-bind="text: $root.counter"></span>
+                    <span class="label label-warning" data-bind="text: $root.questionNumber"></span>
                     <h3 data-bind="html: question"></h3>
                 </div>
                 <div class="modal-body">
@@ -28,4 +28,13 @@
             </div>
         </div>
     </div>
+    <div data-bind="component: {
+						name: 'modal',
+						params: {
+							title: 'Resultado de el test de aprendizaje',
+							view: view,
+							model: model,
+							btnStr: 'OK'
+						},
+					}"></div>
 </div>
