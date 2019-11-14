@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `password` VARCHAR(45) NOT NULL,
   `type` INT NOT NULL,
   `email` VARCHAR(45) NOT NULL,
+  `userType` VARCHAR(45),
   `learningType` VARCHAR(45),
   PRIMARY KEY (`idUser`, `type`),
   INDEX `fk_user_userType_idx` (`type` ASC) ,

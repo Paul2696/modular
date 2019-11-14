@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>E-Learning A Tu Medida</title>
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="../../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../css/animate.css">
+	<link href="../../css/animate.min.css" rel="stylesheet">
+	<link href="../../css/style.css" rel="stylesheet" />
+	<script src="../../js/lib/jquery-3.3.1.min.js"></script>
+	<script src="../../js/lib/knockout-3.4.2.js"></script>
+	<script src="../../js/modules/session/Session.js"></script>
+	<script src="../../js/cuestionario.js"></script>
+  </head>
+
+  <body>	
+	<header id="header">
+        <nav class="navbar navbar-default navbar-static-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                	<div class="navbar-brand">
+						<a href="../index.html"><h1>E-Learning</h1></a>
+					</div>
+                </div>
+
+				<div class="nav navbar-nav">
+					<ul data-bind="foreach: menu" class="nav nav-tabs">
+						<li>
+							<a data-bind="attr:{href: url}, text: menu, css: {active: $root.active === menu}"></a>
+						</li>
+					</ul>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span><h4>Logout</h4></a></li>
+				</ul>
+            </div><!--/.container-->
+        </nav><!--/nav-->		
+    </header><!--/header-->	
+
+	<div class="slider">
+		<div id="about-slider">
+		    <div class="item active">
+				    <center><h1>Cuestionario sobre tipos de aprendizaje</h1></center>
+				</div>
+			</div>
+		</div>
+	</div>
+	<center>
+		<form action="javascript:sendAnswers()">
+			<div data-bind="foreach: preguntas">
+				<p style="color: black; font-size: 15px; font-style:bold;" data-bind="text: $data"></p>
+				<input type="radio" data-bind="attr: {name: 'respuesta' + $index()}" value="1"><p style="color: black; display: inline;">Nunca</p></input>
+				<input type="radio" data-bind="attr: {name: 'respuesta' + $index()}" value="2"><p style="color: black; display: inline;">Raramente</p></input>
+				<input type="radio" data-bind="attr: {name: 'respuesta' + $index()}" value="3"><p style="color: black; display: inline;">Ocasionalmente</p></input>
+				<input type="radio" data-bind="attr: {name: 'respuesta' + $index()}" value="4"><p style="color: black; display: inline;">Usualmente</p></input>
+				<input type="radio" data-bind="attr: {name: 'respuesta' + $index()}" value="5"><p style="color: black; display: inline;">Siempre</input>
+			</div>
+			<br>
+			<input type="submit" class="btn btn-primary">
+		</form>
+	</center>
+			
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../js//lib/bootstrap.min.js"></script>
+	<script src="../../js/wow.min.js"></script>
+	<script>
+	wow = new WOW(
+	 {
+	
+		}	) 
+		.init();
+	</script>	
+  </body>
+</html>

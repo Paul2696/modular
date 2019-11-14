@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>E-Learning A Tu Medida</title>
+
+    <!-- Bootstrap -->
+      <link href="css/bootstrap.css" rel="stylesheet">
+	  <link href="js/lib/jquery-ui/jquery-ui.css" rel="stylesheet">
+	  <link rel="stylesheet" href="css/font-awesome.min.css">
+      <link rel="stylesheet" href="css/style.css">
+	  <script data-main="js/app" src="js/lib/require.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">E-Learning</a>
+        </div>
+    </nav>
+    <div class="container-fluid h-100">
+        <div class="row flex-grow-1 h-100">
+            <nav class="col-md-2 d-none d-md-block bg-light h-100">
+                <div class="nav-pills" aria-orientation="vertical"
+                     data-bind="component: {name: 'nav-bar', params: {menu: menu, handler: navHandler}}"></div>
+            </nav>
+            <main role="main" class="col-md9 ml-sm-auto col-lg-10 h-100" style="overflow-y: auto">
+                <div id="main-content"></div>
+                <div class="d-flex justify-content-center">
+                    <div id="loading" class="spinner-border text-primary align-middle m-5">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+  </body>
+</html>

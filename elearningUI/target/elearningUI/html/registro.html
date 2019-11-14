@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Registro</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../css/animate.css">
+	<link href="../css/animate.min.css" rel="stylesheet"> 
+	<link href="../css/style.css" rel="stylesheet" />
+	<script src="../js/lib/jquery-3.3.1.min.js"></script>
+	<script src="../js/lib/knockout-3.4.2.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<script src="../js/modules/session/Session.js"></script>
+	<script src="../js/PostSignUp.js"></script>
+</head>
+
+<body>
+    <section class="contact-page">
+        <div class="container">
+            <div class="row contact-wrap"> 
+                <div class="status alert alert-success" style="display: none"></div>
+                <form id="main-contact-form" class="contact-form" name="contact-form" method="post">
+                    <div class="col-sm-5 col-sm-offset-1">
+                        <div class="form-group">
+                        	<label>Nombre:</label>
+                        	<input data-bind="textInput: name" type="name" name="name" class="form-control" required="required">
+                            <label>Correo:</label>
+                            <input data-bind = "textInput: mail" type="name" name="name" class="form-control" required="required">
+                            <label>Contraseña: </label>
+                            <input data-bind = "textInput: password" type="password" name="password" class="form-control" required="required">
+                            <br>
+                            <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">REGISTRAR</button>
+                        </div>               
+                    </div>
+                </form> 
+            </div><!--/.row-->
+        </div><!--/.container-->
+    </section><!--/#contact-page-->
+</body>
+</html>

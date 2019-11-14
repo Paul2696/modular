@@ -1,0 +1,8 @@
+<ul data-bind="foreach: menu" class="nav flex-column">
+    <li class="nav-item nav-pills nav-hover m-2">
+        <a class="nav-link nav-link-hover" data-bind="text: $data.text,
+                                       click: $parent.navBarHandler,
+                                        attr: {href: $data.path},
+                                        css: {active: $component.selected() === $data.text}"></a>
+    </li>
+</ul>

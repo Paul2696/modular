@@ -1,0 +1,25 @@
+<div class="modal-body">
+    <label>Estos son los alumnos que han respondido a esta tarea: </label>
+    <div class="form-group">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Alumno</th>
+                <th>Archivo</th>
+                <th>Contenido</th>
+                <th>Calificacion</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: responses">
+            <tr>
+                <td scope="row" data-bind="text: user.name"></td>
+                <td scope="row" ><a data-bind="attr: {
+                        href:  'http://localhost:8080/elearning/api/homework/' + path(), target: '_blank'},
+                        visible: fileExtension">Descargar archivo</a></td>
+                <td scope="row" data-bind="text: textResponse"></td>
+                <td scope="row"><input class="form-control-sm" type="number" data-bind="textInput: grade"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
