@@ -3,8 +3,9 @@ define([
     "jquery",
     "cookie",
     "el/modules/client/UserRestClient",
+    "text!modules/views/learningTypeView.html",
     "bootstrap"
-], function(ko, $, cookie, userClient){
+], function(ko, $, cookie, userClient, view){
     function TestViewModel(){
         let self = this;
         let session = JSON.parse(cookie.get("session"));
@@ -18,6 +19,8 @@ define([
         self.counter = 0;
         self.questionNumber = ko.observable(self.counter);
         self.currentQuestion = ko.observable();
+        self.showTest = ko.observable(true);
+        self.view = view;
         self.model = {
             data : {
                 learningType : ko.observable()
@@ -32,12 +35,21 @@ define([
         };
 
         self.loadTest = () => {
-            userClient.getTest((data) =>{
-                if(data != null && data.length > 0){
-                    self.questions(data);
-                    self.currentQuestion(data[self.counter]);
-                    self.counter++;
-                    self.questionNumber(self.counter);
+            userClient.getUser((session.idUser), (data) =>{
+               self.model.data.learningType(data.learningType);
+                if(self.model.data.learningType() != null){
+                    self.showTest(false);
+                    $("#modal").modal("toggle");
+                }
+                else{
+                    userClient.getTest((data) => {
+                        if (data != null && data.length > 0) {
+                            self.questions(self.shuffle(data));
+                            self.currentQuestion(data[self.counter]);
+                            self.counter++;
+                            self.questionNumber(self.counter);
+                        }
+                    });
                 }
                 $("#loading").hide();
                 $("#main-content").show();
@@ -66,6 +78,7 @@ define([
             self.questionNumber(self.counter);
 
             if(self.counter > 21){
+                self.showTest(false);
                 self.sendAnswers();
             }
         };
@@ -75,6 +88,18 @@ define([
                 self.model.data.learningType(data);
                 $("#modal").modal("toggle");
             });
+        };
+
+        self.shuffle = (array) =>{
+            let ctr = array.length, temp, index;
+            while (ctr > 0) {
+                index = Math.floor(Math.random() * ctr);
+                ctr--;
+                temp = array[ctr];
+                array[ctr] = array[index];
+                array[index] = temp;
+            }
+            return array;
         };
 
         self.init();

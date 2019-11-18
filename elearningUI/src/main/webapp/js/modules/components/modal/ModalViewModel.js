@@ -5,6 +5,7 @@ define(["ko", "jquery"], function (ko, $) {
         self.view = options.view;
         self.data = options.model.data;
         self.handler = options.model.handler;
+        self.btnStr = options.btnStr;
         $("#body").html(self.view);
     }
     return ModalViewModel;

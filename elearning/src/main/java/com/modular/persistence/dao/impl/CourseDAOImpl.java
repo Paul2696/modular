@@ -3,6 +3,7 @@ package com.modular.persistence.dao.impl;
 import com.modular.persistence.dao.CourseDAO;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.model.Course;
+import com.modular.persistence.model.User;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
@@ -118,6 +119,23 @@ public class CourseDAOImpl implements CourseDAO {
     @Override
     public List<Course> getAllFromStudent(int idUser) throws DataBaseException {
         return null;
+    }
+
+    @Override
+    public List<User> getAllUsersFromCourse(int idCourse) throws DataBaseException {
+        try{
+            EntityManager em = ef.createEntityManager();
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            Predicate predicate = criteriaBuilder.equal(root.get("userCourse").get("idCourse"), idCourse);
+            criteriaQuery.select(root).where(predicate);
+            return em.createQuery(criteriaQuery).getResultList();
+        }
+        catch(Exception e){
+            logger.debug("Query Failed", e);
+            throw new DataBaseException("Algo Salio mal");
+        }
     }
 
     public boolean exists(int id){

@@ -162,4 +162,25 @@ public class CourseEndpoint {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{idCourse}/users")
+    public Response getAllUsers(@PathParam("idCourse") int idCourse){
+        try {
+            if(!courseDAO.exists(idCourse)){
+                return Response.status(404).entity("No existe el curso").build();
+            }
+            List<User> users = courseDAO.getAllUsersFromCourse(idCourse);
+            return Response.ok(users).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(Exception e){
+            logger.debug("Algo salio mal");
+            return Response.serverError().entity(e.getMessage()).build();
+        }
+    }
 }

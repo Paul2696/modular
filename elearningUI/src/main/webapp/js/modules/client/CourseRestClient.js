@@ -43,6 +43,10 @@ define(["el/modules/client/Request"], function (request) {
             }
 
 
+        },
+
+        getAllUsersFromCourse : function (idCourse, callback) {
+            request.get("elearning/api/course/", [idCourse, "users"], callback);
         }
     };
 
