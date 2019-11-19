@@ -51,10 +51,13 @@
 	</table>
 	<button class="btn btn-primary btn-md" data-bind="click: create">Crear Curso</button>
 
-	<div data-bind="component: {
-				name : 'usersModal',
-				params: {
-				    course: course
-				}
+    <div data-bind="component: {
+			name : 'modal',
+			params: {
+			    title: 'Perfil de usuario',
+			    view: view,
+			    model: model,
+			    btnStr: 'Ok'
+			}
 		}"></div>
 </div>
