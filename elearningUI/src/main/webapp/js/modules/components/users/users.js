@@ -7,33 +7,18 @@ define([
     "text!modules/views/usersInCourse.html",
     "bootstrap"
 ], function (ko, $, cookie, courseClient, userClient, view) {
-    function UsersListViewModel(){
+    function UsersListViewModel(options){
         let self = this;
         let session = JSON.parse(cookie.get("session"));
-        self.usersList = ko.observableArray([]);
+        self.course = options.course();
+        self.usersList = ko.observableArray(options.course.users());
         self.user = ko.observable();
         self.view = view;
-
-        self.init = () => {
-            self.loadUsers();
-        };
-
-        self.loadUsers = () => {
-            courseClient.getAllUsersFromCourse((1), (data) => {
-                if(data != null && data.length > 0){
-                    self.usersList(data);
-                }
-                $("#loading").hide();
-                $("#main-content").show();
-            });
-        };
 
         self.loadProfile = (user) => {
                 self.user(user);
                 $("#modal").modal("toggle");
         };
-
-        self.init();
 
         return UsersListViewModel;
     };

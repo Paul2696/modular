@@ -10,6 +10,10 @@ define([
         viewModel: {require: "modules/components/modal/ModalViewModel"},
         template:  {require: "text!modules/components/modal/modal.html"}
     });
+    ko.components.register("usersModal", {
+       viewModel: {require: "modules/components/users/users"},
+       template: {require: "text!modules/components/modal/users.html"}
+    });
 
     return ko.components;
 });

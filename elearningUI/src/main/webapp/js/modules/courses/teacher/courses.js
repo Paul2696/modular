@@ -5,7 +5,8 @@ define([
     "cookie",
     "el/modules/courses/Course",
     "el/modules/client/CourseRestClient",
-    "el/modules/components/globalMessages/globalMessages"
+    "el/modules/components/globalMessages/globalMessages",
+    "bootstrap"
 ], function (ko, $, moment, cookie, Course, client, messages) {
     function CourseViewModel(){
         let self = this;
@@ -14,6 +15,7 @@ define([
         let session = JSON.parse(cookie.get("session"));
         self.idUser = session.idUser;
         self.userType = session.userType;
+        self.course = ko.observable();
 
         self.init = function() {
             self.populateCoursesTable();
@@ -66,7 +68,11 @@ define([
                     self.courses.remove(course);
                 });
             }
-        }
+        };
+
+        self.expandUsers = (course) =>{
+            $("#" + course.idCourse).collapse("toggle");
+        };
 
         self.init();
     };
