@@ -389,3 +389,7 @@ label .glyphicon {
         background-color: #FFF
     }
 }
+
+.hiddenRow {
+    padding: 0 !important;
+}

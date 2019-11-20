@@ -6,8 +6,10 @@ define([
     "el/modules/courses/Course",
     "el/modules/client/CourseRestClient",
     "el/modules/components/globalMessages/globalMessages",
-    "el/modules/session/Session"
-], function (ko, $, moment, cookie, Course, client, messages, session) {
+    "el/modules/session/Session",
+    "text!modules/views/userProfile.html",
+    "bootstrap"
+], function (ko, $, moment, cookie, Course, client, messages, session, view) {
     function CourseViewModel(){
         let self = this;
         self.start = ko.observable(new Date());
@@ -15,6 +17,17 @@ define([
 
         self.idUser = session.idUser;
         self.userType = session.userType;
+        self.course = ko.observable();
+
+        self.view = view;
+        self.model = {
+            data : {
+                user : ko.observableArray([])
+            },
+            handler: () => {
+
+            }
+        };
 
         self.init = function() {
             self.populateCoursesTable();
@@ -67,8 +80,16 @@ define([
                     self.courses.remove(course);
                 });
             }
-        }
+        };
 
+        self.expandUsers = (course) =>{
+            $("#" + course.idCourse).collapse("toggle");
+        };
+
+        self.loadProfile = (user) =>{
+            self.model.data.user([user]);
+            $("#modal").modal("toggle");
+        };
         self.init();
     };
     return CourseViewModel;

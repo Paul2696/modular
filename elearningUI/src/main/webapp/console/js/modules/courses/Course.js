@@ -14,6 +14,7 @@ define([
         self.hasPassword = ko.observable(false);
         self.startObservable = ko.observable(self.start);
         self.endObservable = ko.observable(self.end);
+        self.users =[];
     }
     return Course;
 });

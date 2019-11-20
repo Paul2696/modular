@@ -41,13 +41,8 @@ define(["el/modules/client/Request"], function (request) {
             } else if(userType === 2) {
                 request.get("elearning/api/course/student", [idUser], callback);
             }
-
-
-        },
-
-        getAllUsersFromCourse : function (idCourse, callback) {
-            request.get("elearning/api/course/", [idCourse, "users"], callback);
         }
+
     };
 
     return CourseRestClient;
