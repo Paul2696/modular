@@ -10,5 +10,8 @@
         <module>elearning</module>
         <module>elearningUI</module>
     </modules>
+    <properties>
+        <tomee.path>/home/carlo/dev/apache-tomee-plume-8.0.0/webapps</tomee.path>
+    </properties>
 
 </project>
