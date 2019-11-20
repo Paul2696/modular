@@ -24,6 +24,7 @@ public class User {
     private String password;
     private String email;
     private String learningType;
+    private boolean hasLearningType;
     @Column(name = "userType")
     private String type;
     @OneToOne(fetch = FetchType.EAGER)
@@ -118,8 +119,13 @@ public class User {
     }
 
     @JsonProperty
-    public boolean hasLearningType(){
+    public boolean getHasLearningType(){
         return !StringUtils.isBlank(learningType);
+    }
+
+    @JsonIgnore
+    public void setHasLearningType(boolean hasLearningType){
+        this.hasLearningType = hasLearningType;
     }
 
     public void addCourse(Course course) {

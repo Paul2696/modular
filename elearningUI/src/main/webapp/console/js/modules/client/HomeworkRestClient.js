@@ -11,7 +11,7 @@ define(["el/modules/client/Request"], function (request) {
             if(data.file() != null) {
                 formData.append("file", data.file());
             }
-            request.post(data,"elearning/api/homework/file", [], [], formData, callback, false, false);
+            request.post("elearning/api/homework/file", [], [], formData, callback, false, false);
         },
         /**
          * Function to update an existing homework
