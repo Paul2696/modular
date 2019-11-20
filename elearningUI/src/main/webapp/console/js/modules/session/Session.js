@@ -9,14 +9,16 @@ let withUserStudent = [
     {text: "Cursos", path: "#courses/student"},
     {text: "Lista de compañeros", path: "#users"},
     {text: "Tareas", path: "#homework/student"},
-    {text: "Test de Tipo de Aprendizaje", path: "#test"}
+    {text: "Test de Tipo de Aprendizaje", path: "#test"},
+    {text: "Chat", path: "#chat"}
 ];
 
 let withUserTeacher = [
     {text: "Inicio", path: "#"},
     {text: "Cursos", path: "#courses/teacher"},
     {text: "Estadisticas de Alumnos", path: "#statistics"},
-    {text: "Tareas", path: "#homework/teacher"}
+    {text: "Tareas", path: "#homework/teacher"},
+    {text: "Chat", path: "#chat"}
 ];
 
 let withUserAdmin = [

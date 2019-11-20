@@ -63,7 +63,11 @@ define([
         };
 
         self.updateTable = (course) =>{
+            $("#loading").show();
+            $("#main-content").hide();
             self.populateHomeworkTable(course.homework);
+            $("#loading").hide();
+            $("#main-content").show();
         };
 
         self.openModal = (hw) =>{

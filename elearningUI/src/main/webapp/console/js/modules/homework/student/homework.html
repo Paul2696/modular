@@ -2,42 +2,46 @@
 	<h2 class="title">Tareas</h2>
 	<hr class="my-3">
 	<div>
-		<div class="form-group">
-			<label for="course" class="select-label">Cursos</label>
-			<select id="course" class="form-control" data-bind="foreach: courses">
-				<option data-bind="text: name, click: $root.updateTable"></option>
-			</select>
+		<div class="container text-center p-3">
+			<div id="course" class="dropdown">
+				<button class="btn btn-primary btn-lg dropdown-toggle" id="dropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Cursos</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownButton" data-bind="foreach: courses">
+					<a href="#" class="dropdown-item" data-bind="text: name, click: $root.updateTable"></a>
+				</div>
+			</div>
 		</div>
-		<table id="datos" class="table table-hover">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">Tarea</th>
-					<th scope="col">Fecha</th>
-					<th scope="col">Recursos</th>
-					<th scope="col">Descripción</th>
-					<!--th scope="col" ><h2>	Detalles</h2></th>-->
-					<th scope="col">Calificacion</th>
-					<th scope="col" >Subir</th>
-				</tr>
-			</thead>
+		<div class="container">
+			<table id="datos" class="table table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Tarea</th>
+						<th scope="col">Fecha</th>
+						<th scope="col">Recursos</th>
+						<th scope="col">Descripción</th>
+						<!--th scope="col" ><h2>	Detalles</h2></th>-->
+						<th scope="col">Calificacion</th>
+						<th scope="col" >Subir</th>
+					</tr>
+				</thead>
 
-			<tbody data-bind="foreach: homework">
-				<tr>
-					<td scope="row" data-bind="text: name"></td>
-					<td scope="row" data-bind="text: formattedDate"></td>
-					<td><a href="text:" data-bind="#"></a></td>
-					<td data-bind="text: description"></td>
-					<!--td><h3 data-bind="text: tipo"></h3></td>-->
-					<td data-bind="text: gradeObservable"></td>
-					<td>
-						<button  class="btn btn-primary btn-md"
-								 data-bind="
-									visible: !gradedObservable(),
-									click: $root.openModal,
-									text: uploaded() ? 'Actualizar Tarea' : 'Subir Tarea'"></button></td>
-				</tr>
-			</tbody>
-		</table>
+				<tbody data-bind="foreach: homework">
+					<tr>
+						<td scope="row" data-bind="text: name"></td>
+						<td scope="row" data-bind="text: formattedDate"></td>
+						<td><a href="text:" data-bind="#"></a></td>
+						<td data-bind="text: description"></td>
+						<!--td><h3 data-bind="text: tipo"></h3></td>-->
+						<td data-bind="text: gradeObservable"></td>
+						<td>
+							<button  class="btn btn-primary btn-md"
+									 data-bind="
+										visible: !gradedObservable(),
+										click: $root.openModal,
+										text: uploaded() ? 'Actualizar Tarea' : 'Subir Tarea'"></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div data-bind="component: {
 							name : 'modal',
 							params: {
