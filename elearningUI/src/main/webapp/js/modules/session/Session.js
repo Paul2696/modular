@@ -7,13 +7,15 @@ let noUser = [
 let withUserStudent = [
     {text: "Inicio", path: "#"},
     {text: "Cursos", path: "#courses/student"},
+    {text: "Lista de compañeros", path: "#users"},
     {text: "Tareas", path: "#homework/student"},
-    {text: "Test de Aprendizaje", path: "#test"}
+    {text: "Test de Tipo de Aprendizaje", path: "#test"}
 ];
 
 let withUserTeacher = [
     {text: "Inicio", path: "#"},
     {text: "Cursos", path: "#courses/teacher"},
+    {text: "Estadisticas de Alumnos", path: "#statistics"},
     {text: "Tareas", path: "#homework/teacher"}
 ];
 
@@ -56,7 +58,7 @@ define(["cookie"], function (Cookie) {
     }
 
     self.testSession = function() {
-        let session =  new Session(3,2);
+        let session =  new Session(4,1);
         Cookie.set("session", session);
         return session;
     }

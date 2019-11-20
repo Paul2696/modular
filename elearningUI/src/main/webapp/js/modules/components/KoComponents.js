@@ -11,5 +11,6 @@ define([
         template:  {require: "text!modules/components/modal/modal.html"}
     });
 
+
     return ko.components;
 });

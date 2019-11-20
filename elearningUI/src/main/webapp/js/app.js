@@ -11,7 +11,8 @@ requirejs.config({
         text: "lib/text",
         router: "lib/vanilla-router.min",
         popper: "lib/bootstrap/popper.min",
-        bootstrap: "lib/bootstrap/bootstrap.min"
+        bootstrap: "lib/bootstrap/bootstrap.min",
+        chart: "lib/bootstrap/Chart.min"
     }
 });
 

@@ -1,8 +1,8 @@
-<div class="form-group">
-    <h1>Nombre: </h1>
-    <h2 data-bind="text: user.name"></h2>
-    <h1>Correo electronico: </h1>
-    <h2 data-bind="text: user.email"></h2>
-    <h1>Tipo de aprendizaje: </h1>
-    <h2 data-bind="text: user.learningType"></h2>
+<div class="form-group" data-bind="foreach: user">
+    <label>Nombre: </label>
+    <label data-bind="text: name"></label>
+    <label>Correo electronico: </label>
+    <label data-bind="text: email"></label>
+    <label>Tipo de aprendizaje: </label>
+    <label data-bind="text: learningType"></label>
 </div>

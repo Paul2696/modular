@@ -12,7 +12,9 @@ define([
           "#homework/teacher" : "modules/homework/teacher/homework",
           "#homework/student" : "modules/homework/student/homework",
           "#courses/student"  : "modules/courses/student/courses",
-          "#course/users" : "modules/courses/users/users",
+          "#user/profile" : "modules/profile/profile",
+          "#statistics" : "modules/statistics/statistics",
+          "#users" : "modules/users/users",
           "#test" : "modules/test/test"
       };
       self.views = {
@@ -20,7 +22,9 @@ define([
           "#homework/teacher" : "text!modules/homework/teacher/homework.html",
           "#homework/student" : "text!modules/homework/student/homework.html",
           "#courses/student"  : "text!modules/courses/student/courses.html",
-          "#course/users" : "text!modules/courses/users/users.html",
+          "#user/profile" : "text!modules/profile/profile.html",
+          "#statistics" : "text!modules/statistics/statistics.html",
+          "#users" : "text!modules/users/users.html",
           "#test" : "text!modules/test/test.html"
       };
 
