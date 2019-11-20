@@ -4,12 +4,13 @@ define([
     "cookie",
     "moment",
     "el/modules/client/CourseRestClient",
+    "el/modules/session/Session",
     "text!modules/views/enrollView.html",
     "bootstrap"
-], function (ko, $, cookie, moment, courseClient, enrollView) {
+], function (ko, $, cookie, moment, courseClient, session, enrollView) {
     function CourseViewModel() {
         let self = this;
-        let session = JSON.parse(cookie.get("session"));
+
         self.idUser = session.idUser;
         self.courses = ko.observableArray([]);
         self.course = ko.observable();

@@ -6,15 +6,16 @@
      "el/modules/client/CourseRestClient",
      "el/modules/client/HomeworkRestClient",
      "el/modules/homework/Homework",
+     "el/modules/session/Session",
      "text!modules/views/gradeHomeworkView.html",
      "bootstrap"
- ], function (ko, $, moment, cookie, courseClient, homeworkClient, Homework, view) {
+ ], function (ko, $, moment, cookie, courseClient, homeworkClient, Homework, session,  view) {
      function HomeworkViewModel() {
          let self = this;
          self.homework = ko.observableArray([]);
          self.courses = ko.observableArray([]);
          self.currentCourse = ko.observable();
-         let session = JSON.parse(cookie.get("session"));
+
          self.idUser = session.idUser;
          self.userType = session.userType;
 

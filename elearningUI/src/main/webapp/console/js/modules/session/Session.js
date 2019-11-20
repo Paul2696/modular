@@ -32,6 +32,17 @@ define(["cookie"], function (Cookie) {
         self.userType = userType;
     };
 
+    self.init = () =>{
+        let cookie = Cookie.get("session");
+        if(cookie == null) {
+            window.location.href = "/elearningUI/html/log_in.html";
+        } else {
+            let values = cookie.split("|");
+            self.idUser = parseInt(values[0]);
+            self.userType = parseInt(values[1]);
+        }
+    };
+
     /**
      */
     self.isSessionActive =  function() {
@@ -40,8 +51,8 @@ define(["cookie"], function (Cookie) {
     };
     /**
      */
-    self.getSessionMenu = function(userType) {
-        switch(userType) {
+    self.getSessionMenu = function() {
+        switch(self.userType) {
             case 2: return withUserStudent;
             case 1: return withUserTeacher;
             case 3: return noUser;
@@ -50,17 +61,13 @@ define(["cookie"], function (Cookie) {
     };
     /**
      */
-    self.destroySession = function() {
-        Cookie.remove("session");
-    }
-    self.getNoUserMenu = function () {
-        return noUser
-    }
 
     self.testSession = function() {
         let session =  new Session(4,1);
         Cookie.set("session", session);
         return session;
-    }
+    };
+
+    self.init();
     return self;
 });

@@ -6,14 +6,15 @@ define([
     "el/modules/courses/Course",
     "el/modules/client/CourseRestClient",
     "el/modules/components/globalMessages/globalMessages",
+    "el/modules/session/Session",
     "text!modules/views/userProfile.html",
     "bootstrap"
-], function (ko, $, moment, cookie, Course, client, messages, view) {
+], function (ko, $, moment, cookie, Course, client, messages, session, view) {
     function CourseViewModel(){
         let self = this;
         self.start = ko.observable(new Date());
         self.courses = ko.observableArray([]);
-        let session = JSON.parse(cookie.get("session"));
+
         self.idUser = session.idUser;
         self.userType = session.userType;
         self.course = ko.observable();

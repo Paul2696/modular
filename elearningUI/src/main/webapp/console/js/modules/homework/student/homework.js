@@ -6,16 +6,16 @@ define([
     "el/modules/client/UserRestClient",
     "el/modules/client/HomeworkRestClient",
     "el/modules/homework/Response",
+    "el/modules/session/Session",
     "text!modules/views/uploadHomework.html",
     "bootstrap"
-], function (ko, $, cookie, moment, userClient, homeworkClient, Response, modalView) {
+], function (ko, $, cookie, moment, userClient, homeworkClient, Response, session, modalView) {
     function HomeworkViewModel() {
         let self = this;
         self.homework = ko.observableArray();
         self.courses = ko.observableArray();
         self.course = ko.observable();
 
-        let session = JSON.parse(cookie.get("session"));
         self.idUser = session.idUser;
         self.userType = session.userType;
         self.model = {

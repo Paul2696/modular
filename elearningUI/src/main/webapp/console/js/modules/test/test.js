@@ -3,12 +3,12 @@ define([
     "jquery",
     "cookie",
     "el/modules/client/UserRestClient",
-    "text!modules/views/learningTypeView.html",
+    "el/modules/session/Session",
     "bootstrap"
-], function(ko, $, cookie, userClient, view){
+], function(ko, $, cookie, userClient, session){
     function TestViewModel(){
         let self = this;
-        let session = JSON.parse(cookie.get("session"));
+
         self.questions = ko.observableArray([]);
         self.answers = {
             visual : 0,

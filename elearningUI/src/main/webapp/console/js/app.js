@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl : "js",
+    baseUrl : "/elearningUI/console/js",
     paths : {
         el: ".",
         jquery: "lib/jquery-3.3.1.min",
@@ -22,14 +22,14 @@ requirejs([
     "jquery",
     "el/modules/session/Session",
     "el/AppRouter",
+    "cookie",
     "el/modules/components/KoComponents"
-], function (require, ko, $, session, Router) {
+], function (require, ko, $, session, Router, cookie) {
     let self = this;
-    let s = session.testSession();
     self.mainViewModel = {
         router : Router,
         resource: ko.observable(),
-        menu: session.getSessionMenu(s.userType),
+        menu: session.getSessionMenu(),
         navHandler: function (element) {
             console.log(element);
             $("#main-content").hide();

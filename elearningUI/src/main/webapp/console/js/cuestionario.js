@@ -11,7 +11,7 @@ function CuestionarioViewModel(){
                 if(session && session.isSessionActive()) {
                     self.menu(session.getSessionMenu());
                 } else {
-                    window.location.href = "/webapp/html/log_in.html";
+                    window.location.href = "../../html/log_in.html";
                 }
             }
 }
