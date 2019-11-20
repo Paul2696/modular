@@ -38,10 +38,14 @@ define([
         };
 
         self.updateGraphic = (course) => {
+            $("#loading").show();
+            $("#main-content").hide();
             self.learningTypeCounters.visual = 0;
             self.learningTypeCounters.auditivo = 0;
             self.learningTypeCounters.kinestesico = 0;
             self.getGraphic(course.users);
+            $("#loading").hide();
+            $("#main-content").show();
         }
 
         self.getGraphic = (users) => {

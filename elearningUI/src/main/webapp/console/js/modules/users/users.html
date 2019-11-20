@@ -2,14 +2,19 @@
     <h2 class="title">Lista de compa&ntilde;eros</h2>
     <hr class="my-3">
     <div>
-        <div class="form-group">
+        <div class="container text-center p-3">
             <label for="course" class="select-label">Cursos</label>
-            <select id="course" class="form-control" data-bind="foreach: courses">
-                <option data-bind="text: name, click: $root.updateList"></option>
-            </select>
+            <div id="course" class="dropdown">
+                <button class="btn btn-primary btn-lg dropdown-toggle" id="dropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownButton" data-bind="foreach: courses">
+                    <a href="#" class="dropdown-item" data-bind="text: name, click: $root.updateList"></a>
+                </div>
+            </div>
         </div>
-        <div class="list-group" data-bind="foreach: usersList">
-            <button class="list-group-item list-group-item-action" data-bind="text: name, click: $root.loadProfile"></button>
+        <div>
+            <div class="list-group" data-bind="foreach: usersList">
+                <button class="list-group-item list-group-item-action" data-bind="text: name, click: $root.loadProfile"></button>
+            </div>
         </div>
         <div data-bind="component: {
 							name : 'modal',

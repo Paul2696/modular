@@ -38,7 +38,6 @@ define([
                 if(data != null && data.length > 0){
                     data.forEach(function (element) {
                         let course = Object.assign(new Course(), element);
-                        course.hasPassword(course.password ? true :  false);
                         course.startObservable(new Date(course.start));
                         course.endObservable(new Date(course.end));
                         course.editable(false);

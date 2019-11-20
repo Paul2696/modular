@@ -45,12 +45,17 @@
              });
          };
 
-         self.updateTable = (hw) => {
-             self.populateHomeworkTable(hw);
+         self.updateTable = (course) => {
+             $("#loading").show();
+             $("#main-content").hide();
+             self.populateHomeworkTable(course.homework);
+             $("#loading").hide();
+             $("#main-content").show();
          };
 
          self.populateHomeworkTable = (homework) => {
-             if (homework.length > 0) {
+             if (homework != null) {
+                 self.homework([]);
                  homework.forEach((element) => {
                      let hw = Object.assign(new Homework(), element);
                      hw.endObservable(new Date(hw.end));
