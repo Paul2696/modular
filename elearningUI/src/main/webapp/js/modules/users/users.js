@@ -13,7 +13,7 @@ define([
         self.course = ko.observable();
         self.courses = ko.observableArray([]);
         self.idUser = session.idUser;
-        self.usersList = ko.observableArray();
+        self.usersList = ko.observableArray([]);
 
         self.view = view;
         self.model = {
@@ -34,6 +34,7 @@ define([
                 if(data.courses != null && data.courses.length > 0){
                     self.courses(data.courses);
                     self.course(data.courses[0]);
+                    self.updateList(self.course());
                 }
                 $("#loading").hide();
                 $("#main-content").show();
@@ -42,12 +43,12 @@ define([
 
         self.updateList = (courses) => {
             courseClient.getCourses(courses.idCourse, (course) => {
-                self.usersList([course.users]);
+                self.usersList(course.users);
             });
         };
 
         self.loadProfile = (user) => {
-            self.data.user([user]);
+            self.model.data.user([user]);
             $("#modal").modal("toggle");
         };
 
