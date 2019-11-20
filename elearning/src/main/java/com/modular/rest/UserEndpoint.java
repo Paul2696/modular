@@ -129,7 +129,7 @@ public class UserEndpoint {
                 return Response.status(400).entity("El usuario ya se encuentra inscrito en el curso").build();
             }
             JsonObject password = null;
-            if(course.needsPassword()){
+            if(course.getHasPassword()){
                 password = gson.fromJson(passwordJson, JsonObject.class);
                 if (password == null && password.entrySet().size() == 0) {
                     return Response.status(400).entity("El curso requiere un password").build();

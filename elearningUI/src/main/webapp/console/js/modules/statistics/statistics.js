@@ -3,12 +3,12 @@ define([
     "jquery",
     "cookie",
     "el/modules/client/CourseRestClient",
+    "el/modules/session/Session",
     "chart",
     "bootstrap"
-], function (ko, $, cookie, courseClient) {
+], function (ko, $, cookie, courseClient, session) {
     function StatisticsViewModel(){
         let self = this;
-        let session = JSON.parse(cookie.get("session"));
         self.currentCourse = ko.observable();
         self.courses = ko.observableArray([]);
         self.users = ko.observableArray([]);

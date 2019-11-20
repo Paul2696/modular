@@ -37,7 +37,7 @@ public class Course {
     @JsonIgnoreProperties({"homeworkResponse"})
     private Set<Homework> homework;
     @Transient
-    private boolean hasPassword = needsPassword();
+    private boolean hasPassword;
 
 
     public int getIdCourse() {
@@ -105,8 +105,13 @@ public class Course {
     }
 
     @JsonProperty
-    public boolean needsPassword(){
+    public boolean getHasPassword(){
         return !StringUtils.isBlank(password);
+    }
+
+    @JsonIgnore
+    public void setHasPassword(boolean hasPassword){
+        this.hasPassword = hasPassword;
     }
 
     @Override

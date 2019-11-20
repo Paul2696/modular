@@ -45,10 +45,8 @@
              });
          };
 
-         self.updateTable = (hw, event) => {
-             if (event.originalEvent) {
-                 self.populateHomeworkTable(hw);
-             }
+         self.updateTable = (hw) => {
+             self.populateHomeworkTable(hw);
          };
 
          self.populateHomeworkTable = (homework) => {

@@ -24,6 +24,7 @@ public class User {
     private String password;
     private String email;
     private String learningType;
+    @Transient
     private boolean hasLearningType;
     @Column(name = "userType")
     private String type;
