@@ -27,7 +27,7 @@ public class Homework {
     private Set<HomeworkResponse> responses;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
-    @JsonIgnoreProperties("homework")
+    @JsonIgnoreProperties({"homework", "users"})
     private Course course;
 
     public int getIdHomework() {

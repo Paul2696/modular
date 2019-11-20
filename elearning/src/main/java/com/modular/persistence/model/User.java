@@ -103,6 +103,7 @@ public class User {
         return responses;
     }
 
+    @JsonIgnore
     public void setResponses(Set<HomeworkResponse> responses) {
         this.responses = responses;
     }

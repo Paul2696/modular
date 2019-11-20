@@ -5,11 +5,11 @@ define([
     "el/modules/client/CourseRestClient",
     "el/modules/client/UserRestClient",
     "text!modules/views/userProfile.html",
+    "el/modules/session/Session",
     "bootstrap"
-], function (ko, $, cookie, courseClient, userClient, view) {
+], function (ko, $, cookie, courseClient, userClient, session, view) {
     function UsersListViewModel(){
         let self = this;
-        let session = JSON.parse(cookie.get("session"));
         self.course = ko.observable();
         self.courses = ko.observableArray([]);
         self.idUser = session.idUser;

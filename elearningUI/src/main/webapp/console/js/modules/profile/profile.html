@@ -1,0 +1,30 @@
+<div class="jumbotron">
+    <h2 class="title">Perfil de usuario</h2>
+    <hr class="my-3">
+    <div class="container">
+        <form data-bind="with: user">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input class="form-control" id="name" data-bind="textInput: name, enable: $root.editable"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" data-bind="textInput: password, enable: $root.editPassword() && $root.editable()"/>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="passwordCheck" data-bind="checked: $root.editPassword">
+                    <label class="form-check-label" for="passwordCheck">Change Password</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electr&oacute;nico</label>
+                <input class="form-control" id="email" data-bind="textInput: email, enable: $root.editable"/>
+            </div>
+            <div class="form-group" data-bind="visible: userType.idUserType == 2">
+                <label for="learningType">Tipo de aprendizaje</label>
+                <label class="form-control" id="learningType" data-bind="text: learningType, enable: $root.editable"/>
+            </div>
+            <button type="button" class="btn btn-secondary" data-bind="click: $root.updateData">Editar Perfil</button>
+            <button type="submit" class="btn btn-primary" data-bind="enable: $root.editable, click: $root.updateProfile">Actualizar Perfil</button>
+        </form>
+    </div>
+</div>

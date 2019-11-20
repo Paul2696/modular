@@ -14,6 +14,7 @@ import com.modular.persistence.dao.impl.UserDAOImpl;
 import com.modular.persistence.model.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.SetUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
@@ -80,6 +81,9 @@ public class UserEndpoint {
         try{
             //User user = mapper.readValue(json, User.class);
             user.setIdUser(userId);
+            if(StringUtils.isBlank(user.getPassword())){
+                user.setPassword(userDAO.get(user.getIdUser()).getPassword());
+            }
             userDAO.update(user);
             return Response.ok("Success").build();
         } catch (DataBaseException dbe){
