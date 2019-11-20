@@ -34,7 +34,7 @@ public class Course {
     private Set<User> users;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idCourse")
-    @JsonIgnoreProperties({"homeworkResponse"})
+    @JsonIgnoreProperties({"homeworkResponse", "course"})
     private Set<Homework> homework;
     @Transient
     private boolean hasPassword;

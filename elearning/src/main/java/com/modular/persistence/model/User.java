@@ -9,6 +9,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.Objects;
@@ -103,6 +104,7 @@ public class User {
         return responses;
     }
 
+    @JsonIgnore
     public void setResponses(Set<HomeworkResponse> responses) {
         this.responses = responses;
     }
@@ -131,7 +133,7 @@ public class User {
 
     public void addCourse(Course course) {
         if(courses == null){
-            courses = new TreeSet<>();
+            courses = new HashSet<>();
         }
         courses.add(course);
     }

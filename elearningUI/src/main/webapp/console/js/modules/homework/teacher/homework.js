@@ -48,6 +48,7 @@
          self.updateTable = (course) => {
              $("#loading").show();
              $("#main-content").hide();
+             self.currentCourse(course);
              self.populateHomeworkTable(course.homework);
              $("#loading").hide();
              $("#main-content").show();
@@ -87,8 +88,6 @@
                  if(hw.idHomework == null) {
                      homeworkClient.createHomework(hw,(data) =>{
                          console.log(data);
-                         self.populateHomeworkTable(self.currentCourse());
-
                      });
                  } else {
                      homeworkClient.updateHomework(hw, (data) =>{

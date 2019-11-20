@@ -103,6 +103,7 @@ public class UserEndpoint {
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUser(){
         try{
             List<User> users = userDAO.getAllUsers();
@@ -182,6 +183,26 @@ public class UserEndpoint {
         try{
             List<Chat> chats = chatDAO.getConversation(senderID, receiverId);
             Conversation conversation = Conversation.createConversation(chats);
+            String json = mapper.writeValueAsString(conversation);
+            return Response.ok(json).build();
+        }
+        catch(DataBaseException dbe){
+            logger.debug(dbe.getMessage(), dbe);
+            return Response.serverError().entity(dbe.getMessage()).build();
+        }
+        catch(JsonProcessingException jpe) {
+            logger.debug(jpe.getMessage(), jpe);
+            return Response.status(400).entity(jpe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("{sender}/chat/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllConversations(@PathParam("sender") int senderID){
+        try{
+            List<Chat> chats = chatDAO.getAllConversations(senderID);
+            List<Conversation> conversation = Conversation.createListOfConversations(chats);
             String json = mapper.writeValueAsString(conversation);
             return Response.ok(json).build();
         }

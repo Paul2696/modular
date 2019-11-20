@@ -29,12 +29,12 @@ define(["jquery"], function ($) {
             if(processData != null){
                 pd = processData;
             }
-            if(type != null){
-                this.contentType = type;
+            if(type == null){
+                type = this.contentType;
             }
             $.ajax({
                 url: url,
-                contentType: this.contentType,
+                contentType: type,
                 processData: pd,
                 data: data,
                 method: "POST",

@@ -79,4 +79,24 @@ public class ChatDAOImpl implements ChatDAO {
         }
 
     }
+
+    @Override
+    public List<Chat> getAllConversations(int userId) throws DataBaseException{
+        try{
+            EntityManager em = ef.createEntityManager();
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Chat> criteriaQuery = criteriaBuilder.createQuery(Chat.class);
+            Root<Chat> root = criteriaQuery.from(Chat.class);
+            Predicate predicate1 = criteriaBuilder.equal(root.get("user").get("idUser"), userId);
+            Predicate predicate2 = criteriaBuilder.equal(root.get("user1").get("idUser"), userId);
+            Predicate predicate3 = criteriaBuilder.or(predicate1, predicate2);
+            criteriaQuery.select(root).where(predicate3);
+            return em.createQuery(criteriaQuery).getResultList();
+        }
+        catch(Exception e){
+            logger.debug(e.getMessage(), e);
+            throw new DataBaseException("No se pudo obtener la conversacion");
+        }
+
+    }
 }

@@ -8,6 +8,8 @@ public class Message {
     private String message;
     private String sender;
     private String receiver;
+    private int idSender;
+    private int idReceiver;
 
     public Message(){}
 
@@ -16,6 +18,8 @@ public class Message {
         this.message = message;
         this.sender = sender.getName();
         this.receiver = receiver.getName();
+        this.idSender = sender.getIdUser();
+        this.idReceiver = receiver.getIdUser();
     }
 
     public Date getDate() {
@@ -48,6 +52,14 @@ public class Message {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public int getIdSender() {
+        return idSender;
+    }
+
+    public void setIdSender(int idSender) {
+        this.idSender = idSender;
     }
 
     @Override
