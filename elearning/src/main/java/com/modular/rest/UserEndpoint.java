@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.modular.ejb.ChatHandler;
 import com.modular.fuzzy.FuzzyLearning;
 import com.modular.persistence.dao.*;
 import com.modular.persistence.dao.impl.ChatDAOImpl;
@@ -39,6 +40,8 @@ public class UserEndpoint {
     private CourseDAO courseDAO;
     @Inject
     private QuestionDAO questionDAO;
+    @Inject
+    private ChatHandler chatHandler;
 
     static {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
@@ -171,7 +174,7 @@ public class UserEndpoint {
             message.setUser1(receiver);
             message.setMessage(messageJson.get("message").getAsString());
             message.setDate(Calendar.getInstance().getTime());
-            chatDAO.create(message);
+            chatHandler.createNewMessage(message);
             return Response.ok("Success").build();
         }
         catch(DataBaseException dbe){
@@ -205,8 +208,7 @@ public class UserEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllConversations(@PathParam("sender") int senderID){
         try{
-            List<Chat> chats = chatDAO.getAllConversations(senderID);
-            List<Conversation> conversation = Conversation.createListOfConversations(chats);
+            List<Conversation> conversation = chatHandler.getConversation(userDAO.get(senderID));
             String json = mapper.writeValueAsString(conversation);
             return Response.ok(json).build();
         }
@@ -217,6 +219,20 @@ public class UserEndpoint {
         catch(JsonProcessingException jpe) {
             logger.debug(jpe.getMessage(), jpe);
             return Response.status(400).entity(jpe.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{sender}/chat/newMessages")
+    public Response getNewMessages(@PathParam("sender") int senderId) {
+        try {
+            User user = userDAO.get(senderId);
+            Message message = chatHandler.getNewMessage(user);
+            return Response.ok(message).build();
+        } catch (Exception e) {
+            logger.debug(e.getMessage(), e);
+            return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
