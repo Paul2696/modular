@@ -4,10 +4,11 @@ define([
     "cookie",
     "moment",
     "el/modules/client/CourseRestClient",
+    "el/modules/client/UserRestClient",
     "el/modules/session/Session",
     "text!modules/views/enrollView.html",
     "bootstrap"
-], function (ko, $, cookie, moment, courseClient, session, enrollView) {
+], function (ko, $, cookie, moment, courseClient, userClient, session, enrollView) {
     function CourseViewModel() {
         let self = this;
 

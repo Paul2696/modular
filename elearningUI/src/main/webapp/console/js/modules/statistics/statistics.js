@@ -43,6 +43,7 @@ define([
             self.learningTypeCounters.visual = 0;
             self.learningTypeCounters.auditivo = 0;
             self.learningTypeCounters.kinestesico = 0;
+            self.currentCourse(course);
             self.getGraphic(course.users);
             $("#loading").hide();
             $("#main-content").show();

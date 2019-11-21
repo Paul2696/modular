@@ -9,6 +9,7 @@ define(["ko"], function (ko) {
         self.endObservable = ko.observable(new Date());
         self.editable = ko.observable(true);
         self.file = ko.observable(null);
+        self.hasResponse = ko.observable(false);
 
         self.setFile = (data, e) => {
             self.file(e.target.files[0]);

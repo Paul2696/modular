@@ -62,6 +62,7 @@
                      hw.endObservable(new Date(hw.end));
                      hw.editable(false);
                      if(hw.responses != null && hw.responses.length > 0) {
+                         hw.hasResponse(true);
                          hw.responses.forEach((res) =>{
                              res.path = ko.pureComputed(()=>{
                                  return hw.idHomework +
@@ -88,6 +89,7 @@
                  if(hw.idHomework == null) {
                      homeworkClient.createHomework(hw,(data) =>{
                          console.log(data);
+                         self.homework.push(hw);
                      });
                  } else {
                      homeworkClient.updateHomework(hw, (data) =>{
