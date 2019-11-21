@@ -26,7 +26,9 @@
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#" data-bind="click: function(){navHandler('#profile')}"> Perfil de usuario</a></li>
-                        <li><a href="#"> Cerrar sesi&oacute;n</a></li>
+                        <form id="logout" method="post" action="/elearningUI/logout">
+                            <li><a href="#" data-bind="click: logout"> Cerrar sesi&oacute;n</a></li>
+                        </form>
                     </ul>
                 </li>
             </ul>

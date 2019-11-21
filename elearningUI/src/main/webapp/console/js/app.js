@@ -30,7 +30,14 @@ requirejs([
         router : Router,
         resource: ko.observable(),
         menu: session.getSessionMenu(),
+        logout: () =>{
+           $("#logout").submit();
+        },
         navHandler: function (element) {
+            if(!element) {
+                element = "#index";
+            }
+            clearInterval();
             console.log(element);
             $("#main-content").hide();
             $("#loading").show();
