@@ -37,6 +37,7 @@ public class PostLoginFilter implements Filter {
             if(!cookieExists((HttpServletRequest) req, "session")) {
                 Map<String, Integer> user = getAuthenticatedUser(((HttpServletRequest)req).getUserPrincipal());
                 Cookie cookie = new Cookie("session", user.get("idUser") + "|" + user.get("userType"));
+                //cookie.setMaxAge(0);
                 ((HttpServletResponse)res).addCookie(cookie);
             }
         }

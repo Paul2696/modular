@@ -37,7 +37,7 @@ define(["cookie"], function (Cookie) {
     self.init = () =>{
         let cookie = Cookie.get("session");
         if(cookie == null) {
-            window.location.href = "/elearningUI/html/log_in.html";
+           // window.location.href = "/elearningUI/html/log_in.html";
         } else {
             let values = cookie.split("|");
             self.idUser = parseInt(values[0]);

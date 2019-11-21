@@ -31,7 +31,9 @@ requirejs([
         resource: ko.observable(),
         menu: session.getSessionMenu(),
         logout: () =>{
-           $("#logout").submit();
+           $("#logout").submit(() =>{
+               cookie.remove("session");
+           });
         },
         navHandler: function (element) {
             if(!element) {
