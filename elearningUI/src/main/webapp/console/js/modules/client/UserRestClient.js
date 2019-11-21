@@ -36,6 +36,9 @@ define(["el/modules/client/Request"], function (request) {
         },
         getAllConversations: (sender, callback) => {
             request.get(path, [sender, "chat"], callback);
+        },
+        getNewMessage: (idUser, callback) =>{
+            request.get(path, [idUser, "chat", "newMessages"], callback);
         }
     };
 

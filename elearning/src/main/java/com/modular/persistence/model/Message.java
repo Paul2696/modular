@@ -1,5 +1,7 @@
 package com.modular.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,6 +12,10 @@ public class Message {
     private String receiver;
     private int idSender;
     private int idReceiver;
+    @JsonIgnore
+    private User userSender;
+    @JsonIgnore
+    private User userReceiver;
 
     public Message(){}
 
@@ -20,6 +26,8 @@ public class Message {
         this.receiver = receiver.getName();
         this.idSender = sender.getIdUser();
         this.idReceiver = receiver.getIdUser();
+        this.userSender = sender;
+        this.userReceiver = receiver;
     }
 
     public Date getDate() {
