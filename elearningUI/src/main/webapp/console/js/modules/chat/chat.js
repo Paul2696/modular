@@ -3,12 +3,14 @@ define([
     "jquery",
     "el/modules/client/UserRestClient",
     "el/modules/chat/Conversation",
+    "el/modules/chat/Message",
     "el/modules/session/Session",
     "bootstrap"
-], function (ko, $, client, Conversation, session) {
+], function (ko, $, client, Conversation, Message, session) {
     function ChatClientViewModel() {
         let self = this;
         self.idUser = session.idUser;
+        self.name = ko.observable();
         self.users = ko.observableArray([]);
         self.receiver = ko.observable();
         self.conversations = ko.observableArray([]);
@@ -19,12 +21,16 @@ define([
         self.init = () => {
             self.getUsers();
             self.populateConversation();
+            self.listenForMessages();
         };
 
         self.populateConversation = () => {
             client.getAllConversations(session.idUser, (data) =>{
                 data.forEach((element)=>{
                     let filtered = element.users.filter((value, index, arr)=>{
+                        if(value.idUser != session.idUser) {
+                            self.name(value.name);
+                        }
                         return value.idUser != session.idUser;
                     });
                     element.users = filtered;
@@ -66,8 +72,14 @@ define([
             self.conversation(conversation.conversation);
         };
 
-        self.sendMessage = (conversation) =>{
+        self.sendMessage = () =>{
+            let message = new Message();
+            message.idSender = self.idUser;
+            message.message = self.message();
+            message.sender = self.name;
+            message.receiver = self.receiver().name;
             client.sendMessage(self.idUser, self.receiver().idUser, self.message(), (data) =>{
+                self.conversation.push(message);
                 console.log(data);
                 self.message("");
             });
@@ -82,6 +94,16 @@ define([
             });
             return result;
         };
+        self.listenForMessages = () => {
+          setInterval(self.retrieveNewMessages, 2500);
+        };
+
+        self.retrieveNewMessages = () =>{
+            client.getNewMessage(self.idUser, (data) =>{
+                console.log(data)
+            })
+        };
+
         self.init();
     }
 
