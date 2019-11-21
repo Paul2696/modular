@@ -3,16 +3,16 @@ package com.modular.persistence.dao.impl;
 import com.modular.persistence.dao.DataBaseException;
 import com.modular.persistence.dao.IncorrectPasswordException;
 import com.modular.persistence.dao.UserDAO;
-import com.modular.persistence.model.Course;
-import com.modular.persistence.model.User;
-import com.modular.persistence.model.UserType;
+import com.modular.persistence.model.*;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class UserDAOImpl implements UserDAO {
@@ -53,32 +53,26 @@ public class UserDAOImpl implements UserDAO {
             if(user == null){
                 throw new DataBaseException("No existe un usuario con la llave: " + key);
             }
-            return user;
+            return filter(user);
         }
         catch(IllegalArgumentException iae){
             throw new DataBaseException("No se pudo encontrar el elemento");
         }
     }
 
-    @Override
-    public User getUser(int key) throws DataBaseException {
-        try{
-            EntityManager em = ef.createEntityManager();
-            Query q = em.createNativeQuery("SELECT * FROM user u JOIN " +
-                    "userCourse uc ON u.idUser = uc.idUser JOIN " +
-                    "course c ON uc.idCourse = c.idCourse JOIN " +
-                    "homework h ON h.idCourse = c.idCourse JOIN " +
-                    "homeworkResponse hr ON h.idHomework = hr.idHomework " +
-                    "WHERE u.idUser = " + key +";", User.class);
-            List<User> l = q.getResultList();
-            if(l != null && l.size() > 0) {
-                return l.get(0);
+    private User filter(User u) {
+        for(Course c : u.getCourses()) {
+            for(Homework h : c.getHomework()) {
+                Set<HomeworkResponse> res = new HashSet<>();
+                for(HomeworkResponse hr : h.getResponses()){
+                    if(hr.getUser().equals(u)) {
+                        res.add(hr);
+                    }
+                }
+                h.setResponses(res);
             }
-            return null;
         }
-        catch(IllegalArgumentException iae){
-            throw new DataBaseException("No se pudo encontrar el elemento");
-        }
+        return u;
     }
 
     @Override
