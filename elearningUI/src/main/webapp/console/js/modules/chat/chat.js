@@ -2,9 +2,10 @@ define([
     "ko",
     "jquery",
     "el/modules/client/UserRestClient",
+    "el/modules/chat/Conversation",
     "el/modules/session/Session",
     "bootstrap"
-], function (ko, $, client, session) {
+], function (ko, $, client, Conversation, session) {
     function ChatClientViewModel() {
         let self = this;
         self.idUser = session.idUser;
@@ -37,16 +38,28 @@ define([
 
         self.getUsers = () =>{
             client.getUsers((data) =>{
+                data = data.filter((value) =>{
+                    return value.idUser != self.idUser;
+                });
                 self.users(data);
             });
         };
 
         self.createConversation= (receiver) => {
             self.receiver(receiver);
+            let conversation = self.conversationExists(receiver);
+            if(!conversation) {
+                let conversation = new Conversation();
+                conversation.users.push(receiver);
+                self.conversations.push(conversation);
+            }
+            self.loadConversation(conversation);
         };
 
         self.loadConversation = (conversation) =>{
-            self.currentConversation().active(false);
+            if(self.currentConversation() != null) {
+                self.currentConversation().active(false);
+            }
             self.currentConversation(conversation);
             conversation.active(true);
             self.receiver(conversation.users[0]);
@@ -55,10 +68,20 @@ define([
 
         self.sendMessage = (conversation) =>{
             client.sendMessage(self.idUser, self.receiver().idUser, self.message(), (data) =>{
-                console.log(data)
+                console.log(data);
+                self.message("");
             });
         };
 
+        self.conversationExists = (receiver) => {
+            let result = false;
+            self.conversations().forEach((element) => {
+                  if(element.users[0].idUser == receiver.idUser) {
+                      result = element;
+                  }
+            });
+            return result;
+        };
         self.init();
     }
 
