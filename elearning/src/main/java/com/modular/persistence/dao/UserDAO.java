@@ -9,4 +9,5 @@ public interface UserDAO extends BaseDAO <User> {
     List<User> getAllUsers() throws DataBaseException;
     boolean exist(int id);
     void enrollCourse(Course course, User user, String password) throws IncorrectPasswordException;
+    User getUser(int key) throws DataBaseException;
 }
