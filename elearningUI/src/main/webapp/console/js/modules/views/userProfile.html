@@ -1,8 +1,10 @@
-<div class="form-group" data-bind="foreach: user">
-    <label>Nombre: </label>
-    <label data-bind="text: name"></label>
-    <label>Correo electronico: </label>
-    <label data-bind="text: email"></label>
-    <label>Tipo de aprendizaje: </label>
-    <label data-bind="text: learningType"></label>
+<div class="container">
+    <div class="form-group" data-bind="foreach: user">
+        <label>Nombre: </label>
+        <input class="form-control" data-bind="textInput: name, disable: true"></input>
+        <label>Correo electronico: </label>
+        <input class="form-control" data-bind="textInput: email, disable: true"></input>
+        <label data-bind="visible: userType.idUserType == 2">Tipo de aprendizaje: </label>
+        <input class="form-control" data-bind="textInput: learningType, disable: true, visible: userType.idUserType == 2"></input>
+    </div>
 </div>

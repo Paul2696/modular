@@ -25,7 +25,7 @@
 					<input type="password" data-bind="textInput: password, visible: hasPassword, enable: editable"/>
 				</td>
 				<td><a data-bind="click: function(){$root.createOrEdit($data, $root)};" href="#">
-					<span data-bind="attr: {class: editable() ? 'glyphicon glyphicon-ok':'glyphicon glyphicon-pencil'}">editar</span>
+					<span data-bind="attr: {class: editable() ? 'fas fa-check':'fas fa-pencil-alt'}">editar</span>
 				</a></td>
 				<td>
 					<a href="#" data-bind="click: function(){$root.remove($data)}">

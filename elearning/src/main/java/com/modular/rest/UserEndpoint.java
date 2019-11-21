@@ -49,6 +49,12 @@ public class UserEndpoint {
         try{
             logger.debug("Request json: " + user);
             //User user = mapper.readValue(json, User.class);
+            if(user.getUserType().getIdUserType() == 1){
+                user.getUserType().setName("teacher");
+            }
+            if(user.getUserType().getIdUserType() == 2){
+                user.getUserType().setName("student");
+            }
             userDAO.create(user);
             return Response.ok(200).build();
         } catch(DataBaseException dbe){

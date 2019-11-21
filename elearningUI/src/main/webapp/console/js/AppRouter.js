@@ -16,7 +16,8 @@ define([
           "#statistics" : "modules/statistics/statistics",
           "#users" : "modules/users/users",
           "#test" : "modules/test/test",
-          "#chat" : "modules/chat/chat"
+          "#chat" : "modules/chat/chat",
+          "#index" : "modules/index/index"
       };
       self.views = {
           "#courses/teacher"  : "text!modules/courses/teacher/courses.html",
@@ -27,7 +28,8 @@ define([
           "#statistics" : "text!modules/statistics/statistics.html",
           "#users" : "text!modules/users/users.html",
           "#test" : "text!modules/test/test.html",
-          "#chat" : "text!modules/chat/chat.html"
+          "#chat" : "text!modules/chat/chat.html",
+          "#index" : "text!modules/index/index.html"
       };
 
       self.router = new Router({

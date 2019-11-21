@@ -5,7 +5,7 @@ let noUser = [
 ];
 
 let withUserStudent = [
-    {text: "Inicio", path: "#"},
+    {text: "Inicio", path: "#index"},
     {text: "Cursos", path: "#courses/student"},
     {text: "Lista de compañeros", path: "#users"},
     {text: "Tareas", path: "#homework/student"},
@@ -14,7 +14,7 @@ let withUserStudent = [
 ];
 
 let withUserTeacher = [
-    {text: "Inicio", path: "#"},
+    {text: "Inicio", path: "#index"},
     {text: "Cursos", path: "#courses/teacher"},
     {text: "Estadisticas de Alumnos", path: "#statistics"},
     {text: "Tareas", path: "#homework/teacher"},

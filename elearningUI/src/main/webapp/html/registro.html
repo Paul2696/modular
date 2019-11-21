@@ -13,34 +13,49 @@
 	<link rel="stylesheet" href="../css/animate.css">
 	<link href="../css/animate.min.css" rel="stylesheet"> 
 	<link href="../css/style.css" rel="stylesheet" />
-	<script src="../js/lib/jquery-3.3.1.min.js"></script>
-	<script src="../js/lib/knockout-3.4.2.js"></script>
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="knockout-latest.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-	<script src="../js/modules/session/Session.js"></script>
-	<script src="../js/PostSignUp.js"></script>
+	<script src="PostSignUp.js"></script>
 </head>
 
 <body>
-    <section class="contact-page">
-        <div class="container">
-            <div class="row contact-wrap"> 
-                <div class="status alert alert-success" style="display: none"></div>
-                <form id="main-contact-form" class="contact-form" name="contact-form" method="post">
-                    <div class="col-sm-5 col-sm-offset-1">
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <form id="main-contact-form" role="form" method="post" action="PostSignUp.js" class="text-center">
+                    <fieldset>
+                        <p class="text-uppercase pull-center"> SIGN UP.</p>
                         <div class="form-group">
-                        	<label>Nombre:</label>
-                        	<input data-bind="textInput: name" type="name" name="name" class="form-control" required="required">
-                            <label>Correo:</label>
-                            <input data-bind = "textInput: mail" type="name" name="name" class="form-control" required="required">
-                            <label>Contraseña: </label>
-                            <input data-bind = "textInput: password" type="password" name="password" class="form-control" required="required">
-                            <br>
-                            <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">REGISTRAR</button>
-                        </div>               
-                    </div>
-                </form> 
-            </div><!--/.row-->
-        </div><!--/.container-->
-    </section><!--/#contact-page-->
+                            <input type="text" name="username" id="user" class="form-control input-lg" placeholder="username" data-bind="textInput: name">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" data-bind="textInput: email">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" id="pass" class="form-control input-lg" placeholder="Password" data-bind="textInput: password">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de usuario</label>
+                            <select id="userType" class="form-control">
+                                <option value="2">Estudiante</option>
+                                <option value="1">Profesor</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="submit" class="btn btn-lg btn-primary">
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="col-md-2">
+                <!-------null------>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

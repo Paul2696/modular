@@ -1,16 +1,17 @@
 Arreglar el modal de el perfil de usuario para que se vea bonito.
-    userProfile en views
+    userProfile en views - Hecho
 
-Diseniar el index
+Diseniar el index - HEcho
 
-Diseniar login
+Diseniar login - Hecho
+
 Diseniar registro
 
 Cambiar el editar y borrar por iconos bonitos
 
 Agregar a la tabla de tareas de maestro el titulo de los recursos
 
-POner fecha de entrega en lugar de fecha nada mas
+POner fecha de entrega en lugar de fecha nada mas - estudiantes
 
 Deshabilitar boton de calificar cuando se crea la tarea
 
@@ -27,3 +28,5 @@ Cambiar si necesita contrasenia a palabrras
 Agregar mensajes de informacion
 
 Agregar el uso de global messages
+
+Desactivar los botones de los cursos a los que ya estas inscrito
