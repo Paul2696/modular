@@ -14,7 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path(("/user"))
+@Path("/user")
 public class SignUp {
     private static final Logger logger = Logger.getLogger(UserEndpoint.class);
     private static ObjectMapper mapper = new ObjectMapper();

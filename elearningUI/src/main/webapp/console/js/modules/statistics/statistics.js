@@ -50,6 +50,9 @@ define([
 
         self.getGraphic = (users) => {
             users.forEach((user) => {
+                if(user.learningType == null){
+                    return;
+                }
                 if(user.learningType.localeCompare("Visual") == 0){
                     self.learningTypeCounters.visual++;
                 }
