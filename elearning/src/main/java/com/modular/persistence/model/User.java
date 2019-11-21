@@ -16,7 +16,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user")
-@NamedQuery(name = "findById", query = "SELECT u FROM User u where u.idUser = :id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

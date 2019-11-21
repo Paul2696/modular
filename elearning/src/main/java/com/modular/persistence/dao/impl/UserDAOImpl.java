@@ -61,6 +61,27 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User getUser(int key) throws DataBaseException {
+        try{
+            EntityManager em = ef.createEntityManager();
+            Query q = em.createNativeQuery("SELECT * FROM user u JOIN " +
+                    "userCourse uc ON u.idUser = uc.idUser JOIN " +
+                    "course c ON uc.idCourse = c.idCourse JOIN " +
+                    "homework h ON h.idCourse = c.idCourse JOIN " +
+                    "homeworkResponse hr ON h.idHomework = hr.idHomework " +
+                    "WHERE u.idUser = " + key +";", User.class);
+            List<User> l = q.getResultList();
+            if(l != null && l.size() > 0) {
+                return l.get(0);
+            }
+            return null;
+        }
+        catch(IllegalArgumentException iae){
+            throw new DataBaseException("No se pudo encontrar el elemento");
+        }
+    }
+
+    @Override
     public void update(User entity) throws DataBaseException {
         try{
             EntityManager em = ef.createEntityManager();
@@ -128,4 +149,5 @@ public class UserDAOImpl implements UserDAO {
             logger.debug(dbe.getMessage(), dbe);
         }
     }
+
 }
