@@ -13,3 +13,17 @@ Agregar a la tabla de tareas de maestro el titulo de los recursos
 POner fecha de entrega en lugar de fecha nada mas
 
 Deshabilitar boton de calificar cuando se crea la tarea
+
+Agregar al boton de cursos de maestros el curso actual en las tareas
+
+Error en el modulo de tareas, no carga las tareas creadas en el momento hasta que recargamos el modulo
+
+Desactivar el boton de calificar si no hay respuestas
+
+Cambiar "Asignar contrasnia"
+
+Cambiar si necesita contrasenia a palabrras
+
+Agregar mensajes de informacion
+
+Agregar el uso de global messages

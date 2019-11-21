@@ -5,7 +5,8 @@
         <div class="container text-center p-3">
             <label for="course" class="select-label">Cursos</label>
             <div id="course" class="dropdown">
-                <button class="btn btn-primary btn-lg dropdown-toggle" id="dropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button class="btn btn-primary btn-lg dropdown-toggle" id="dropdownButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-bind="text: $root.currentCourse().name"></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownButton" data-bind="foreach: courses">
                     <a href="#" class="dropdown-item" data-bind="text: name, click: $root.updateList"></a>
                 </div>

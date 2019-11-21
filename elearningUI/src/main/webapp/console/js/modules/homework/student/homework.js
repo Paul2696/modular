@@ -14,7 +14,9 @@ define([
         let self = this;
         self.homework = ko.observableArray();
         self.courses = ko.observableArray();
-        self.course = ko.observable();
+        self.course = ko.observable({
+            name: "Cursos"
+        });
 
         self.idUser = session.idUser;
         self.userType = session.userType;
@@ -65,6 +67,7 @@ define([
         self.updateTable = (course) =>{
             $("#loading").show();
             $("#main-content").hide();
+            self.course(course);
             self.populateHomeworkTable(course.homework);
             $("#loading").hide();
             $("#main-content").show();

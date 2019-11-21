@@ -52,7 +52,7 @@ define([
 
         self.openModal = (course) => {
             self.course(course);
-            if(!course.needsPassword){
+            if(!course.hasPassword){
                 self.enroll();
             } else {
                 $("#modal").modal("toggle");

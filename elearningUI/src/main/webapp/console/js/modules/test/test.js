@@ -4,8 +4,9 @@ define([
     "cookie",
     "el/modules/client/UserRestClient",
     "el/modules/session/Session",
+    "text!modules/views/learningTypeView.html",
     "bootstrap"
-], function(ko, $, cookie, userClient, session){
+], function(ko, $, cookie, userClient, session, view){
     function TestViewModel(){
         let self = this;
 

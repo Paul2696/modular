@@ -7,10 +7,12 @@ define([
     "text!modules/views/userProfile.html",
     "el/modules/session/Session",
     "bootstrap"
-], function (ko, $, cookie, courseClient, userClient, session, view) {
+], function (ko, $, cookie, courseClient, userClient, view, session) {
     function UsersListViewModel(){
         let self = this;
-        self.course = ko.observable();
+        self.currentCourse = ko.observable({
+            name : "Cursos"
+        });
         self.courses = ko.observableArray([]);
         self.idUser = session.idUser;
         self.usersList = ko.observableArray([]);
@@ -33,17 +35,18 @@ define([
             userClient.getUser(self.idUser,  (data) =>{
                 if(data.courses != null && data.courses.length > 0){
                     self.courses(data.courses);
-                    self.course(data.courses[0]);
-                    self.updateList(self.course());
+                    self.currentCourse(data.courses[0]);
+                    self.updateList(self.currentCourse());
                 }
                 $("#loading").hide();
                 $("#main-content").show();
             });
         };
 
-        self.updateList = (courses) => {
-            courseClient.getCourses(courses.idCourse, (course) => {
-                self.usersList(course.users);
+        self.updateList = (course) => {
+            courseClient.getCourses(course.idCourse, (data) => {
+                self.currentCourse(course);
+                self.usersList(data.users);
             });
         };
 

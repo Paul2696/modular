@@ -20,7 +20,7 @@
                 <td data-bind="text: user.name"></td>
                 <td data-bind="text: startFormatted"></td>
                 <td data-bind="text: endFormatted"></td>
-                <td data-bind="text: needsPassword"></td>
+                <td data-bind="text: hasPassword"></td>
                 <td><button class="btn btn-primary btn-md"
                             data-bind="click: $root.openModal">Inscribirse</button>
                 </td>
@@ -32,7 +32,8 @@
                             params: {
                                 title: 'Inscribirse al Curso',
                                 view: view,
-                                model: model
+                                model: model,
+                                btnStr: 'OK'
                             }
                         }"></div>
     </div>
