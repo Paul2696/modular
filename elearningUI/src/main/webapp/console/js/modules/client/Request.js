@@ -2,7 +2,7 @@ define(["jquery"], function ($) {
     class Request {
 
         constructor() {
-            this.url = "http://localhost:8080/";
+            this.url = "http://aprendizaje.jl.serv.net.mx/";
             this.contentType = "application/json";
         }
 
@@ -13,6 +13,7 @@ define(["jquery"], function ($) {
                 url: url,
                 method: "GET",
                 headers: {
+                    "Access-Control-Allow-Origin": "*"
                 },
                 success: function(response){
                     callback(response);
@@ -39,6 +40,7 @@ define(["jquery"], function ($) {
                 data: data,
                 method: "POST",
                 headers: {
+                    "Access-Control-Allow-Origin": "*"
                 },
                 success: function(response){
                     callback(response);
@@ -65,6 +67,7 @@ define(["jquery"], function ($) {
                 data: data,
                 method: "PUT",
                 headers: {
+                    "Access-Control-Allow-Origin": "*"
                 },
                 success: function(response){
                     callback(response);
@@ -81,6 +84,7 @@ define(["jquery"], function ($) {
                 url : url,
                 method : "DELETE",
                 headers : {
+                    "Access-Control-Allow-Origin": "*"
                 },
                 success : function (response) {
                     callback(response);

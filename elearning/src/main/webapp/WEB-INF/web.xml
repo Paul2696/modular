@@ -3,29 +3,4 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
   <display-name>Aprendizaje a tu medida</display-name>
- <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>elearning</web-resource-name>
-      <url-pattern>/api/*</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>student</role-name>
-      <role-name>teacher</role-name>
-    </auth-constraint>
-     <!--user-data-constraint>
-         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-     </user-data-constraint-->
-  </security-constraint>
-
-  <login-config>
-    <auth-method>BASIC</auth-method>
-  </login-config>
-
-  <security-role>
-    <role-name>student</role-name>
-  </security-role>
-  <security-role>
-    <role-name>teacher</role-name>
-  </security-role>
-
 </web-app>
